@@ -10,6 +10,8 @@ import {
   TextField
 } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
+import { useFormik } from "formik";
+import * as yup from 'yup';
 
 import { styled } from '@mui/material/styles';
 
@@ -29,6 +31,31 @@ const handleSubmit = () => {
   console.log('Form is submitted.');
 };
 function Login() {
+
+ 
+  const validateSchema = yup.object().shape({
+    email: yup.string().email("Please enter a valid email").required("The email field is required"),
+    password: yup.string()
+      .required("The password field is required"),
+    
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: validateSchema,
+    onSubmit: (values, { resetForm }) => {
+      console.log(values);
+      
+      setTimeout(() => {
+       
+        resetForm();
+      }, 1000 * 2);
+    },
+  });
+
   return (
     <>
       <Helmet>
@@ -46,7 +73,7 @@ function Login() {
             <Card sx={{ textAlign: 'center', mt: 3, p: 4 }}>
               <Box
                 component="form"
-                onSubmit={handleSubmit}
+                onSubmit={formik.handleSubmit}
                 noValidate
                 sx={{ mt: 1 }}
               >
@@ -59,6 +86,9 @@ function Login() {
                   name="email"
                   autoComplete="email"
                   autoFocus
+                  onChange={formik.handleChange}
+                  value={formik.values.email}
+                  helperText={formik.errors.email ? formik.errors.email : ""}
                 />
                 <TextField
                   margin="normal"
@@ -69,10 +99,14 @@ function Login() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  helperText={formik.errors.password ? formik.errors.password : ""}
                 />
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
                   label="Remember me"
+                  sx={{ marginRight: '340px'}}
                 />
                 <Button
                   type="submit"
