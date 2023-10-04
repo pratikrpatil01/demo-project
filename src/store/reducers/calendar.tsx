@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project import
 import axios from 'src/utils/axios';
-import { dispatch } from 'store';
+import { dispatch } from 'src/store';
 
 const initialState = {
   calendarView: 'dayGridMonth',

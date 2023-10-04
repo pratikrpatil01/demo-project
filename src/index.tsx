@@ -6,7 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import 'nprogress/nprogress.css';
 import App from 'src/App';
-import { store, persister } from 'store';
+import { store, persister } from 'src/store';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
 
