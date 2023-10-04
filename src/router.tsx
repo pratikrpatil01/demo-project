@@ -31,6 +31,9 @@ const Messenger = Loader(
 const Transactions = Loader(
   lazy(() => import('src/content/applications/Transactions'))
 );
+const Manufacturers = Loader(
+  lazy(() => import('src/content/applications/Manufacturers'))
+);
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -122,6 +125,24 @@ const routes: RouteObject[] = [
       {
         path: '*',
         element: <Status404 />
+      }
+    ]
+  },
+  {
+    path: 'manufacturers',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Manufacturers />
+      },
+      {
+        path: 'crypto',
+        element: <Crypto />
+      },
+      {
+        path: 'messenger',
+        element: <Messenger />
       }
     ]
   },
