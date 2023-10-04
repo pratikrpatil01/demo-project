@@ -116,11 +116,9 @@ function Login() {
                 >
                   Sign In
                 </Button>
+                <a href='/admin/forgot-password' >Forgot Password</a>
               </Box>
-              <Divider sx={{ my: 4 }}>OR</Divider>
-              <Button href="/overview" variant="outlined">
-                Go to homepage
-              </Button>
+              
             </Card>
           </Container>
         </Container>
