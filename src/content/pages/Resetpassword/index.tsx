@@ -10,7 +10,7 @@ import {
   TextField
 } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
-import { useFormik } from 'formik';
+import { useFormik } from "formik";
 import * as yup from 'yup';
 
 import { styled } from '@mui/material/styles';
@@ -30,41 +30,53 @@ const MainContent = styled(Box)(
 const handleSubmit = () => {
   console.log('Form is submitted.');
 };
-function Login() {
+function Resetpassword() {
+
+ 
   const validateSchema = yup.object().shape({
-    email: yup
-      .string()
-      .email('Please enter a valid email')
-      .required('The email field is required'),
-    password: yup.string().required('The password field is required')
+    otp: yup.string().required("The otp field is required"),
+    password: yup.string()
+    .required("This field is required")
+    .min(8, "Pasword must be 8 or more characters")
+    .matches(/(?=.*[a-z])(?=.*[A-Z])\w+/, "Password ahould contain at least one uppercase and lowercase character")
+    .matches(/\d/, "Password should contain at least one number")
+    .matches(/[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/, "Password should contain at least one special character"),
+    confirmPassword: yup.string().when("password", (password, field) => {
+      if (password) {
+        return field.required("The passwords do not match").oneOf([yup.ref("password")], "The passwords do not match");
+      }
+    }),
+    
   });
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: ''
+      otp: "",
+      password: "",
+      confirmPassword:"",
     },
     validationSchema: validateSchema,
     onSubmit: (values, { resetForm }) => {
       console.log(values);
-
+      
       setTimeout(() => {
+       
         resetForm();
       }, 1000 * 2);
-    }
+    },
   });
 
   return (
     <>
       <Helmet>
-        <title>Login</title>
+        <title>Reset Password</title>
       </Helmet>
       <MainContent>
         <Container maxWidth="md">
           <Box textAlign="center">
             {/* <img alt="404" height={180} src="/static/images/status/404.svg" /> */}
             <Typography variant="h2" sx={{ my: 2 }}>
-              Login
+            Reset Password
             </Typography>
           </Box>
           <Container maxWidth="sm">
@@ -79,14 +91,14 @@ function Login() {
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="otp"
+                  label="OTP"
+                  name="otp"
+                  autoComplete="otp"
                   autoFocus
                   onChange={formik.handleChange}
-                  value={formik.values.email}
-                  helperText={formik.errors.email ? formik.errors.email : ''}
+                  value={formik.values.otp}
+                  helperText={formik.errors.otp ? formik.errors.otp : ""}
                 />
                 <TextField
                   margin="normal"
@@ -99,14 +111,21 @@ function Login() {
                   autoComplete="current-password"
                   onChange={formik.handleChange}
                   value={formik.values.password}
-                  helperText={
-                    formik.errors.password ? formik.errors.password : ''
-                  }
+                  helperText={formik.errors.password ? formik.errors.password : ""}
                 />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                  sx={{ marginRight: '340px' }}
+                
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                  id="confirmPassword"
+                  autoComplete="confirm-password"
+                  onChange={formik.handleChange}
+                  value={formik.values.confirmPassword}
+                  helperText={formik.errors.confirmPassword ? formik.errors.confirmPassword : ""}
                 />
                 <Button
                   type="submit"
@@ -116,7 +135,6 @@ function Login() {
                 >
                   Sign In
                 </Button>
-                <a href='/admin/forgot-password' >Forgot Password</a>
               </Box>
               
             </Card>
@@ -127,4 +145,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Resetpassword;
