@@ -7,6 +7,8 @@ import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
 import Login from './content/pages/Login';
+import Forgotpassword from './content/pages/Forgotpassword';
+import Resetpassword from './content/pages/Resetpassword';
 
 const Loader = (Component) => (props) =>
   (
@@ -89,6 +91,14 @@ const routes: RouteObject[] = [
       {
         path: '/admin/login',
         element: <Login />
+      },
+      {
+        path: '/admin/forgot-password',
+        element: <Forgotpassword />
+      },
+      {
+        path: '/admin/reset-password',
+        element: <Resetpassword />
       },
       {
         path: 'overview',
