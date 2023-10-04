@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import ApiEndPoints from 'src/Network_call/ApiEndPoints';
 import ApiServices from 'src/Network_call/apiservices';
-import { dispatch } from 'store';
+import { dispatch } from 'src/store';
 
 const initialState = {
   count: 0,

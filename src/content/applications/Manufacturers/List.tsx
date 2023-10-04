@@ -17,7 +17,7 @@ import {
   decreseCount,
   increseCount
 } from 'src/store/reducers/manufacturer';
-import { useSelector } from 'store';
+import { useSelector } from 'src/store';
 
 function List() {
   const [data, setData] = useState(dummyData);
@@ -30,9 +30,9 @@ function List() {
   });
   const pagination = { pageIndex: 1, pageSize: 10 };
   const navigate = useNavigate();
-  const { ManufacturerData, count } = useSelector(
-    (store) => store.manufacturerSlice
-  );
+  // const { ManufacturerData, count } = useSelector(
+  //   (store) => store.manufacturerSlice
+  // );
 
   const key = [
     'id',
@@ -92,7 +92,7 @@ function List() {
       info: filterData
     };
     await GetManufacturerList(payload);
-    console.log('manufacturerList', ManufacturerData);
+    // console.log('manufacturerList', ManufacturerData);
     // console.log('manufacturerDetails', manufacturerDetails);
     const response = null;
     // await ApiServices('post', payload, ApiEndPoints.DataList);
