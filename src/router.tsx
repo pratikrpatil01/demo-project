@@ -39,6 +39,9 @@ const Manufacturers = Loader(
 const AddManufacturer = Loader(
   lazy(() => import('src/content/applications/Manufacturers/add'))
 );
+const EditManufacturer = Loader(
+  lazy(() => import('src/content/applications/Manufacturers/edit'))
+);
 
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
@@ -153,6 +156,10 @@ const routes: RouteObject[] = [
       {
         path: 'add',
         element: <AddManufacturer />
+      },
+      {
+        path: 'edit',
+        element: <EditManufacturer />
       },
       {
         path: 'crypto',
