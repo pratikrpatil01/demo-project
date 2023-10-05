@@ -36,6 +36,10 @@ const Transactions = Loader(
 const Manufacturers = Loader(
   lazy(() => import('src/content/applications/Manufacturers'))
 );
+const AddManufacturer = Loader(
+  lazy(() => import('src/content/applications/Manufacturers/add'))
+);
+
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -145,6 +149,10 @@ const routes: RouteObject[] = [
       {
         path: '',
         element: <Manufacturers />
+      },
+      {
+        path: 'add',
+        element: <AddManufacturer />
       },
       {
         path: 'crypto',
