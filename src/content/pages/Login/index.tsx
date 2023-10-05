@@ -14,6 +14,11 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { styled } from '@mui/material/styles';
+import { userLogin } from 'src/store/action/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import ApiServices from 'src/Network_call/apiservices';
+import ApiEndPoints from 'src/Network_call/ApiEndPoints';
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -31,6 +36,10 @@ const handleSubmit = () => {
   console.log('Form is submitted.');
 };
 function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const daTA = useSelector((store) => store.auth);
   const validateSchema = yup.object().shape({
     email: yup
       .string()
@@ -39,18 +48,21 @@ function Login() {
     password: yup.string().required('The password field is required')
   });
 
+  console.log('daTA', daTA);
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: ''
+      password: '',
+      user_type: 'admin'
     },
     validationSchema: validateSchema,
-    onSubmit: (values, { resetForm }) => {
-      console.log(values);
-
-      setTimeout(() => {
+    onSubmit: async (values, { resetForm }) => {
+      const responce = await ApiServices('post', ApiEndPoints.Login, values);
+      if (responce.success) {
+        dispatch(userLogin(responce));
         resetForm();
-      }, 1000 * 2);
+        navigate('/dashboards');
+      }
     }
   });
 
@@ -116,9 +128,8 @@ function Login() {
                 >
                   Sign In
                 </Button>
-                <a href='/admin/forgot-password' >Forgot Password</a>
+                <a href="/admin/forgot-password">Forgot Password</a>
               </Box>
-              
             </Card>
           </Container>
         </Container>
