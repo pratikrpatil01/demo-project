@@ -13,12 +13,13 @@ import {
 export const initialState = {
   isLoggedIn: false,
   isInitialized: false,
-  user: any
+  user: any,
+  token: any
 };
 
 // ==============================|| AUTH REDUCER ||============================== //
 
-const auth = (action, state = initialState) => {
+const auth = (state = initialState, action) => {
   switch (action.type) {
     case REGISTER: {
       const { user } = action.payload;
@@ -27,13 +28,14 @@ const auth = (action, state = initialState) => {
         user
       };
     }
-    case LOGIN: {
-      const { user } = action.payload;
+    case 'LOGIN': {
+      const { data, tokenInfo } = action.payload;
       return {
         ...state,
         isLoggedIn: true,
         isInitialized: true,
-        user
+        user: data,
+        token: tokenInfo?.token
       };
     }
     case FORGOTPASSWORD: {
