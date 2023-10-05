@@ -7,13 +7,15 @@ import storage from 'redux-persist/lib/storage';
 import calendar from './calendar';
 import snackbar from './snackbar';
 import manufacturer from './manufacturer';
+import auth from './auth';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
 const reducers = combineReducers({
   calendar,
   snackbar,
-  manufacturerSlice: manufacturer
+  manufacturerSlice: manufacturer,
+  auth:auth
 });
 
 export default reducers;

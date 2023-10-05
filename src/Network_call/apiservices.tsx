@@ -59,7 +59,7 @@ const ApiServices = async (
 
   try {
     const response: AxiosResponse = await axiosInstance(config);
-    return response.data;
+    return response;
   } catch (error) {
     if (error.response) {
       if (error.response.status === 409) {
