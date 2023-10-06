@@ -180,6 +180,30 @@ function SidebarMenu() {
   return (
     <>
       <MenuWrapper>
+        <List
+          component="div"
+          subheader={
+            <ListSubheader component="div" disableSticky>
+              Master
+            </ListSubheader>
+          }
+        >
+          <SubMenuWrapper>
+            <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/master/list"
+                  startIcon={<DesignServicesTwoToneIcon />}
+                >
+                  Master
+                </Button>
+              </ListItem>
+            </List>
+          </SubMenuWrapper>
+        </List>
         <List component="div">
           <SubMenuWrapper>
             <List component="div">

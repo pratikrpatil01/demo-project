@@ -9,6 +9,8 @@ import SuspenseLoader from 'src/components/SuspenseLoader';
 import Login from './content/pages/Login';
 import Forgotpassword from './content/pages/Forgotpassword';
 import Resetpassword from './content/pages/Resetpassword';
+import AddUser from './content/pages/Master/addUser';
+import EditUser from './content/pages/Master/editUset';
 
 const Loader = (Component) => (props) =>
   (
@@ -20,6 +22,9 @@ const Loader = (Component) => (props) =>
 // Pages
 
 const Overview = Loader(lazy(() => import('src/content/overview')));
+
+// Master
+const MasterList = Loader(lazy(() => import('src/content/pages/Master')));
 
 // Dashboards
 
@@ -217,6 +222,28 @@ const routes: RouteObject[] = [
             element: <UserSettings />
           }
         ]
+      }
+    ]
+  },
+  {
+    path: 'master',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="list" replace />
+      },
+      {
+        path: 'list',
+        element: <MasterList />
+      },
+      {
+        path: 'add-user',
+        element: <AddUser />
+      },
+      {
+        path: 'edit-user',
+        element: <EditUser />
       }
     ]
   },
