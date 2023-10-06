@@ -81,15 +81,15 @@ function Sidebar() {
         />
         <Box p={2}>
           <Button
-            href="https://bloomui.com"
+            href="/admin/manufacturers"
             target="_blank"
             rel="noopener noreferrer"
             variant="contained"
-            color="warning"
+            color="success"
             size="small"
             fullWidth
           >
-            Upgrade to PRO
+            Homepage
           </Button>
         </Box>
       </SidebarWrapper>

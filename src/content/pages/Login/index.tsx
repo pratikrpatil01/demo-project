@@ -39,7 +39,7 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const daTA = useSelector((store) => store.auth);
+  // const daTA = useSelector((store) => store.auth);
   const validateSchema = yup.object().shape({
     email: yup
       .string()
@@ -48,7 +48,7 @@ function Login() {
     password: yup.string().required('The password field is required')
   });
 
-  console.log('daTA', daTA);
+  // console.log('daTA', daTA);
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -74,7 +74,11 @@ function Login() {
       <MainContent>
         <Container maxWidth="md">
           <Box textAlign="center">
-            {/* <img alt="404" height={180} src="/static/images/status/404.svg" /> */}
+            <img
+              alt="ProCuriit"
+              height={180}
+              src="/static/images/logo/procuriit-horizontal.jpg"
+            />
             <Typography variant="h2" sx={{ my: 2 }}>
               Login
             </Typography>
@@ -99,6 +103,7 @@ function Login() {
                   onChange={formik.handleChange}
                   value={formik.values.email}
                   helperText={formik.errors.email ? formik.errors.email : ''}
+                  error={formik.errors.email ? true : false}
                 />
                 <TextField
                   margin="normal"
@@ -111,6 +116,7 @@ function Login() {
                   autoComplete="current-password"
                   onChange={formik.handleChange}
                   value={formik.values.password}
+                  error={formik.errors.password ? true : false}
                   helperText={
                     formik.errors.password ? formik.errors.password : ''
                   }

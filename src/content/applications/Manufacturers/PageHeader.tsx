@@ -19,6 +19,7 @@ function PageHeader() {
       </Grid>
       <Grid item>
         <Button
+          href="manufacturers/add"
           sx={{ mt: { xs: 2, md: 0 } }}
           variant="contained"
           startIcon={<AddTwoToneIcon fontSize="small" />}

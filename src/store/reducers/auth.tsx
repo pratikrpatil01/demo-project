@@ -19,6 +19,7 @@ export const initialState = {
 
 // ==============================|| AUTH REDUCER ||============================== //
 
+// eslint-disable-next-line @typescript-eslint/default-param-last
 const auth = (state = initialState, action) => {
   switch (action.type) {
     case REGISTER: {

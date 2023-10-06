@@ -109,7 +109,7 @@ const routes: RouteObject[] = [
       {
         path: '/admin/reset-password',
         element: <Resetpassword />
-      },      
+      },
       {
         path: 'overview',
         element: <Navigate to="/" replace />
@@ -146,7 +146,7 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: 'manufacturers',
+    path: 'admin/manufacturers/',
     element: <SidebarLayout />,
     children: [
       {
