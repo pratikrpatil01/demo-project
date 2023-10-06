@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Box,
   Card,
@@ -7,7 +8,8 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  TextField
+  TextField,
+  Link
 } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useFormik } from 'formik';
@@ -19,6 +21,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import ApiServices from 'src/Network_call/apiservices';
 import ApiEndPoints from 'src/Network_call/ApiEndPoints';
+import { red } from '@mui/material/colors';
+import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -31,6 +35,7 @@ const MainContent = styled(Box)(
       justify-content: center;
   `
 );
+
 
 const handleSubmit = () => {
   console.log('Form is submitted.');
@@ -58,13 +63,40 @@ function Login() {
     validationSchema: validateSchema,
     onSubmit: async (values, { resetForm }) => {
       const responce = await ApiServices('post', ApiEndPoints.Login, values);
+      console.log('responce')
+      console.log(responce)
       if (responce.success) {
         dispatch(userLogin(responce));
         resetForm();
         navigate('/dashboards');
-      }
+      }else{
+        showError(responce.msg);
+      } 
     }
   });
+
+  const [errorMessage, setErrorMessage] =  React.useState('');
+  const [successMessage, setSuccessMessage] =  React.useState('');
+
+  // Function to show an error message
+  const showError = (message) => {
+    setErrorMessage(message);
+  };
+
+  // Function to hide the error message
+  const hideError = () => {
+    setErrorMessage('');
+  };
+  // Function to show an success message
+  const showSuccess = (message) => {
+    setSuccessMessage(message);
+  };
+
+  // Function to hide the success message
+  const hideSuccess = () => {
+    setSuccessMessage('');
+  };
+
 
   return (
     <>
@@ -84,13 +116,33 @@ function Login() {
             </Typography>
           </Box>
           <Container maxWidth="sm">
+          
             <Card sx={{ textAlign: 'center', mt: 3, p: 4 }}>
+            {errorMessage && (
+              <Card className="error-message" sx={{  padding: '10px',borderRadius:'6px',  backgroundColor:'red', position: 'relative'}}>
+                
+                  <button style={{  position: 'absolute',top:'5px',right:'5px','background':'none',border:'none',cursor:'pointer',fontSize:'20px' }} onClick={hideError} >
+                    <CloseSharpIcon /> {/* Font Awesome close icon */}
+                  </button>
+                  <span style={{paddingRight: '30px'}}>{errorMessage}</span>
+              </Card>
+            )}
+            {successMessage && (
+              <Card className="error-message" sx={{  padding: '10px',borderRadius:'6px',  backgroundColor:'green', position: 'relative'}}>
+                
+                  <button style={{  position: 'absolute',top:'5px',right:'5px','background':'none',border:'none',cursor:'pointer',fontSize:'20px' }} onClick={hideSuccess} >
+                    <CloseSharpIcon /> {/* Font Awesome close icon */}
+                  </button>
+                  <span style={{paddingRight: '30px'}}>{successMessage}</span>
+              </Card>
+            )}
               <Box
                 component="form"
                 onSubmit={formik.handleSubmit}
                 noValidate
                 sx={{ mt: 1 }}
               >
+                
                 <TextField
                   margin="normal"
                   required
@@ -134,7 +186,8 @@ function Login() {
                 >
                   Sign In
                 </Button>
-                <a href="/admin/forgot-password">Forgot Password</a>
+                  <Link href="/admin/forgot-password" underline="hover"> Forgot Password?</Link>
+               
               </Box>
             </Card>
           </Container>

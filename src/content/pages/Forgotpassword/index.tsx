@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Box,
   Card,
@@ -7,13 +8,20 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  TextField
+  TextField,
+  Link
 } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useFormik } from "formik";
 import * as yup from 'yup';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+
 import { styled } from '@mui/material/styles';
+import CloseSharpIcon from '@mui/icons-material/CloseSharp';
+import ApiServices from 'src/Network_call/apiservices';
+import ApiEndPoints from 'src/Network_call/ApiEndPoints';
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -32,11 +40,10 @@ const handleSubmit = () => {
 };
 function Forgotpassword() {
 
- 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const validateSchema = yup.object().shape({
     email: yup.string().email("Please enter a valid email").required("The email field is required"),
-    password: yup.string()
-      .required("The password field is required"),
     
   });
 
@@ -46,16 +53,44 @@ function Forgotpassword() {
 
     },
     validationSchema: validateSchema,
-    onSubmit: (values, { resetForm }) => {
-      console.log(values);
-      
-      setTimeout(() => {
-       
+    onSubmit: async (values, { resetForm }) => {
+      console.log(ApiEndPoints)
+      const responce = await ApiServices('post', ApiEndPoints.ForgotPassword, values);
+      console.log('responce')
+      console.log(responce)
+      if (responce.success) {
+        showSuccess(responce.msg);
+        navigate('admin/reset-password');
         resetForm();
-      }, 1000 * 2);
-    },
+  
+      }else{
+        showError(responce.msg);
+      } 
+    }
   });
 
+
+  const [errorMessage, setErrorMessage] =  React.useState('');
+  const [successMessage, setSuccessMessage] =  React.useState('');
+
+  // Function to show an error message
+  const showError = (message) => {
+    setErrorMessage(message);
+  };
+
+  // Function to hide the error message
+  const hideError = () => {
+    setErrorMessage('');
+  };
+  // Function to show an success message
+  const showSuccess = (message) => {
+    setSuccessMessage(message);
+  };
+
+  // Function to hide the success message
+  const hideSuccess = () => {
+    setSuccessMessage('');
+  };
   return (
     <>
       <Helmet>
@@ -63,14 +98,37 @@ function Forgotpassword() {
       </Helmet>
       <MainContent>
         <Container maxWidth="md">
+            
           <Box textAlign="center">
-            {/* <img alt="404" height={180} src="/static/images/status/404.svg" /> */}
+            <img
+              alt="ProCuriit"
+              height={180}
+              src="/static/images/logo/procuriit-horizontal.jpg"
+            />
             <Typography variant="h2" sx={{ my: 2 }}>
-            Forgot Password
+              Login
             </Typography>
           </Box>
           <Container maxWidth="sm">
             <Card sx={{ textAlign: 'center', mt: 3, p: 4 }}>
+            {errorMessage && (
+              <Card className="error-message" sx={{  padding: '10px',borderRadius:'6px',  backgroundColor:'red', position: 'relative'}}>
+                
+                  <button style={{  position: 'absolute',top:'5px',right:'5px','background':'none',border:'none',cursor:'pointer',fontSize:'20px' }} onClick={hideError} >
+                    <CloseSharpIcon /> {/* Font Awesome close icon */}
+                  </button>
+                  <span style={{paddingRight: '30px'}}>{errorMessage}</span>
+              </Card>
+            )}
+            {successMessage && (
+              <Card className="error-message" sx={{  padding: '10px',borderRadius:'6px',  backgroundColor:'green', position: 'relative'}}>
+                
+                  <button style={{  position: 'absolute',top:'5px',right:'5px','background':'none',border:'none',cursor:'pointer',fontSize:'20px' }} onClick={hideSuccess} >
+                    <CloseSharpIcon /> {/* Font Awesome close icon */}
+                  </button>
+                  <span style={{paddingRight: '30px'}}>{successMessage}</span>
+              </Card>
+            )}
               <Box
                 component="form"
                 onSubmit={formik.handleSubmit}
@@ -89,6 +147,7 @@ function Forgotpassword() {
                   onChange={formik.handleChange}
                   value={formik.values.email}
                   helperText={formik.errors.email ? formik.errors.email : ""}
+                  error={formik.errors.email ? true : false}
                 />
                 
                 <Button
@@ -99,7 +158,7 @@ function Forgotpassword() {
                 >
                   Submit
                 </Button>
-                <a href='/admin/login' >Back to Login</a>
+                <Link href="/admin/login" underline="hover">Back to Login?</Link>
               </Box>
               
             </Card>
