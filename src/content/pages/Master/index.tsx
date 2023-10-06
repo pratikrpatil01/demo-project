@@ -17,6 +17,12 @@ function MasterList() {
   const handleClick = () => {
     navigate('/master/add-user');
   };
+  const handleEdit = (data: any) => {
+    navigate('/master/edit-user', { state: { data } });
+  };
+  const handleDelete = () => {
+    // navigate('/master/add-user');
+  };
   return (
     <>
       <Helmet>
@@ -44,6 +50,8 @@ function MasterList() {
                 cryptoOrders={data}
                 tableHeader={tableheader}
                 title="User List"
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
               />
             </Card>
           </Grid>
@@ -57,24 +65,132 @@ function MasterList() {
 export default MasterList;
 
 const data: UserList[] = [
-  { id: '1', name: 'west', place: 'indore', type: 'user', status: 'active' },
-  { id: '2', name: 'west', place: 'indore', type: 'user', status: 'active' },
-  { id: '3', name: 'west', place: 'indore', type: 'user', status: 'active' },
-  { id: '4', name: 'west', place: 'indore', type: 'user', status: 'active' },
-  { id: '5', name: 'west', place: 'indore', type: 'user', status: 'active' },
-  { id: '6', name: 'test', place: 'pune', type: 'admin', status: 'inactive' },
-  { id: '7', name: 'test', place: 'pune', type: 'admin', status: 'inactive' },
-  { id: '8', name: 'test', place: 'pune', type: 'admin', status: 'inactive' },
-  { id: '9', name: 'test', place: 'pune', type: 'admin', status: 'inactive' },
-  { id: '10', name: 'test', place: 'pune', type: 'admin', status: 'inactive' },
-  { id: '11', name: 'demo', place: 'dhar', type: 'master', status: 'pending' },
-  { id: '12', name: 'demo', place: 'dhar', type: 'master', status: 'pending' },
-  { id: '13', name: 'demo', place: 'dhar', type: 'master', status: 'pending' },
-  { id: '14', name: 'demo', place: 'dhar', type: 'master', status: 'pending' },
-  { id: '15', name: 'demo', place: 'dhar', type: 'master', status: 'pending' }
+  {
+    id: '1',
+    email: 'test@gmail.com',
+    name: 'test',
+    place: 'pune',
+    type: 'admin',
+    status: 'inactive'
+  },
+  {
+    id: '2',
+    email: 'demo@gmail.com',
+    name: 'demo',
+    place: 'dhar',
+    type: 'master',
+    status: 'pending'
+  },
+  {
+    id: '3',
+    email: 'west@gmail.com',
+    name: 'west',
+    place: 'indore',
+    type: 'user',
+    status: 'active'
+  },
+  {
+    id: '4',
+    email: 'test@gmail.com',
+    name: 'test',
+    place: 'pune',
+    type: 'admin',
+    status: 'inactive'
+  },
+  {
+    id: '5',
+    email: 'demo@gmail.com',
+    name: 'demo',
+    place: 'dhar',
+    type: 'master',
+    status: 'pending'
+  },
+  {
+    id: '6',
+    email: 'west@gmail.com',
+    name: 'west',
+    place: 'indore',
+    type: 'user',
+    status: 'active'
+  },
+  {
+    id: '7',
+    email: 'test@gmail.com',
+    name: 'test',
+    place: 'pune',
+    type: 'admin',
+    status: 'inactive'
+  },
+  {
+    id: '8',
+    email: 'demo@gmail.com',
+    name: 'demo',
+    place: 'dhar',
+    type: 'master',
+    status: 'pending'
+  },
+  {
+    id: '9',
+
+    email: 'west@gmail.com',
+    name: 'west',
+    place: 'indore',
+    type: 'user',
+    status: 'active'
+  },
+  {
+    id: '10',
+    email: 'test@gmail.com',
+    name: 'test',
+    place: 'pune',
+    type: 'admin',
+    status: 'inactive'
+  },
+  {
+    id: '11',
+    email: 'demo@gmail.com',
+    name: 'demo',
+    place: 'dhar',
+    type: 'master',
+    status: 'pending'
+  },
+  {
+    id: '12',
+
+    email: 'west@gmail.com',
+    name: 'west',
+    place: 'indore',
+    type: 'user',
+    status: 'active'
+  },
+  {
+    id: '13',
+    email: 'test@gmail.com',
+    name: 'test',
+    place: 'pune',
+    type: 'admin',
+    status: 'inactive'
+  },
+  {
+    id: '14',
+    email: 'demo@gmail.com',
+    name: 'demo',
+    place: 'dhar',
+    type: 'master',
+    status: 'pending'
+  },
+  {
+    id: '15',
+    email: 'west@gmail.com',
+    name: 'west',
+    place: 'indore',
+    type: 'user',
+    status: 'active'
+  }
 ];
 const tableheader: any = [
   { accesskey: 'name', label: 'Name' },
+  { accesskey: 'email', label: 'Email' },
   { accesskey: 'place', label: 'Place' },
   { accesskey: 'type', label: 'Type' },
   { accesskey: 'status', label: 'status' }

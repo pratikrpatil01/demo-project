@@ -37,6 +37,8 @@ interface RecentOrdersTableProps {
   cryptoOrders: UserList[];
   tableHeader: any;
   title: string;
+  handleDelete: any;
+  handleEdit: any;
 }
 
 interface Filters {
@@ -90,7 +92,9 @@ const applyPagination = (
 const MainTable: FC<RecentOrdersTableProps> = ({
   cryptoOrders,
   tableHeader,
-  title
+  title,
+  handleDelete,
+  handleEdit
 }) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
@@ -273,6 +277,9 @@ const MainTable: FC<RecentOrdersTableProps> = ({
                   <TableCell align="right">
                     <Tooltip title="Edit " arrow>
                       <IconButton
+                        onClick={() => {
+                          handleEdit(cryptoOrder);
+                        }}
                         sx={{
                           '&:hover': {
                             background: theme.colors.primary.lighter
@@ -287,6 +294,7 @@ const MainTable: FC<RecentOrdersTableProps> = ({
                     </Tooltip>
                     <Tooltip title="Delete " arrow>
                       <IconButton
+                        onClick={handleDelete}
                         sx={{
                           '&:hover': { background: theme.colors.error.lighter },
                           color: theme.palette.error.main

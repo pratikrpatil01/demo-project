@@ -10,6 +10,7 @@ import Login from './content/pages/Login';
 import Forgotpassword from './content/pages/Forgotpassword';
 import Resetpassword from './content/pages/Resetpassword';
 import AddUser from './content/pages/Master/addUser';
+import EditUser from './content/pages/Master/editUset';
 
 const Loader = (Component) => (props) =>
   (
@@ -239,6 +240,10 @@ const routes: RouteObject[] = [
       {
         path: 'add-user',
         element: <AddUser />
+      },
+      {
+        path: 'edit-user',
+        element: <EditUser />
       }
     ]
   },
