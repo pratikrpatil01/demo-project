@@ -1,7 +1,19 @@
 // third-party
 import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch as useAppDispatch, useSelector as useAppSelector } from 'react-redux';
-import { persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, persistReducer } from 'redux-persist';
+import {
+  useDispatch as useAppDispatch,
+  useSelector as useAppSelector
+} from 'react-redux';
+import {
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  persistReducer
+} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 // project import
 import reducers from './reducers';
@@ -19,6 +31,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
+        isSerializable: () => true,
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
     })

@@ -33,6 +33,7 @@ import VolumeUp from '@mui/icons-material/VolumeUp';
 
 import Switch from '@mui/material/Switch';
 import PageHeader from 'src/components/PageHeader';
+import { useLocation } from 'react-router';
 
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
@@ -55,11 +56,18 @@ const currencies = [
   }
 ];
 
-function AddUser() {
-  const [currency, setCurrency] = useState('EUR');
+function EditUser() {
+  const location: any = useLocation();
+  const data = location?.state?.data;
+  const [status, setStatus] = useState(data?.status);
+  const [type, setType] = useState(data?.type);
 
+  console.log(location);
   const handleChange = (event) => {
-    setCurrency(event.target.value);
+    setStatus(event.target.value);
+  };
+  const handleChangeType = (event) => {
+    setType(event.target.value);
   };
 
   const [value, setValue] = useState(30);
@@ -71,14 +79,14 @@ function AddUser() {
   return (
     <>
       <Helmet>
-        <title>Add User - Components</title>
+        <title>Edit User - Components</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader
           actionText="Back"
-          title={'Add User'}
+          title={'Edit User'}
           subTitle=""
-          link="/master/list"
+          handleClick="/master/list"
         />
       </PageTitleWrapper>
       <Container maxWidth="lg">
@@ -103,15 +111,31 @@ function AddUser() {
                   autoComplete="off"
                 >
                   <div>
-                    <TextField id="outlined-required" label="Name" fullWidth />
-                    <TextField id="outlined-disabled" label="Email" fullWidth />
-                    <TextField id="outlined-disabled" label="Place" fullWidth />
+                    <TextField
+                      id="outlined-required"
+                      label="Name"
+                      defaultValue={data.name}
+                      fullWidth
+                    />
+                    <TextField
+                      id="outlined-disabled"
+                      label="Email"
+                      defaultValue={data.email}
+                      fullWidth
+                    />
+                    <TextField
+                      id="outlined-disabled"
+                      label="Place"
+                      defaultValue={data.place}
+                      fullWidth
+                    />
 
                     <TextField
+                      defaultValue={data.status}
                       id="outlined-select-currency"
                       select
                       label="Status"
-                      value={currency}
+                      value={status}
                       onChange={handleChange}
                       //   helperText="Please select your status"
                     >
@@ -122,11 +146,12 @@ function AddUser() {
                       ))}
                     </TextField>
                     <TextField
+                      defaultValue={data.type}
                       id="outlined-select-currency"
                       select
                       label="Type"
-                      value={currency}
-                      onChange={handleChange}
+                      value={type}
+                      onChange={handleChangeType}
                       //   helperText="Please select your user type"
                     >
                       {userType.map((option) => (
@@ -155,7 +180,7 @@ function AddUser() {
   );
 }
 
-export default AddUser;
+export default EditUser;
 
 const userType = ['user', 'admin', 'master'];
 const userStatus = ['active', 'inactive', 'panding'];
