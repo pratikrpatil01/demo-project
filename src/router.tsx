@@ -40,6 +40,13 @@ const Transactions = Loader(
 const Manufacturers = Loader(
   lazy(() => import('src/content/applications/Manufacturers'))
 );
+const AddManufacturer = Loader(
+  lazy(() => import('src/content/applications/Manufacturers/add'))
+);
+const EditManufacturer = Loader(
+  lazy(() => import('src/content/applications/Manufacturers/edit'))
+);
+
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -143,12 +150,20 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: 'manufacturers',
+    path: 'admin/manufacturers/',
     element: <SidebarLayout />,
     children: [
       {
         path: '',
         element: <Manufacturers />
+      },
+      {
+        path: 'add',
+        element: <AddManufacturer />
+      },
+      {
+        path: 'edit',
+        element: <EditManufacturer />
       },
       {
         path: 'crypto',
