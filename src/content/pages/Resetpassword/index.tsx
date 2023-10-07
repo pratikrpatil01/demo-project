@@ -22,6 +22,7 @@ import { styled } from '@mui/material/styles';
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import ApiServices from 'src/Network_call/apiservices';
 import ApiEndPoints from 'src/Network_call/ApiEndPoints';
+import ErrorSuccessMsg from '../Components/ErrorSuccessMsg';
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -67,11 +68,11 @@ function Resetpassword() {
     validationSchema: validateSchema,
     onSubmit: async (values, { resetForm }) => {
       console.log(ApiEndPoints)
-      const responce = await ApiServices('post', ApiEndPoints.ResetPassword, values);
-      console.log('responce')
-      console.log(responce)
-      if (responce.success) {
-        showSuccess(responce.msg);
+      const response = await ApiServices('post', ApiEndPoints.ResetPassword, values);
+      console.log('response')
+      console.log(response)
+      if (response.success) {
+        showSuccess(response.msg);
         setTimeout(() => {
           navigate('admin/login');
         }, 3000);
@@ -79,31 +80,28 @@ function Resetpassword() {
         resetForm();
   
       }else{
-        showError(responce.msg);
+        showError(response.msg);
       } 
     }
   });
 
   const [errorMessage, setErrorMessage] =  React.useState('');
-  const [successMessage, setSuccessMessage] =  React.useState('We have sent an otp on your email');
+  const [successMessage, setSuccessMessage] =  React.useState('');
 
   // Function to show an error message
   const showError = (message) => {
     setErrorMessage(message);
   };
 
-  // Function to hide the error message
-  const hideError = () => {
-    setErrorMessage('');
-  };
   // Function to show an success message
   const showSuccess = (message) => {
     setSuccessMessage(message);
   };
 
   // Function to hide the success message
-  const hideSuccess = () => {
+  const hideMesssage = () => {
     setSuccessMessage('');
+    setErrorMessage('');
   };
 
   return (
@@ -121,24 +119,9 @@ function Resetpassword() {
           </Box>
           <Container maxWidth="sm">
             <Card sx={{ textAlign: 'center', mt: 3, p: 4 }}>
-            {errorMessage && (
-              <Card className="error-message" sx={{  padding: '10px',borderRadius:'6px',  backgroundColor:'red', position: 'relative'}}>
-                
-                  <button style={{  position: 'absolute',top:'5px',right:'5px','background':'none',border:'none',cursor:'pointer',fontSize:'20px' }} onClick={hideError} >
-                    <CloseSharpIcon /> {/* Font Awesome close icon */}
-                  </button>
-                  <span style={{paddingRight: '30px'}}>{errorMessage}</span>
-              </Card>
-            )}
-            {successMessage && (
-              <Card className="error-message" sx={{  padding: '10px',borderRadius:'6px',  backgroundColor:'green', position: 'relative'}}>
-                
-                  <button style={{  position: 'absolute',top:'5px',right:'5px','background':'none',border:'none',cursor:'pointer',fontSize:'20px' }} onClick={hideSuccess} >
-                    <CloseSharpIcon /> {/* Font Awesome close icon */}
-                  </button>
-                  <span style={{paddingRight: '30px'}}>{successMessage}</span>
-              </Card>
-            )}
+
+              <ErrorSuccessMsg onClose={hideMesssage} message={successMessage?successMessage:errorMessage} success={!!successMessage}/>
+              
               <Box
                 component="form"
                 onSubmit={formik.handleSubmit}
