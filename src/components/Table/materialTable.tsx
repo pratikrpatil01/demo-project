@@ -23,7 +23,7 @@ const MaterialTable = ({
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     getData && getData(pagination);
-  }, [data.length, pagination.pageIndex, pagination.pageSize]);
+  }, [pagination.pageIndex, pagination.pageSize]);
 
   return (
     <React.Fragment>
