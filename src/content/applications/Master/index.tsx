@@ -105,7 +105,7 @@ function MasterList() {
               /> */}
 
               <MaterialTable
-                data={data}
+                data={data || []}
                 isLoading={isLoading}
                 columns={columns}
                 getData={''}
