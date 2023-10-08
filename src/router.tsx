@@ -9,8 +9,8 @@ import SuspenseLoader from 'src/components/SuspenseLoader';
 import Login from './content/pages/Login';
 import Forgotpassword from './content/pages/Forgotpassword';
 import Resetpassword from './content/pages/Resetpassword';
-import AddUser from './content/pages/Master/addUser';
-import EditUser from './content/pages/Master/editUset';
+import AddUser from './content/applications/Master/addUser';
+import EditUser from './content/applications/Master/editUset';
 
 const Loader = (Component) => (props) =>
   (
@@ -24,7 +24,9 @@ const Loader = (Component) => (props) =>
 const Overview = Loader(lazy(() => import('src/content/overview')));
 
 // Master
-const MasterList = Loader(lazy(() => import('src/content/pages/Master')));
+const MasterList = Loader(
+  lazy(() => import('src/content/applications/Master'))
+);
 
 // Dashboards
 

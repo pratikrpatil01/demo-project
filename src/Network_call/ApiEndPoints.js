@@ -13,7 +13,9 @@ const ApiEndPoints = {
   DataList: `${APPConfig.API_URL}/list`,
   ManufacturerListForAdmin: `${APPConfig.API_URL}/get-manufacturer-list`,
   UserListForAdmin: `${APPConfig.API_URL}/get-user-list`,
-  FileUpload: `${APPConfig.API_URL}/upload`
+  FileUpload: `${APPConfig.API_URL}/upload`,
+  GetTypeList: `${APPConfig.API_URL}/get-type-list`,
+  AddType: `${APPConfig.API_URL}/add-type`
 };
 
 export default ApiEndPoints;
