@@ -12,10 +12,14 @@ import PageHeader from 'src/components/PageHeader';
 import { useNavigate } from 'react-router';
 import MaterialTable from 'src/components/Table/materialTable';
 import { Columns } from 'src/utils/commonFunction';
-import React from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { AddtypeModal } from 'src/content/pages/Components/Modals';
 import { dispatch, useSelector } from 'src/store';
-import { GetTypeList } from 'src/store/reducers/master';
+import {
+  ChangeContentTypeStatus,
+  DeleteContentType,
+  GetContentTypeList
+} from 'src/store/reducers/master';
 // import { useSelector } from 'react-redux';
 // import RecentOrders from './RecentOrders';
 
@@ -33,40 +37,70 @@ function MasterList() {
     manufacturer: 0
   });
 
-  console.log('masterType', data);
-  React.useEffect(() => {
-    dispatch(GetTypeList());
+  const getData = () => {
+    return dispatch(GetContentTypeList());
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
 
   const handleModal = () => {
     setOpen(!open);
   };
+
   const handleClick = () => {
     navigate('/master/add-user');
   };
+
   const handleEdit = (data: any) => {
     navigate('/master/edit-user', { state: { data } });
   };
-  const handleDelete = () => {
-    // navigate('/master/add-user');
+
+  const handleDelete = (id: string) => {
+    dispatch(
+      DeleteContentType({
+        id: id,
+        data: {
+          type: 'ContentType'
+        }
+      })
+    );
+    getData();
+  };
+
+  const handleStatus = ({ id, status }) => {
+    dispatch(
+      ChangeContentTypeStatus({
+        id: id,
+        data: {
+          status: status == 1 ? 2 : 1,
+          type: 'ContentType'
+        }
+      })
+    );
+    getData();
   };
 
   const key = ['title', 'type', 'status'];
   const columns = Columns(key);
 
-  const TableAction = (row) => {
+  const TableAction = (row: any) => {
     const action = [
       <MenuItem
         key="Details"
-        onClick={() => navigate(`/manufacturer/details/${row.id}`)}
+        // onClick={() => navigate(`/admin/content_type/edit/${row._id}`)}
       >
         Edit
       </MenuItem>,
+      <MenuItem key="edit" onClick={() => handleDelete(row?._id)}>
+        Delete
+      </MenuItem>,
       <MenuItem
         key="edit"
-        onClick={() => navigate(`/manufacturer/add-plant/${row.id}`)}
+        onClick={() => handleStatus({ id: row?._id, status: row?.status })}
       >
-        Delete
+        {row?.status == 1 ? 'Active' : 'Inactive'}
       </MenuItem>
     ];
     return action;
@@ -75,13 +109,13 @@ function MasterList() {
   return (
     <>
       <Helmet>
-        <title>Master</title>
+        <title>Content Type</title>
       </Helmet>
       <AddtypeModal open={open} handleClose={handleModal} />
       <PageTitleWrapper>
         <PageHeader
-          title={'Master'}
-          actionText="Add User"
+          title={'Content Type'}
+          actionText="Add Content Type"
           subTitle=""
           handleClick={handleModal}
         />
@@ -111,7 +145,7 @@ function MasterList() {
                 getData={''}
                 rowCount={rowCount.mainData}
                 tableAction={TableAction}
-                title="Manufacturer List"
+                title="Content Type List"
                 Filter={<></>}
               />
             </Card>

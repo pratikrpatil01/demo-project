@@ -11,6 +11,7 @@ import Forgotpassword from './content/pages/Forgotpassword';
 import Resetpassword from './content/pages/Resetpassword';
 import AddUser from './content/applications/Master/addUser';
 import EditUser from './content/applications/Master/editUset';
+import ManufacturerDetails from './content/applications/Manufacturers/Details';
 
 const Loader = (Component) => (props) =>
   (
@@ -175,6 +176,10 @@ const routes: RouteObject[] = [
       {
         path: 'messenger',
         element: <Messenger />
+      },
+      {
+        path: 'details/:id',
+        element: <ManufacturerDetails />
       }
     ]
   },
@@ -228,7 +233,7 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: 'master',
+    path: 'admin/content_type',
     element: <SidebarLayout />,
     children: [
       {

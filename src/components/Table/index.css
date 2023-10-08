@@ -1,11 +1,12 @@
 .css-ys16z5-MuiToolbar-root {
   /* height: 200px !important; */
   min-height: 50px !important;
+  height: 50px !important;
 }
 .css-6s56kd-MuiToolbar-root {
-  background-color: white;
+  background-color: white !important;
 }
 
 .css-ys16z5-MuiToolbar-root {
-  background-color: white;
+  background-color: white !important;
 }

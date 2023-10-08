@@ -17,15 +17,17 @@ function PageHeader({ actionText, title, subTitle, handleClick }) {
       </Grid>
       <Grid item>
         <Grid></Grid>
-        <Button
-          // href={`${handleCkick}`}
-          onClick={handleClick}
-          sx={{ mt: { xs: 2, md: 0 } }}
-          variant="contained"
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-        >
-          {actionText}
-        </Button>
+        {actionText && (
+          <Button
+            // href={`${handleCkick}`}
+            onClick={handleClick}
+            sx={{ mt: { xs: 2, md: 0 } }}
+            variant="contained"
+            startIcon={<AddTwoToneIcon fontSize="small" />}
+          >
+            {actionText}
+          </Button>
+        )}
       </Grid>
     </Grid>
   );

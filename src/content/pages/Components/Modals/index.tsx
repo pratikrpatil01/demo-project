@@ -30,7 +30,7 @@ import Footer from 'src/components/Footer';
 import { useFormik } from 'formik';
 
 import * as yup from 'yup';
-import { AddType } from 'src/store/reducers/master';
+import { AddContentType } from 'src/store/reducers/master';
 // import { useDispatch } from 'react-redux';
 // import { dispatch } from 'src/store';
 import { dispatch } from 'src/store';
@@ -156,19 +156,19 @@ export const AddtypeModal = ({ handleClose, open }) => {
   // const dispatch = useDispatch();
 
   const validateSchema = yup.object().shape({
-    value: yup.string().required('The type field is required'),
+    type: yup.string().required('The type field is required'),
     title: yup.string().required('The title field is required')
   });
 
   const formik = useFormik({
     initialValues: {
-      value: '',
+      type: '',
       title: ''
     },
     validationSchema: validateSchema,
     onSubmit: (values, { resetForm }) => {
       //
-      dispatch(AddType(values));
+      dispatch(AddContentType(values));
       resetForm();
       handleClose();
     }
@@ -204,14 +204,14 @@ export const AddtypeModal = ({ handleClose, open }) => {
               margin="normal"
               required
               fullWidth
-              name="value"
-              label="value"
-              id="value"
-              autoComplete="value"
+              name="type"
+              label="type"
+              id="type"
+              autoComplete="type"
               onChange={formik.handleChange}
-              value={formik.values.value}
-              error={formik.errors.value ? true : false}
-              helperText={formik.errors.value ? formik.errors.value : ''}
+              value={formik.values.type}
+              error={formik.errors.type ? true : false}
+              helperText={formik.errors.type ? formik.errors.type : ''}
             />
             <Button
               type="submit"

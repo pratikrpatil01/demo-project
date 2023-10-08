@@ -55,6 +55,10 @@ const ApiServices = async (
     config.params = data;
   } else if (method.toLowerCase() === 'post') {
     config.data = formData ? getFormData(data) : data;
+  } else if (method.toLowerCase() === 'put') {
+    config.data = formData ? getFormData(data) : data;
+  } else if (method.toLowerCase() === 'delete') {
+    config.data = formData ? getFormData(data) : data;
   }
 
   try {
