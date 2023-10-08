@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet-async';
-import EditPageHeader from './EditPageHeader';
+import AddPageHeader from './AddPageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 
 
@@ -30,7 +30,7 @@ import List from './List';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
-function ApplicationsEditManufacturers() {
+function ApplicationsAddManufacturers() {
 
 
   const validateSchema = yup.object().shape({
@@ -127,7 +127,7 @@ function ApplicationsEditManufacturers() {
         <title>Add Manufacturers</title>
       </Helmet>
       <PageTitleWrapper>
-        <EditPageHeader />
+        <AddPageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg" style={{height: '100%'}}>
       <Box
@@ -180,10 +180,10 @@ function ApplicationsEditManufacturers() {
                         id="activities"
                         name="activities"
                         label="Activities"
-                        value={formik.activities}
-                        onChange={formik.handleChangeActivities}
+                        value={formik.values.activities}
+                        onChange={formik.handleChange}
                         autoFocus
-                        helperText={formik.errors.activities ? formik.errors.activities : ''}
+                        
                        
                     >
                       <MenuItem value="">
@@ -202,11 +202,11 @@ function ApplicationsEditManufacturers() {
                         labelId="typesOfProducts"
                         id="typesOfProducts"
                         name="typesOfProducts"
-                        value={formik.typesOfProducts}
+                        value={formik.values.typesOfProducts}
                         label="Types Of Products"
-                        onChange={formik.handleChangeTypesOfProducts}
+                        onChange={formik.handleChange}
                         autoFocus
-                        helperText={formik.errors.typesOfProducts ? formik.errors.typesOfProducts : ''}
+                        
                         
                     >
                         
@@ -222,11 +222,11 @@ function ApplicationsEditManufacturers() {
                         labelId="internationalGMPStatus"
                         name="internationalGMPStatus"
                         id="internationalGMPStatus"
-                        value={formik.internationalGMPStatus}
+                        value={formik.values.internationalGMPStatus}
                         label="International GMP Status"
-                        onChange={formik.handleChangeInternationalGMPStatus}
+                        onChange={formik.handleChange}
                         autoFocus
-                        helperText={formik.errors.internationalGMPStatus ? formik.errors.internationalGMPStatus : ''}
+                        
                     >
                         <MenuItem value={10}>PIC/S</MenuItem>
                         <MenuItem value={20}>EUGMP</MenuItem>
@@ -272,11 +272,11 @@ function ApplicationsEditManufacturers() {
                         labelId="personal"
                         id="personal"
                         name="personal"
-                        value={formik.personal}
+                        value={formik.values.personal}
                         label="Personal"
-                        onChange={formik.handleChangePersonal}
+                        onChange={formik.handleChange}
                         autoFocus
-                        helperText={formik.errors.personal ? formik.errors.personal : ''}
+                       
                     >
                         <MenuItem value="">
                         <em>None</em>
@@ -292,11 +292,11 @@ function ApplicationsEditManufacturers() {
                         labelId="sectionsDosageFormsApproved"
                         id="sectionsDosageFormsApproved"
                         name="sectionsDosageFormsApproved"
-                        value={formik.sectionsDosageFormsApproved}
+                        value={formik.values.sectionsDosageFormsApproved}
                         label="Sections - Dosage Forms Approved"
-                        onChange={formik.handleChangeSectionsDosageFormsApproved}
+                        onChange={formik.handleChange}
                         autoFocus
-                        helperText={formik.errors.sectionsDosageFormsApproved ? formik.errors.sectionsDosageFormsApproved : ''}
+                        
                     >
                         <MenuItem value={10}>Tablets/Capsules</MenuItem>
                         <MenuItem value={20}>Oral liquid</MenuItem>
@@ -313,11 +313,11 @@ function ApplicationsEditManufacturers() {
                         labelId="nonPharmaActivities"
                         id="nonPharmaActivities"
                         name="nonPharmaActivities"
-                        value={formik.nonPharmaActivities}
+                        value={formik.values.nonPharmaActivities}
                         label="Non Pharma Activities"
-                        onChange={formik.handleChangeNonPharmaActivities}
+                        onChange={formik.handleChange}
                         autoFocus
-                        helperText={formik.errors.nonPharmaActivities ? formik.errors.nonPharmaActivities : ''}
+                        
                     >
                         <MenuItem value={10}>Yes</MenuItem>
                         <MenuItem value={20}>No</MenuItem>
@@ -346,11 +346,11 @@ function ApplicationsEditManufacturers() {
                         labelId="availability of manufacturing license"
                         id="availabilityOfManufacturingLicense"
                         name="availabilityOfManufacturingLicense"
-                        value={formik.availabilityofmanufacturinglicense}
+                        value={formik.values.availabilityOfManufacturingLicense}
                         label="Availability Of Manufacturing License"
-                        onChange={formik.handleChangeAvailabilityOfManufacturingLicense}
+                        onChange={formik.handleChange}
                         autoFocus
-                        helperText={formik.errors.availabilityOfManufacturingLicense ? formik.errors.availabilityOfManufacturingLicense : ''}
+                        
                     >
                         <MenuItem value={10}>Local FDA</MenuItem>
                         <MenuItem value={20}>FSSAI</MenuItem>
@@ -365,11 +365,11 @@ function ApplicationsEditManufacturers() {
                         labelId="Equipments"
                         id="equipments"
                         name="equipments"
-                        value={formik.equipments}
+                        value={formik.values.equipments}
                         label="Equipments"
-                        onChange={formik.handleChangeEquipments}
+                        onChange={formik.handleChange}
                         autoFocus
-                        helperText={formik.errors.equipments ? formik.errors.equipments : ''}
+                        
                     >
                         <MenuItem value={10}>Skilled</MenuItem>
                         <MenuItem value={20}>unskilled Control</MenuItem>
@@ -381,11 +381,11 @@ function ApplicationsEditManufacturers() {
                         labelId="indianGMPStatusStateGMP"
                         id="indianGMPStatusStateGMP"
                         name="indianGMPStatusStateGMP"
-                        value={formik.indianGMPStatusStateGMP}
+                        value={formik.values.indianGMPStatusStateGMP}
                         label="Indian GMP status - State GMP"
-                        onChange={formik.handleChangeIndianGMPStatusStateGMP}
+                        onChange={formik.handleChange}
                         autoFocus
-                        helperText={formik.errors.indianGMPStatusStateGMP ? formik.errors.indianGMPStatusStateGMP : ''}
+                        
                     >
                         <MenuItem value={10}>State GMP</MenuItem>
                         <MenuItem value={20}>WHO-GMP</MenuItem>
@@ -421,4 +421,4 @@ function ApplicationsEditManufacturers() {
   );
 }
 
-export default ApplicationsEditManufacturers;
+export default ApplicationsAddManufacturers;

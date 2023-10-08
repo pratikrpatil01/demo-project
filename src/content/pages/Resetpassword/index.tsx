@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Box,
   Card,
@@ -7,13 +8,21 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  TextField
+  TextField,
+  Link
 } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useFormik } from "formik";
 import * as yup from 'yup';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+
 import { styled } from '@mui/material/styles';
+import CloseSharpIcon from '@mui/icons-material/CloseSharp';
+import ApiServices from 'src/Network_call/apiservices';
+import ApiEndPoints from 'src/Network_call/ApiEndPoints';
+import ErrorSuccessMsg from '../Components/ErrorSuccessMsg';
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -32,7 +41,8 @@ const handleSubmit = () => {
 };
 function Resetpassword() {
 
- 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const validateSchema = yup.object().shape({
     otp: yup.string().required("The otp field is required"),
     password: yup.string()
@@ -56,15 +66,43 @@ function Resetpassword() {
       confirmPassword:"",
     },
     validationSchema: validateSchema,
-    onSubmit: (values, { resetForm }) => {
-      console.log(values);
-      
-      setTimeout(() => {
-       
+    onSubmit: async (values, { resetForm }) => {
+      console.log(ApiEndPoints)
+      const response = await ApiServices('post', ApiEndPoints.ResetPassword, values);
+      console.log('response')
+      console.log(response)
+      if (response.success) {
+        showSuccess(response.msg);
+        setTimeout(() => {
+          navigate('admin/login');
+        }, 3000);
+        
         resetForm();
-      }, 1000 * 2);
-    },
+  
+      }else{
+        showError(response.msg);
+      } 
+    }
   });
+
+  const [errorMessage, setErrorMessage] =  React.useState('');
+  const [successMessage, setSuccessMessage] =  React.useState('');
+
+  // Function to show an error message
+  const showError = (message) => {
+    setErrorMessage(message);
+  };
+
+  // Function to show an success message
+  const showSuccess = (message) => {
+    setSuccessMessage(message);
+  };
+
+  // Function to hide the success message
+  const hideMesssage = () => {
+    setSuccessMessage('');
+    setErrorMessage('');
+  };
 
   return (
     <>
@@ -81,6 +119,9 @@ function Resetpassword() {
           </Box>
           <Container maxWidth="sm">
             <Card sx={{ textAlign: 'center', mt: 3, p: 4 }}>
+
+              <ErrorSuccessMsg onClose={hideMesssage} message={successMessage?successMessage:errorMessage} success={!!successMessage}/>
+              
               <Box
                 component="form"
                 onSubmit={formik.handleSubmit}
@@ -99,6 +140,7 @@ function Resetpassword() {
                   onChange={formik.handleChange}
                   value={formik.values.otp}
                   helperText={formik.errors.otp ? formik.errors.otp : ""}
+                  error={formik.errors.otp ? true : false}
                 />
                 <TextField
                   margin="normal"
@@ -112,6 +154,7 @@ function Resetpassword() {
                   onChange={formik.handleChange}
                   value={formik.values.password}
                   helperText={formik.errors.password ? formik.errors.password : ""}
+                  error={formik.errors.password ? true : false}
                 />
                 
                 <TextField
@@ -126,6 +169,7 @@ function Resetpassword() {
                   onChange={formik.handleChange}
                   value={formik.values.confirmPassword}
                   helperText={formik.errors.confirmPassword ? formik.errors.confirmPassword : ""}
+                  error={formik.errors.confirmPassword ? true : false}
                 />
                 <Button
                   type="submit"
