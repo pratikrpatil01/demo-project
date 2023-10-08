@@ -9,18 +9,49 @@ const initialState = {
   error: null
 };
 
-export const AddType = createAsyncThunk('add/type', async (payload: any) => {
-  const response = await ApiServices('post', ApiEndPoints.AddType, payload);
-  return response;
-});
-export const GetTypeList = createAsyncThunk('GetTypeList', async () => {
-  const response = await ApiServices(
-    'get',
-    ApiEndPoints.GetTypeList
-    //   payload
-  );
-  return response?.data;
-});
+export const AddContentType = createAsyncThunk(
+  'add/type',
+  async (payload: any) => {
+    const response = await ApiServices(
+      'post',
+      ApiEndPoints.AddContentType,
+      payload
+    );
+    return response;
+  }
+);
+
+export const GetContentTypeList = createAsyncThunk(
+  'GetContentTypeList',
+  async () => {
+    const response = await ApiServices('get', ApiEndPoints.GetContentTypeList);
+    return response?.data;
+  }
+);
+
+export const ChangeContentTypeStatus = createAsyncThunk(
+  'ChangeStatus',
+  async (payload: any) => {
+    const response = await ApiServices(
+      'put',
+      ApiEndPoints.StatusActiveInactive + payload?.id,
+      payload.data
+    );
+    return response?.data;
+  }
+);
+
+export const DeleteContentType = createAsyncThunk(
+  'DeleteContentType',
+  async (payload: any) => {
+    const response = await ApiServices(
+      'delete',
+      ApiEndPoints.Delete + payload?.id,
+      payload.data
+    );
+    return response;
+  }
+);
 
 const masterTypeSlice = createSlice({
   name: 'manufacturerSlice',
@@ -29,19 +60,32 @@ const masterTypeSlice = createSlice({
   reducers: {},
   extraReducers: (builder: any) => {
     builder
-      .addCase(AddType.pending, (state: any) => {
+      .addCase(AddContentType.pending, (state: any) => {
         state.isLoading = true;
       })
-      .addCase(AddType.fulfilled, (state: any, action: any) => {
+      .addCase(AddContentType.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
         // state.dat.unshift(action.payload);
       })
-      .addCase(GetTypeList.pending, (state: any) => {
+      .addCase(GetContentTypeList.pending, (state: any) => {
         state.isLoading = true;
       })
-      .addCase(GetTypeList.fulfilled, (state: any, action: any) => {
+      .addCase(GetContentTypeList.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
         state.data = action.payload;
+      })
+      .addCase(ChangeContentTypeStatus.pending, (state: any) => {
+        state.isLoading = true;
+      })
+      .addCase(ChangeContentTypeStatus.fulfilled, (state: any, action: any) => {
+        state.isLoading = false;
+        // state.data = action.payload;
+      })
+      .addCase(DeleteContentType.pending, (state: any) => {
+        state.isLoading = true;
+      })
+      .addCase(DeleteContentType.fulfilled, (state: any, action: any) => {
+        state.isLoading = false;
       });
   }
 });

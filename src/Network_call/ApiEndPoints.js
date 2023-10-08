@@ -15,7 +15,10 @@ const ApiEndPoints = {
   UserListForAdmin: `${APPConfig.API_URL}/get-user-list`,
   FileUpload: `${APPConfig.API_URL}/upload`,
   GetTypeList: `${APPConfig.API_URL}/get-type-list`,
-  AddType: `${APPConfig.API_URL}/add-type`
+  GetContentTypeList: `${APPConfig.API_URL}/get-content-type-list`,
+  AddContentType: `${APPConfig.API_URL}/add-content-type`,
+  StatusActiveInactive: `${APPConfig.API_URL}/active-inactive/`,
+  Delete: `${APPConfig.API_URL}/common-delete/`
 };
 
 export default ApiEndPoints;

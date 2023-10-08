@@ -180,7 +180,7 @@ function SidebarMenu() {
   return (
     <>
       <MenuWrapper>
-        <List
+        {/* <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
@@ -203,7 +203,7 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List>
+        </List> */}
         <List component="div">
           <SubMenuWrapper>
             <List component="div">
@@ -299,10 +299,10 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/transactions"
+                  to="/admin/content_type/list"
                   startIcon={<TableChartTwoToneIcon />}
                 >
-                  Masters
+                  Content Type
                 </Button>
               </ListItem>
               <ListItem component="div">
