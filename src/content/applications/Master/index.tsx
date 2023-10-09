@@ -1,13 +1,8 @@
 import { Helmet } from 'react-helmet-async';
-// import PageHeader from 'src/content/dashboards/Crypto/PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container, Card, MenuItem } from '@mui/material';
 import Footer from 'src/components/Footer';
 
-import RecentOrders from 'src/content/applications/Transactions/RecentOrders';
-import RecentOrdersTable from 'src/content/applications/Transactions/RecentOrdersTable';
-import { UserList } from 'src/models/user_list';
-import MainTable from '../../pages/Components/Table';
 import PageHeader from 'src/components/PageHeader';
 import { useNavigate } from 'react-router';
 import MaterialTable from 'src/components/Table/materialTable';
@@ -15,22 +10,15 @@ import { Columns } from 'src/utils/commonFunction';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { AddtypeModal } from 'src/content/pages/Components/Modals';
 import { dispatch, useSelector } from 'src/store';
-import {
-  ChangeContentTypeStatus,
-  DeleteContentType,
-  GetContentTypeList
-} from 'src/store/reducers/master';
-// import { useSelector } from 'react-redux';
-// import RecentOrders from './RecentOrders';
+import { GetContentTypeList } from 'src/store/reducers/master';
+import { ChangeStatus, DeleteItem } from 'src/store/reducers/commanReducer';
+import DeleteAlert from 'src/components/DeleteAlert';
 
 function MasterList() {
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
   const { data } = useSelector((store: any) => store.masterType);
   const [open, setOpen] = React.useState(false);
-  // const [data, setData] = React.useState(dummyData);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [filterData, setFilterData] = React.useState({});
   const [rowCount, setRowCount] = React.useState({
     mainData: 0,
     user: 0,
@@ -49,29 +37,22 @@ function MasterList() {
     setOpen(!open);
   };
 
-  const handleClick = () => {
-    navigate('/master/add-user');
-  };
-
   const handleEdit = (data: any) => {
     navigate('/master/edit-user', { state: { data } });
   };
 
   const handleDelete = (id: string) => {
-    dispatch(
-      DeleteContentType({
-        id: id,
-        data: {
-          type: 'ContentType'
-        }
-      })
-    );
-    getData();
+    DeleteAlert({
+      id: id,
+      data: {
+        type: 'ContentType'
+      }
+    });
   };
 
   const handleStatus = ({ id, status }) => {
     dispatch(
-      ChangeContentTypeStatus({
+      ChangeStatus({
         id: id,
         data: {
           status: status == 1 ? 2 : 1,
@@ -79,26 +60,35 @@ function MasterList() {
         }
       })
     );
-    getData();
   };
 
   const key = ['title', 'type', 'status'];
   const columns = Columns(key);
 
-  const TableAction = (row: any) => {
+  const TableAction = (row: any, closeMenu: any) => {
+    console.log(row, 'closeMenu', closeMenu);
     const action = [
       <MenuItem
-        key="Details"
+        key="edit"
         // onClick={() => navigate(`/admin/content_type/edit/${row._id}`)}
       >
         Edit
       </MenuItem>,
-      <MenuItem key="edit" onClick={() => handleDelete(row?._id)}>
+      <MenuItem
+        key="delete"
+        onClick={() => {
+          handleDelete(row?._id);
+          closeMenu();
+        }}
+      >
         Delete
       </MenuItem>,
       <MenuItem
-        key="edit"
-        onClick={() => handleStatus({ id: row?._id, status: row?.status })}
+        key="status"
+        onClick={() => {
+          handleStatus({ id: row?._id, status: row?.status });
+          closeMenu();
+        }}
       >
         {row?.status == 1 ? 'Active' : 'Inactive'}
       </MenuItem>
