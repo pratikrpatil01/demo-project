@@ -379,8 +379,6 @@ const routes: RouteObject[] = [
       }
     ]
   },
-<<<<<<< HEAD
-=======
   {
     path: 'admin/content_type',
     element: <SidebarLayout />,
@@ -449,7 +447,6 @@ const routes: RouteObject[] = [
       }
     ]
   }
->>>>>>> 143fd7cff889a3f284ec6cd26947215f34730252
 ];
 
 export default routes;
