@@ -1,8 +1,8 @@
-import { Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Outlet, RouteObject, useNavigate } from 'react-router';
+import { RouteObject } from 'react-router';
 
-import SidebarLayout, { checkAuthLoader } from 'src/layouts/SidebarLayout';
+import SidebarLayout from 'src/layouts/SidebarLayout';
 import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
@@ -97,28 +97,6 @@ const StatusMaintenance = Loader(
   lazy(() => import('src/content/pages/Status/Maintenance'))
 );
 
-
-const CheckAuth = () => {
-
-  const navigate = useNavigate();
-
-  const checkingAuth = () => {
-
-  }
-
-  useEffect(()=>{
-    let auth = localStorage.getItem("auth");
-    if(!auth){
-      navigate('/admin/login');
-    };
-    checkingAuth();
-  }, [])
-
-  return (<>
-    <Outlet />
-  </>)
-}
-
 const routes: RouteObject[] = [
   {
     path: '',
@@ -176,8 +154,8 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: '/',
-    element: <CheckAuth />,
+    path: 'admin/manufacturers/',
+    element: <SidebarLayout />,
     children: [
       {
         path: '',
@@ -240,145 +218,21 @@ const routes: RouteObject[] = [
         children: [
           {
             path: '',
-            element: <Manufacturers />
+            element: <Navigate to="details" replace />
           },
           {
-            path: 'add',
-            element: <AddManufacturer />
+            path: 'details',
+            element: <UserProfile />
           },
           {
-            path: 'edit',
-            element: <EditManufacturer />
-          },
-          {
-            path: 'crypto',
-            element: <Crypto />
-          },
-          {
-            path: 'messenger',
-            element: <Messenger />
-          }
-        ]
-      },
-      {
-        path: 'dashboards',
-        element: <SidebarLayout />,
-        children: [
-          {
-            path: '',
-            element: <Navigate to="crypto" replace />
-          },
-          {
-            path: 'crypto',
-            element: <Crypto />
-          },
-          {
-            path: 'messenger',
-            element: <Messenger />
-          }
-        ]
-      },
-      {
-        path: 'management',
-        element: <SidebarLayout />,
-        children: [
-          {
-            path: '',
-            element: <Navigate to="transactions" replace />
-          },
-          {
-            path: 'transactions',
-            element: <Transactions />
-          },
-          {
-            path: 'profile',
-            children: [
-              {
-                path: '',
-                element: <Navigate to="details" replace />
-              },
-              {
-                path: 'details',
-                element: <UserProfile />
-              },
-              {
-                path: 'settings',
-                element: <UserSettings />
-              }
-            ]
-          }
-        ]
-      },
-      {
-        path: 'master',
-        element: <SidebarLayout />,
-        children: [
-          {
-            path: '',
-            element: <Navigate to="list" replace />
-          },
-          {
-            path: 'list',
-            element: <MasterList />
-          },
-          {
-            path: 'add-user',
-            element: <AddUser />
-          },
-          {
-            path: 'edit-user',
-            element: <EditUser />
-          }
-        ]
-      },
-      {
-        path: '/components',
-        element: <SidebarLayout />,
-        children: [
-          {
-            path: '',
-            element: <Navigate to="buttons" replace />
-          },
-          {
-            path: 'buttons',
-            element: <Buttons />
-          },
-          {
-            path: 'modals',
-            element: <Modals />
-          },
-          {
-            path: 'accordions',
-            element: <Accordions />
-          },
-          {
-            path: 'tabs',
-            element: <Tabs />
-          },
-          {
-            path: 'badges',
-            element: <Badges />
-          },
-          {
-            path: 'tooltips',
-            element: <Tooltips />
-          },
-          {
-            path: 'avatars',
-            element: <Avatars />
-          },
-          {
-            path: 'cards',
-            element: <Cards />
-          },
-          {
-            path: 'forms',
-            element: <Forms />
+            path: 'settings',
+            element: <UserSettings />
           }
         ]
       }
     ]
   },
+  
   {
     path: 'admin/content_type',
     element: <SidebarLayout />,

@@ -10,10 +10,6 @@ interface SidebarLayoutProps {
 }
 
 
-export const checkAuthLoader = () => {
-  let auth = localStorage.getItem("auth");
-  if(!auth) return <Navigate to='login' />;
-}
 
 const SidebarLayout: FC<SidebarLayoutProps> = () => {
   const theme = useTheme();

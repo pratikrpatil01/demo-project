@@ -72,7 +72,7 @@ function Login() {
       const response = await ApiServices('post', ApiEndPoints.Login, values);
       
       if (response.success) {
-        localStorage.setItem('auth', JSON.stringify(response))
+        //localStorage.setItem('auth', JSON.stringify(response))
         dispatch(userLogin(response));
         resetForm();
         navigate('/dashboards');
