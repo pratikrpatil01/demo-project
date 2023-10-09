@@ -79,6 +79,7 @@ function HeaderUserbox() {
   };
 
   const handleSignout = (): void => {
+    localStorage.clear();
     navigate('/admin/login');
   };
 

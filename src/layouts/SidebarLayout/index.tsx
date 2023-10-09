@@ -1,12 +1,18 @@
 import { FC, ReactNode } from 'react';
 import { Box, alpha, lighten, useTheme } from '@mui/material';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 
 import Sidebar from './Sidebar';
 import Header from './Header';
 
 interface SidebarLayoutProps {
   children?: ReactNode;
+}
+
+
+export const checkAuthLoader = () => {
+  let auth = localStorage.getItem("auth");
+  if(!auth) return <Navigate to='login' />;
 }
 
 const SidebarLayout: FC<SidebarLayoutProps> = () => {
