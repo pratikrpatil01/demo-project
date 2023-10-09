@@ -1,10 +1,10 @@
-import { AnyAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiEndPoints from 'src/Network_call/ApiEndPoints';
 import ApiServices from 'src/Network_call/apiservices';
-import { dispatch } from 'src/store';
+import { ChangeStatus, DeleteItem } from './commanReducer';
 
 const initialState = {
-  data: null,
+  data: [],
   isLoading: false,
   error: null
 };
@@ -29,30 +29,6 @@ export const GetContentTypeList = createAsyncThunk(
   }
 );
 
-export const ChangeContentTypeStatus = createAsyncThunk(
-  'ChangeStatus',
-  async (payload: any) => {
-    const response = await ApiServices(
-      'put',
-      ApiEndPoints.StatusActiveInactive + payload?.id,
-      payload.data
-    );
-    return response?.data;
-  }
-);
-
-export const DeleteContentType = createAsyncThunk(
-  'DeleteContentType',
-  async (payload: any) => {
-    const response = await ApiServices(
-      'delete',
-      ApiEndPoints.Delete + payload?.id,
-      payload.data
-    );
-    return response;
-  }
-);
-
 const masterTypeSlice = createSlice({
   name: 'manufacturerSlice',
   initialState,
@@ -65,7 +41,6 @@ const masterTypeSlice = createSlice({
       })
       .addCase(AddContentType.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
-        // state.dat.unshift(action.payload);
       })
       .addCase(GetContentTypeList.pending, (state: any) => {
         state.isLoading = true;
@@ -74,18 +49,24 @@ const masterTypeSlice = createSlice({
         state.isLoading = false;
         state.data = action.payload;
       })
-      .addCase(ChangeContentTypeStatus.pending, (state: any) => {
+      .addCase(ChangeStatus.pending, (state: any) => {
         state.isLoading = true;
       })
-      .addCase(ChangeContentTypeStatus.fulfilled, (state: any, action: any) => {
+      .addCase(ChangeStatus.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
-        // state.data = action.payload;
+        const updateData = state.data.findIndex(
+          (obj: any) => obj._id === action.payload.id
+        );
+        state.data[updateData].status = action.payload.data.status;
       })
-      .addCase(DeleteContentType.pending, (state: any) => {
+      .addCase(DeleteItem.pending, (state: any) => {
         state.isLoading = true;
       })
-      .addCase(DeleteContentType.fulfilled, (state: any, action: any) => {
+      .addCase(DeleteItem.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
+        state.data = state.data.filter(
+          (item: any) => item._id !== action.payload
+        );
       });
   }
 });
