@@ -8,6 +8,7 @@ import calendar from './calendar';
 import snackbar from './snackbar';
 import manufacturer from './manufacturer';
 import auth from './auth';
+import masterTypeReducer from './master';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -15,7 +16,8 @@ const reducers = combineReducers({
   calendar,
   snackbar,
   manufacturerSlice: manufacturer,
-  auth:auth
+  auth: auth,
+  masterType: masterTypeReducer
 });
 
 export default reducers;

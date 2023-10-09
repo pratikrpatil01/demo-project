@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -10,7 +10,9 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Divider
+  Divider,
+  TextField,
+  Box
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
@@ -25,6 +27,13 @@ import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import { blue } from '@mui/material/colors';
 import Footer from 'src/components/Footer';
+import { useFormik } from 'formik';
+
+import * as yup from 'yup';
+import { AddContentType } from 'src/store/reducers/master';
+// import { useDispatch } from 'react-redux';
+// import { dispatch } from 'src/store';
+import { dispatch } from 'src/store';
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 
@@ -142,3 +151,84 @@ function Modals() {
 }
 
 export default Modals;
+
+export const AddtypeModal = ({ handleClose, open }) => {
+  // const dispatch = useDispatch();
+
+  const validateSchema = yup.object().shape({
+    type: yup.string().required('The type field is required'),
+    title: yup.string().required('The title field is required')
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      type: '',
+      title: ''
+    },
+    validationSchema: validateSchema,
+    onSubmit: (values, { resetForm }) => {
+      //
+      dispatch(AddContentType(values));
+      resetForm();
+      handleClose();
+    }
+  });
+
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <DialogTitle fontSize={'20px'}> Add New Type</DialogTitle>
+      <Card>
+        {/* <CardHeader>Add Type</CardHeader> */}
+        <CardContent>
+          <Box
+            component="form"
+            onSubmit={formik.handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="Title"
+              label="Title"
+              name="title"
+              autoFocus
+              onChange={formik.handleChange}
+              value={formik.values.title}
+              helperText={formik.errors.title ? formik.errors.title : ''}
+              error={formik.errors.title ? true : false}
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="type"
+              label="type"
+              id="type"
+              autoComplete="type"
+              onChange={formik.handleChange}
+              value={formik.values.type}
+              error={formik.errors.type ? true : false}
+              helperText={formik.errors.type ? formik.errors.type : ''}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Submit
+            </Button>
+          </Box>
+        </CardContent>
+      </Card>
+    </Dialog>
+  );
+};
+
+AddtypeModal.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+  open: PropTypes.any.isRequired
+};

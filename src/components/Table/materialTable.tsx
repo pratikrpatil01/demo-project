@@ -4,7 +4,7 @@ import { Grid, Typography } from '@mui/material';
 import { lightGreen } from '@mui/material/colors';
 // import ExportCSV from './exportCSV';
 // import ExportCSV from 'components/exportCSV';
-
+import './index.css';
 const MaterialTable = ({
   Filter,
   data,
@@ -23,7 +23,7 @@ const MaterialTable = ({
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     getData && getData(pagination);
-  }, [data.length, pagination.pageIndex, pagination.pageSize]);
+  }, [pagination.pageIndex, pagination.pageSize]);
 
   return (
     <React.Fragment>
@@ -42,12 +42,19 @@ const MaterialTable = ({
         onPaginationChange={setPagination}
         rowCount={rowCount}
         enableStickyHeader
-        // enableColumnVirtualization
+        enableStickyFooter // enableColumnVirtualization
         // enableFilterMatchHighlighting
         enableRowActions={tableAction && tableAction}
         positionActionsColumn="first"
+        muiTableHeadCellProps={{
+          //no useTheme hook needed, just use the `sx` prop with the theme callback
+          sx: (theme) => ({
+            // backgroundColor: 'white',
+            color: theme.palette.text.secondary
+          })
+        }}
         muiTableContainerProps={{
-          sx: { maxHeight: '800px' }
+          sx: { maxHeight: '800px', backgroundColor: 'white' }
         }}
         state={{
           // density: 'compact',

@@ -9,8 +9,9 @@ import SuspenseLoader from 'src/components/SuspenseLoader';
 import Login from './content/pages/Login';
 import Forgotpassword from './content/pages/Forgotpassword';
 import Resetpassword from './content/pages/Resetpassword';
-import AddUser from './content/pages/Master/addUser';
-import EditUser from './content/pages/Master/editUset';
+import AddUser from './content/applications/Master/addUser';
+import EditUser from './content/applications/Master/editUset';
+import ManufacturerDetails from './content/applications/Manufacturers/Details';
 
 const Loader = (Component) => (props) =>
   (
@@ -24,7 +25,9 @@ const Loader = (Component) => (props) =>
 const Overview = Loader(lazy(() => import('src/content/overview')));
 
 // Master
-const MasterList = Loader(lazy(() => import('src/content/pages/Master')));
+const MasterList = Loader(
+  lazy(() => import('src/content/applications/Master'))
+);
 
 // Dashboards
 
@@ -177,8 +180,63 @@ const routes: RouteObject[] = [
     element: <CheckAuth />,
     children: [
       {
-        path: 'admin/manufacturers/',
-        element: <SidebarLayout />,
+        path: '',
+        element: <Manufacturers />
+      },
+      {
+        path: 'add',
+        element: <AddManufacturer />
+      },
+      {
+        path: 'edit',
+        element: <EditManufacturer />
+      },
+      {
+        path: 'crypto',
+        element: <Crypto />
+      },
+      {
+        path: 'messenger',
+        element: <Messenger />
+      },
+      {
+        path: 'details/:id',
+        element: <ManufacturerDetails />
+      }
+    ]
+  },
+  {
+    path: 'dashboards',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="crypto" replace />
+      },
+      {
+        path: 'crypto',
+        element: <Crypto />
+      },
+      {
+        path: 'messenger',
+        element: <Messenger />
+      }
+    ]
+  },
+  {
+    path: 'management',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="transactions" replace />
+      },
+      {
+        path: 'transactions',
+        element: <Transactions />
+      },
+      {
+        path: 'profile',
         children: [
           {
             path: '',
@@ -321,6 +379,77 @@ const routes: RouteObject[] = [
       }
     ]
   },
+<<<<<<< HEAD
+=======
+  {
+    path: 'admin/content_type',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="list" replace />
+      },
+      {
+        path: 'list',
+        element: <MasterList />
+      },
+      {
+        path: 'add-user',
+        element: <AddUser />
+      },
+      {
+        path: 'edit-user',
+        element: <EditUser />
+      }
+    ]
+  },
+  {
+    path: '/components',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '',
+        element: <Navigate to="buttons" replace />
+      },
+      {
+        path: 'buttons',
+        element: <Buttons />
+      },
+      {
+        path: 'modals',
+        element: <Modals />
+      },
+      {
+        path: 'accordions',
+        element: <Accordions />
+      },
+      {
+        path: 'tabs',
+        element: <Tabs />
+      },
+      {
+        path: 'badges',
+        element: <Badges />
+      },
+      {
+        path: 'tooltips',
+        element: <Tooltips />
+      },
+      {
+        path: 'avatars',
+        element: <Avatars />
+      },
+      {
+        path: 'cards',
+        element: <Cards />
+      },
+      {
+        path: 'forms',
+        element: <Forms />
+      }
+    ]
+  }
+>>>>>>> 143fd7cff889a3f284ec6cd26947215f34730252
 ];
 
 export default routes;

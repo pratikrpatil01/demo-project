@@ -50,7 +50,7 @@ function List() {
     const action = [
       <MenuItem
         key="Details"
-        onClick={() => navigate(`/manufacturer/details/${row.id}`)}
+        onClick={() => navigate(`/admin/manufacturers/details/${row.id}`)}
       >
         Details
       </MenuItem>,

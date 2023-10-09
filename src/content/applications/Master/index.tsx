@@ -1,39 +1,123 @@
 import { Helmet } from 'react-helmet-async';
 // import PageHeader from 'src/content/dashboards/Crypto/PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Grid, Container, Card } from '@mui/material';
+import { Grid, Container, Card, MenuItem } from '@mui/material';
 import Footer from 'src/components/Footer';
 
 import RecentOrders from 'src/content/applications/Transactions/RecentOrders';
 import RecentOrdersTable from 'src/content/applications/Transactions/RecentOrdersTable';
 import { UserList } from 'src/models/user_list';
-import MainTable from '../Components/Table';
+import MainTable from '../../pages/Components/Table';
 import PageHeader from 'src/components/PageHeader';
 import { useNavigate } from 'react-router';
+import MaterialTable from 'src/components/Table/materialTable';
+import { Columns } from 'src/utils/commonFunction';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { AddtypeModal } from 'src/content/pages/Components/Modals';
+import { dispatch, useSelector } from 'src/store';
+import {
+  ChangeContentTypeStatus,
+  DeleteContentType,
+  GetContentTypeList
+} from 'src/store/reducers/master';
+// import { useSelector } from 'react-redux';
 // import RecentOrders from './RecentOrders';
 
 function MasterList() {
   const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  const { data } = useSelector((store: any) => store.masterType);
+  const [open, setOpen] = React.useState(false);
+  // const [data, setData] = React.useState(dummyData);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [filterData, setFilterData] = React.useState({});
+  const [rowCount, setRowCount] = React.useState({
+    mainData: 0,
+    user: 0,
+    manufacturer: 0
+  });
+
+  const getData = () => {
+    return dispatch(GetContentTypeList());
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const handleModal = () => {
+    setOpen(!open);
+  };
+
   const handleClick = () => {
     navigate('/master/add-user');
   };
+
   const handleEdit = (data: any) => {
     navigate('/master/edit-user', { state: { data } });
   };
-  const handleDelete = () => {
-    // navigate('/master/add-user');
+
+  const handleDelete = (id: string) => {
+    dispatch(
+      DeleteContentType({
+        id: id,
+        data: {
+          type: 'ContentType'
+        }
+      })
+    );
+    getData();
   };
+
+  const handleStatus = ({ id, status }) => {
+    dispatch(
+      ChangeContentTypeStatus({
+        id: id,
+        data: {
+          status: status == 1 ? 2 : 1,
+          type: 'ContentType'
+        }
+      })
+    );
+    getData();
+  };
+
+  const key = ['title', 'type', 'status'];
+  const columns = Columns(key);
+
+  const TableAction = (row: any) => {
+    const action = [
+      <MenuItem
+        key="Details"
+        // onClick={() => navigate(`/admin/content_type/edit/${row._id}`)}
+      >
+        Edit
+      </MenuItem>,
+      <MenuItem key="edit" onClick={() => handleDelete(row?._id)}>
+        Delete
+      </MenuItem>,
+      <MenuItem
+        key="edit"
+        onClick={() => handleStatus({ id: row?._id, status: row?.status })}
+      >
+        {row?.status == 1 ? 'Active' : 'Inactive'}
+      </MenuItem>
+    ];
+    return action;
+  };
+
   return (
     <>
       <Helmet>
-        <title>Master</title>
+        <title>Content Type</title>
       </Helmet>
+      <AddtypeModal open={open} handleClose={handleModal} />
       <PageTitleWrapper>
         <PageHeader
-          title={'Master'}
-          actionText="Add User"
+          title={'Content Type'}
+          actionText="Add Content Type"
           subTitle=""
-          link="/master/add-user"
+          handleClick={handleModal}
         />
       </PageTitleWrapper>
       <Container maxWidth="lg">
@@ -46,12 +130,23 @@ function MasterList() {
         >
           <Grid item xs={12}>
             <Card>
-              <MainTable
+              {/* <MainTable
                 cryptoOrders={data}
                 tableHeader={tableheader}
                 title="User List"
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
+              /> */}
+
+              <MaterialTable
+                data={data || []}
+                isLoading={isLoading}
+                columns={columns}
+                getData={''}
+                rowCount={rowCount.mainData}
+                tableAction={TableAction}
+                title="Content Type List"
+                Filter={<></>}
               />
             </Card>
           </Grid>
@@ -64,11 +159,11 @@ function MasterList() {
 
 export default MasterList;
 
-const data: UserList[] = [
+const dummyData = [
   {
     id: '1',
     email: 'test@gmail.com',
-    name: 'test',
+    title: 'test',
     place: 'pune',
     type: 'admin',
     status: 'inactive'
@@ -76,7 +171,7 @@ const data: UserList[] = [
   {
     id: '2',
     email: 'demo@gmail.com',
-    name: 'demo',
+    title: 'demo',
     place: 'dhar',
     type: 'master',
     status: 'pending'
@@ -84,7 +179,7 @@ const data: UserList[] = [
   {
     id: '3',
     email: 'west@gmail.com',
-    name: 'west',
+    title: 'west',
     place: 'indore',
     type: 'user',
     status: 'active'
@@ -92,7 +187,7 @@ const data: UserList[] = [
   {
     id: '4',
     email: 'test@gmail.com',
-    name: 'test',
+    title: 'test',
     place: 'pune',
     type: 'admin',
     status: 'inactive'
@@ -100,7 +195,7 @@ const data: UserList[] = [
   {
     id: '5',
     email: 'demo@gmail.com',
-    name: 'demo',
+    title: 'demo',
     place: 'dhar',
     type: 'master',
     status: 'pending'
@@ -108,7 +203,7 @@ const data: UserList[] = [
   {
     id: '6',
     email: 'west@gmail.com',
-    name: 'west',
+    title: 'west',
     place: 'indore',
     type: 'user',
     status: 'active'
@@ -116,7 +211,7 @@ const data: UserList[] = [
   {
     id: '7',
     email: 'test@gmail.com',
-    name: 'test',
+    title: 'test',
     place: 'pune',
     type: 'admin',
     status: 'inactive'
@@ -124,7 +219,7 @@ const data: UserList[] = [
   {
     id: '8',
     email: 'demo@gmail.com',
-    name: 'demo',
+    title: 'demo',
     place: 'dhar',
     type: 'master',
     status: 'pending'
@@ -133,7 +228,7 @@ const data: UserList[] = [
     id: '9',
 
     email: 'west@gmail.com',
-    name: 'west',
+    title: 'west',
     place: 'indore',
     type: 'user',
     status: 'active'
@@ -141,7 +236,7 @@ const data: UserList[] = [
   {
     id: '10',
     email: 'test@gmail.com',
-    name: 'test',
+    title: 'test',
     place: 'pune',
     type: 'admin',
     status: 'inactive'
@@ -149,7 +244,7 @@ const data: UserList[] = [
   {
     id: '11',
     email: 'demo@gmail.com',
-    name: 'demo',
+    title: 'demo',
     place: 'dhar',
     type: 'master',
     status: 'pending'
@@ -158,7 +253,7 @@ const data: UserList[] = [
     id: '12',
 
     email: 'west@gmail.com',
-    name: 'west',
+    title: 'west',
     place: 'indore',
     type: 'user',
     status: 'active'
@@ -166,7 +261,7 @@ const data: UserList[] = [
   {
     id: '13',
     email: 'test@gmail.com',
-    name: 'test',
+    title: 'test',
     place: 'pune',
     type: 'admin',
     status: 'inactive'
@@ -174,7 +269,7 @@ const data: UserList[] = [
   {
     id: '14',
     email: 'demo@gmail.com',
-    name: 'demo',
+    title: 'demo',
     place: 'dhar',
     type: 'master',
     status: 'pending'
@@ -182,7 +277,7 @@ const data: UserList[] = [
   {
     id: '15',
     email: 'west@gmail.com',
-    name: 'west',
+    title: 'west',
     place: 'indore',
     type: 'user',
     status: 'active'
