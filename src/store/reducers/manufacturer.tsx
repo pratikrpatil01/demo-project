@@ -7,6 +7,8 @@ const initialState = {
   count: 0,
   ManufacturerData: [],
   manufacturerDetails: [],
+  GetContentTypeList:[],
+
   isLoading: true
 };
 const manufacturerSlice = createSlice({
@@ -31,7 +33,10 @@ const manufacturerSlice = createSlice({
     manufacturerDetails: (state, action) => {
       state.manufacturerDetails = action.payload;
       console.log('action.payload', action.payload);
-    }
+    },
+    GetContentTypeList: (state, action) => {
+      state.GetContentTypeList = action.payload;
+    },
   }
 });
 
@@ -65,10 +70,18 @@ const increseCount = async () => {
   dispatch(manufacturerSlice.actions.increse());
 };
 
+const GetContentTypeList = async (payload) => {
+  const response = await ApiServices('get', ApiEndPoints.GetContentTypeList);
+  dispatch(manufacturerSlice.actions.GetContentTypeList(response));
+};
+
+
 export {
   GetManufacturerList,
   getManufacturerDetails,
   addManufactur,
   increseCount,
-  decreseCount
+  decreseCount,
+  GetContentTypeList
 };
+

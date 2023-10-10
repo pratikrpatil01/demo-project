@@ -232,7 +232,6 @@ const routes: RouteObject[] = [
       }
     ]
   },
-  
   {
     path: 'admin/content_type',
     element: <SidebarLayout />,
