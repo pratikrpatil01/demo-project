@@ -13,12 +13,13 @@ import { dispatch, useSelector } from 'src/store';
 import { GetContentTypeList } from 'src/store/reducers/master';
 import { ChangeStatus, DeleteItem } from 'src/store/reducers/commanReducer';
 import DeleteAlert from 'src/components/DeleteAlert';
+import Loader from 'src/components/Loader';
 
 function MasterList() {
   const navigate = useNavigate();
-  const { data } = useSelector((store: any) => store.masterType);
+  const { data, isLoading } = useSelector((store: any) => store.masterType);
   const [open, setOpen] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
+  // const [isLoading, setIsLoading] = React.useState(false);
   const [rowCount, setRowCount] = React.useState({
     mainData: 0,
     user: 0,
@@ -98,6 +99,7 @@ function MasterList() {
 
   return (
     <>
+      <Loader open={isLoading} />
       <Helmet>
         <title>Content Type</title>
       </Helmet>
