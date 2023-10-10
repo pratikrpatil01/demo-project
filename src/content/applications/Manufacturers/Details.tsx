@@ -90,75 +90,24 @@ function ManufacturerDetails() {
             >
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Stack spacing={1}>
-                    <InputLabel>*Manufacturer Name</InputLabel>
-                    <FormControl sx={{ width: '100%' }}>
-                      <TextField
-                        disabled
-                        value={''}
-                        name="*Manufacturer Name"
-                        id="*Manufacturer Name"
-                        aria-readonly
-                      />
-                    </FormControl>
-                  </Stack>
+                  <Typography variant="h4">Manufacturer Name</Typography>
+                  <Typography>Manufacturer Name</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Stack spacing={1}>
-                    <InputLabel>Address</InputLabel>
-                    <FormControl sx={{ width: '100%' }}>
-                      <TextField
-                        disabled
-                        value={''}
-                        name="Address"
-                        id="Address"
-                        aria-readonly
-                      />
-                    </FormControl>
-                  </Stack>
+                  <Typography variant="h4">Address</Typography>
+                  <Typography>Address</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Stack spacing={1}>
-                    <InputLabel>GST Number</InputLabel>
-                    <FormControl sx={{ width: '100%' }}>
-                      <TextField
-                        disabled
-                        value={''}
-                        name="GST Number"
-                        id="GST Number"
-                        aria-readonly
-                      />
-                    </FormControl>
-                  </Stack>
+                  <Typography variant="h4">GST Number</Typography>
+                  <Typography>GST Number</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Stack spacing={1}>
-                    <InputLabel>NO. of Plants</InputLabel>
-                    <FormControl sx={{ width: '100%' }}>
-                      <TextField
-                        disabled
-                        value={''}
-                        name="NO. of Plants"
-                        id="NO. of Plants"
-                        aria-readonly
-                      />
-                    </FormControl>
-                  </Stack>
+                  <Typography variant="h4">NO. of Plants</Typography>
+                  <Typography>NO. of Plants</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Stack spacing={1}>
-                    <InputLabel>NO. of Plants</InputLabel>
-                    <FormControl sx={{ width: '100%' }}>
-                      <TextField
-                        disabled
-                        // value={'dgsfdgsf.png'}
-                        type="file"
-                        name="NO. of Plants"
-                        id="NO. of Plants"
-                        aria-readonly
-                      />
-                    </FormControl>
-                  </Stack>
+                  <Typography variant="h4">Company Document</Typography>
+                  <Typography>Company Document</Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -222,64 +171,25 @@ function ManufacturerDetails() {
             >
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Stack spacing={1}>
-                    <InputLabel>*Plant title</InputLabel>
-                    <FormControl sx={{ width: '100%' }}>
-                      <TextField
-                        disabled
-                        value={''}
-                        name="* Plant title"
-                        id="* Plant title"
-                        aria-readonly
-                      />
-                    </FormControl>
-                  </Stack>
+                  <Typography variant="h4"> Plant title</Typography>
+                  <Typography> Plant title</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Stack spacing={1}>
-                    <InputLabel>*Address</InputLabel>
-                    <FormControl sx={{ width: '100%' }}>
-                      <TextField
-                        disabled
-                        value={''}
-                        name="Address"
-                        id="Address"
-                        aria-readonly
-                      />
-                    </FormControl>
-                  </Stack>
+                  <Typography variant="h4">Address</Typography>
+                  <Typography>Address</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
-                  <Stack spacing={1}>
-                    <InputLabel>*Dosage forms</InputLabel>
-                    <FormControl sx={{ width: '100%' }}>
-                      <TextField
-                        disabled
-                        value={''}
-                        name="Dosage forms"
-                        id="Dosage forms"
-                        aria-readonly
-                      />
-                    </FormControl>
-                  </Stack>
+                  <Typography variant="h4"> Dosage forms</Typography>
+                  <Typography> Dosage forms</Typography>
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={4}>
-                  <Stack spacing={1}>
-                    <InputLabel>
-                      *plants document(Note:- Select All Document)
-                    </InputLabel>
-                    <FormControl sx={{ width: '100%' }}>
-                      <TextField
-                        disabled
-                        // value={'dgsfdgsf.png'}
-                        type="file"
-                        name="plants document(Note:- Select All Document)"
-                        id="plants document(Note:- Select All Document)"
-                        aria-readonly
-                      />
-                    </FormControl>
-                  </Stack>
+                  <Typography variant="h4">
+                    plants document(Note:- Select All Document)
+                  </Typography>
+                  <Typography>
+                    plants document(Note:- Select All Document)
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>

@@ -72,8 +72,8 @@ const MaterialTable = ({
             </Grid>{' '}
           </Grid>
         )}
-        renderRowActionMenuItems={({ row }) =>
-          tableAction && tableAction(row?.original)
+        renderRowActionMenuItems={({ row, closeMenu }) =>
+          tableAction && tableAction(row?.original, closeMenu)
         }
       />
     </React.Fragment>
