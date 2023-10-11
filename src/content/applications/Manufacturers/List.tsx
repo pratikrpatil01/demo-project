@@ -12,11 +12,7 @@ import { Columns } from 'src/components/Utils/commonFunction';
 import { useNavigate } from 'react-router';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  GetManufacturerList,
-  decreseCount,
-  increseCount
-} from 'src/store/reducers/manufacturer';
+import { GetManufacturerList } from 'src/store/reducers/manufacturer';
 import { useSelector } from 'src/store';
 
 function List() {

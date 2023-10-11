@@ -7,7 +7,8 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = window.sessionStorage.getItem('@userToken');
+    // const token123 = window.sessionStorage.getItem('@userToken');
+    const token = token123;
     config.headers['Access-Control-Allow-Origin'] = '*';
     if (token) {
       config.headers.Authorization = token;
@@ -50,10 +51,9 @@ const ApiServices = async (
     url,
     headers
   };
-    if (method.toLowerCase() === 'get' && formData) {
-    config.data = formData
- }
-  else if (method.toLowerCase() === 'get' && data) {
+  if (method.toLowerCase() === 'get' && formData) {
+    config.data = formData;
+  } else if (method.toLowerCase() === 'get' && data) {
     config.params = data;
   } else if (method.toLowerCase() === 'post') {
     config.data = formData ? getFormData(data) : data;
@@ -89,3 +89,6 @@ const ApiServices = async (
 };
 
 export default ApiServices;
+
+const token123 =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmdWxsX25hbWUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5zQHlvcG1haWwuY29tIiwiaWQiOiI2NTFiZjQ5MWFmMmIzNDViNjM4NzBmZTQiLCJ0eXBlIjoidG9rZW4iLCJpYXQiOjE2OTcwNDE0MDAsImV4cCI6MTY5OTYzMzQwMH0.taZGdSSO-YW32vFg-ySlnFctjrdpfdVd8NvSCSfs93E';
