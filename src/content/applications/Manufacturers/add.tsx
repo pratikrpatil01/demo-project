@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import AddPageHeader from './AddPageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -21,7 +21,8 @@ import {
     MenuItem,
     NativeSelect,
     FormControl,
-    SelectChangeEvent 
+    SelectChangeEvent ,
+    FormHelperText
     
   } from '@mui/material';
 
@@ -29,65 +30,86 @@ import RecentOrders from './RecentOrders';
 import List from './List';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import ApiServices from 'src/Network_call/apiservices';
+import ApiEndPoints from 'src/Network_call/ApiEndPoints';
+import { AnyAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  GetContentTypeList
+} from 'src/store/reducers/manufacturer';
+import { any } from 'prop-types';
 
 function ApplicationsAddManufacturers() {
 
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+
+  const [errorMessage, setErrorMessage] =  useState('');
+  const [successMessage, setSuccessMessage] =  useState('');
+  const [equipmentOptions, setEquipmentOptions] = useState([]);
+  const [activitiesOptions, setActivitiesOptions] = useState([]);
   const validateSchema = yup.object().shape({
-       name: yup.string().required('The name field is required'),
-       gstNumber: yup.string().required('The gst number field is required'),
+      manufacturer_name: yup.string().required('The name field is required'),
+      gst_no: yup.string().required('The gst number field is required'),
        activities: yup.string().required('The activities field is required'),
-       typesOfProducts: yup.string().required('The types of products field is required'),
-       internationalGMPStatus: yup.string().required('The international GMP status field is required'),
-       noOfPlants: yup.string().required('The no of plants field is required'),
+       type_of_products: yup.string().required('The types of products field is required'),
+       international_gmp_status: yup.string().required('The international GMP status field is required'),
+       no_of_plants: yup.string().required('The no of plants field is required'),
        plantsDocument: yup.string().required('The plants document field is required'),
        personal: yup.string().required('The personal field is required'),
-       sectionsDosageFormsApproved: yup.string().required('The sections dosage forms approved field is required'),
-       nonPharmaActivities: yup.string().required('The non pharma activities field is required'),
-       availabilityOfManufacturingLicense: yup.string().required('The availability of manufacturing license field is required'),
+       sections_dosage_froms_approved: yup.string().required('The sections dosage forms approved field is required'),
+       non_pharma_activities: yup.string().required('The non pharma activities field is required'),
+       availability_of_manufacturing_license: yup.string().required('The availability of manufacturing license field is required'),
        address: yup.string().required('The address field is required'),
        equipments: yup.string().required('The equipments field is required'),
-       indianGMPStatusStateGMP: yup.string().required('The indian GMP status state GMP field is required'),
+       indian_gmp_status: yup.string().required('The indian GMP status state GMP field is required'),
+       plant_name: yup.string().required('The plant name field is required'),
+       plant_address: yup.string().required('The plant address field is required'),
+
   });
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      gstNumber: '',
+      manufacturer_name: '',
+      gst_no: '',
       activities:'',
-      typesOfProducts:'',
-      internationalGMPStatus: '',
-      noOfPlants: '',
+      type_of_products:'',
+      international_gmp_status: '',
+      no_of_plants: '',
       plantsDocument:'',
       personal:'',
-      sectionsDosageFormsApproved: '',
-      nonPharmaActivities: '',
-      availabilityOfManufacturingLicense:'',
+      sections_dosage_froms_approved: '',
+      non_pharma_activities: '',
+      availability_of_manufacturing_license:'',
       address:'',
       equipments:'',
-      indianGMPStatusStateGMP:''
+      indian_gmp_status:'',
+      plant_name:'',
+      plant_address:''
 
     },
     validationSchema: validateSchema,
-    onSubmit: (values, { resetForm }) => {
-      console.log(values);
+    onSubmit: async (values, { resetForm }) => {
 
-      setTimeout(() => {
-        resetForm();
-      }, 1000 * 2);
+      console.log(ApiEndPoints)
+      setIsLoading(true);
+      
     }
   });
 
- const [availabilityofmanufacturinglicense, setAvailabilityOfManufacturingLicense] = React.useState('');
+ const [availability_of_manufacturing_license, setAvailabilityOfManufacturingLicense] = useState('');
 
- const [activities, setActivities] = React.useState('');
- const [personal, setPersonal] = React.useState('');
- const [equipments, setEquipments] = React.useState('');
- const [typesOfProducts, setTypesOfProducts] = React.useState('');
- const [sectionsDosageFormsApproved, setSectionsDosageFormsApproved] = React.useState('');
- const [indianGMPStatusStateGMP, setIndianGMPStatusStateGMP] = React.useState('');
- const [internationalGMPStatus, setInternationalGMPStatus] = React.useState('');
- const [nonPharmaActivities, setNonPharmaActivities] = React.useState('');
+ const [activities, setActivities] = useState('');
+ const [personal, setPersonal] = useState('');
+ const [equipments, setEquipments] = useState('');
+ const [type_of_products, setTypesOfProducts] = useState('');
+ const [sections_dosage_froms_approved, setSectionsDosageFormsApproved] = useState('');
+ const [indian_gmp_status, setIndianGMPStatusStateGMP] = useState('');
+ const [international_gmp_status, setInternationalGMPStatus] = useState('');
+ const [non_pharma_activities, setNonPharmaActivities] = useState('');
 
 
   const handleChangeAvailabilityOfManufacturingLicense = (event: SelectChangeEvent) => {
@@ -120,16 +142,41 @@ function ApplicationsAddManufacturers() {
   const handleChangeNonPharmaActivities = (event: SelectChangeEvent) => {
     setNonPharmaActivities(event.target.value);
   };
+  
+  const getContentTypeData = () => {
+    //setActivitiesOptions(GetContentTypeList:any);
+    
+  };
+
+  const getActivityType = async (request) => {
+    
+    const response = await ApiServices('get', ApiEndPoints.GetContentTypeList);
+    if(response.status == 200){
+      setActivitiesOptions(response.data)
+    }
+    
+  };
+  useEffect(() => {
+    
+    const request = {type:'activities'}
+    getActivityType(request);
+  }, []);
 
   return (
     <>
+    
       <Helmet>
         <title>Add Manufacturers</title>
       </Helmet>
       <PageTitleWrapper>
         <AddPageHeader />
       </PageTitleWrapper>
-      <Container maxWidth="lg" style={{height: '100%'}}>
+      
+      <Container  style={{height: '100%'}} maxWidth={false}>
+      <Card  style={{padding:'25px'}}>
+        <Typography variant="h3" component="h3" gutterBottom>
+            Add Manufacturers
+        </Typography>
       <Box
           component="form"
           onSubmit={formik.handleSubmit}
@@ -146,94 +193,114 @@ function ApplicationsAddManufacturers() {
         >
           <Grid item xs={4}>
           <TextField
+                 
                   margin="normal"
                   required
                   fullWidth
-                  id="name"
+                  id="manufacturer_name"
                   label="Enter Full Name"
-                  name="name"
-                  autoComplete="name"
-                  autoFocus
+                  name="manufacturer_name"
+                  autoComplete="manufacturer_name"
+                 
                   onChange={formik.handleChange}
-                  value={formik.values.name}
-                  helperText={formik.errors.name ? formik.errors.name : ''}
+                  value={formik.values.manufacturer_name}
+                  helperText={formik.errors.manufacturer_name ? formik.errors.manufacturer_name : ''}
+                  error={formik.errors.manufacturer_name ? true : false}
                  
                 />
                 <TextField
                   margin="normal"
                   required
                   fullWidth
-                  name="gstNumber"
+                  name="gst_no"
                   label="Enter GST Number"
-                  id="gstNumber"
+                  id="gst_no"
                   autoComplete="Enter GST Number"
-                  autoFocus
+                  
                   onChange={formik.handleChange}
-                  value={formik.values.gstNumber}
-                  helperText={formik.errors.gstNumber ? formik.errors.gstNumber : ''}
+                  value={formik.values.gst_no}
+                  helperText={formik.errors.gst_no ? formik.errors.gst_no : ''}
+                  error={formik.errors.gst_no ? true : false}
                 />
-                <FormControl margin="normal" fullWidth>
-                    <InputLabel id="activities">Activities</InputLabel>
-                    
-                    <Select
-                        labelId="activities"
-                        id="activities"
-                        name="activities"
-                        label="Activities"
-                        value={formik.values.activities}
-                        onChange={formik.handleChange}
-                        autoFocus
-                        
-                       
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                        <MenuItem value={1}>Manufacturing</MenuItem>
-                        <MenuItem value={2}>Quality Control</MenuItem>
-                        <MenuItem value={3}>Packaging</MenuItem>
-                        <MenuItem value={4}>Batch Release</MenuItem>
-                    </Select>
-                </FormControl>
+                <TextField
+                    margin="normal"
+                    id="activities"
+                    required
+                    fullWidth
+                    select
+                    label="Select Activities"
+                    name="activities"
+                    defaultValue="Select"
+                    onChange={formik.handleChange}
+                    value={formik.values.activities}
+                    helperText={formik.errors.activities ? formik.errors.activities : ''}
+                    error={formik.errors.activities ? true : false}
+                  >
+                   
+                  {activitiesOptions.map((activitiesTemp,index) => (
+                    <MenuItem key={index} value={activitiesTemp._id}>
+                      {activitiesTemp.title}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                
+                <TextField
+                    margin="normal"
+                    id="type_of_products"
+                    required
+                    fullWidth
+                    select
+                    label="Select Type of Products"
+                    name="type_of_products"
+                    defaultValue="Select"
+                    onChange={formik.handleChange}
+                    value={formik.values.type_of_products}
+                    helperText={formik.errors.type_of_products ? formik.errors.type_of_products : ''}
+                    error={formik.errors.type_of_products ? true : false}
+                  >
+                   
+                  {activitiesOptions.map((activitiesTemp,index) => (
+                    <MenuItem key={index} value={activitiesTemp._id}>
+                      {activitiesTemp.title}
+                    </MenuItem>
+                  ))}
+                </TextField>
 
-                <FormControl margin="normal" fullWidth>
-                    <InputLabel id="typesOfProducts">Types Of Products</InputLabel>
-                    <Select
-                        labelId="typesOfProducts"
-                        id="typesOfProducts"
-                        name="typesOfProducts"
-                        value={formik.values.typesOfProducts}
-                        label="Types Of Products"
-                        onChange={formik.handleChange}
-                        autoFocus
-                        
-                        
-                    >
-                        
-                        <MenuItem value={10}>Human</MenuItem>
-                        <MenuItem value={20}>Veterinanry</MenuItem>
-                        <MenuItem value={30}>Both</MenuItem>
-                    </Select>
-                </FormControl>
+                <TextField
+                    margin="normal"
+                    id="international_gmp_status"
+                    required
+                    fullWidth
+                    select
+                    label="Select International GMP Status"
+                    name="international_gmp_status"
+                    defaultValue="Select"
+                    onChange={formik.handleChange}
+                    value={formik.values.international_gmp_status}
+                    helperText={formik.errors.international_gmp_status ? formik.errors.international_gmp_status : ''}
+                    error={formik.errors.international_gmp_status ? true : false}
+                  >
+                   
+                  {activitiesOptions.map((activitiesTemp,index) => (
+                    <MenuItem key={index} value={activitiesTemp._id}>
+                      {activitiesTemp.title}
+                    </MenuItem>
+                  ))}
+                </TextField>  
 
-                <FormControl margin="normal" fullWidth>
-                    <InputLabel id="internationalGMPStatus">International GMP Status</InputLabel>
-                    <Select
-                        labelId="internationalGMPStatus"
-                        name="internationalGMPStatus"
-                        id="internationalGMPStatus"
-                        value={formik.values.internationalGMPStatus}
-                        label="International GMP Status"
-                        onChange={formik.handleChange}
-                        autoFocus
-                        
-                    >
-                        <MenuItem value={10}>PIC/S</MenuItem>
-                        <MenuItem value={20}>EUGMP</MenuItem>
-                        <MenuItem value={30}>USFDA</MenuItem>
-                        <MenuItem value={40}>Country Specific</MenuItem>
-                    </Select>
-                </FormControl>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="plant_address"
+                  label="Enter Plant Address"
+                  id="plant_address"
+                  autoComplete="Enter GST Number"
+                  onChange={formik.handleChange}
+                  value={formik.values.plant_address}
+                  helperText={formik.errors.plant_address ? formik.errors.plant_address : ''}
+                  error={formik.errors.plant_address ? true : false}
+                />
 
           </Grid>
           <Grid item xs={4}>
@@ -241,17 +308,19 @@ function ApplicationsAddManufacturers() {
                   margin="normal"
                   required
                   fullWidth
-                  name="noOfPlants"
+                  name="no_of_plants"
                   label="No.of Plants"
-                  id="noOfPlants"
+                  id="no_of_plants"
                   autoComplete="No.of Plants"
-                  autoFocus
+                  
                   onChange={formik.handleChange}
-                  value={formik.values.noOfPlants}
-                  helperText={formik.errors.noOfPlants ? formik.errors.noOfPlants : ''}
+                  value={formik.values.no_of_plants}
+                  helperText={formik.errors.no_of_plants ? formik.errors.no_of_plants : ''}
+                  error={formik.errors.no_of_plants ? true : false}
                   
                 />
                 <TextField
+                 style={{borderColor:'gray'}}
                   margin="normal"
                   required
                   fullWidth
@@ -260,69 +329,83 @@ function ApplicationsAddManufacturers() {
                   type="file"
                   id="plants_document"
                   autoComplete="Plants Document"
-                  autoFocus
+                  
+                  focused
                   onChange={formik.handleChange}
                   value={formik.values.plantsDocument}
                   helperText={formik.errors.plantsDocument ? formik.errors.plantsDocument : ''} 
+                  error={formik.errors.plantsDocument ? true : false}
                 />
 
-                  <FormControl margin="normal" fullWidth>
-                    <InputLabel id="personal">Personal</InputLabel>
-                    <Select
-                        labelId="personal"
-                        id="personal"
-                        name="personal"
-                        value={formik.values.personal}
-                        label="Personal"
-                        onChange={formik.handleChange}
-                        autoFocus
-                       
-                    >
-                        <MenuItem value="">
-                        <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>Skilled</MenuItem>
-                        <MenuItem value={20}>unskilled Control</MenuItem>
-                    </Select>
-                </FormControl>
+                <TextField
+                    margin="normal"
+                    id="personal"
+                    required
+                    fullWidth
+                    select
+                    label="Select"
+                    name="personal"
+                    defaultValue="Select Personal"
+                   
+                    onChange={formik.handleChange}
+                    value={formik.values.personal}
+                    helperText={formik.errors.personal ? formik.errors.personal : ''}
+                    error={formik.errors.personal ? true : false}
+                  >
+                   
+                  {activitiesOptions.map((activitiesTemp,index) => (
+                    <MenuItem key={index} value={activitiesTemp._id}>
+                      {activitiesTemp.title}
+                    </MenuItem>
+                  ))}
+                </TextField>  
 
-                <FormControl margin="normal" fullWidth>
-                    <InputLabel id="sectionsDosageFormsApproved">Sections - Dosage Forms Approved</InputLabel>
-                    <Select
-                        labelId="sectionsDosageFormsApproved"
-                        id="sectionsDosageFormsApproved"
-                        name="sectionsDosageFormsApproved"
-                        value={formik.values.sectionsDosageFormsApproved}
-                        label="Sections - Dosage Forms Approved"
-                        onChange={formik.handleChange}
-                        autoFocus
-                        
-                    >
-                        <MenuItem value={10}>Tablets/Capsules</MenuItem>
-                        <MenuItem value={20}>Oral liquid</MenuItem>
-                        <MenuItem value={30}>Oral dry powder</MenuItem>
-                        <MenuItem value={40}>Topical</MenuItem>
-                        <MenuItem value={50}>Respiratory caps</MenuItem>
-                    </Select>
-                </FormControl>
+                <TextField
+                    margin="normal"
+                    id="sections_dosage_froms_approved"
+                    required
+                    fullWidth
+                    select
+                    label="Select Sons Dosage Froms Approved"
+                    name="sections_dosage_froms_approved"
+                    defaultValue="Select"
+                   
+                    onChange={formik.handleChange}
+                    value={formik.values.sections_dosage_froms_approved}
+                    helperText={formik.errors.sections_dosage_froms_approved ? formik.errors.sections_dosage_froms_approved : ''}
+                    error={formik.errors.sections_dosage_froms_approved ? true : false}
+                  >
+                   
+                  {activitiesOptions.map((activitiesTemp,index) => (
+                    <MenuItem key={index} value={activitiesTemp._id}>
+                      {activitiesTemp.title}
+                    </MenuItem>
+                  ))}
+                </TextField>
 
-
-                <FormControl margin="normal" fullWidth>
-                    <InputLabel id="nonPharmaActivities">Non Pharma Activities</InputLabel>
-                    <Select
-                        labelId="nonPharmaActivities"
-                        id="nonPharmaActivities"
-                        name="nonPharmaActivities"
-                        value={formik.values.nonPharmaActivities}
-                        label="Non Pharma Activities"
-                        onChange={formik.handleChange}
-                        autoFocus
-                        
-                    >
-                        <MenuItem value={10}>Yes</MenuItem>
-                        <MenuItem value={20}>No</MenuItem>
-                    </Select>
-                </FormControl>
+                <TextField
+                    margin="normal"
+                    id="non_pharma_activities"
+                    required
+                    fullWidth
+                    select
+                    label="Select Non Pharma Activities"
+                    name="non_pharma_activities"
+                    defaultValue="Select"
+                    
+                    onChange={formik.handleChange}
+                    value={formik.values.non_pharma_activities}
+                    helperText={formik.errors.non_pharma_activities ? formik.errors.non_pharma_activities : ''}
+                    error={formik.errors.non_pharma_activities ? true : false}
+                  >
+                   
+                  {activitiesOptions.map((activitiesTemp,index) => (
+                    <MenuItem key={index} value={activitiesTemp._id}>
+                      {activitiesTemp.title}
+                    </MenuItem>
+                  ))}
+                </TextField>    
+                
           </Grid>
           <Grid item xs={4}>
                 <TextField
@@ -333,74 +416,104 @@ function ApplicationsAddManufacturers() {
                   label="Enter Address"
                   id="address"
                   autoComplete="Enter Address"
-                  autoFocus
+                 
                   onChange={formik.handleChange}
                   value={formik.values.address}
                   helperText={formik.errors.address ? formik.errors.address : ''} 
-                  
+                  error={formik.errors.address ? true : false}
                 />
                
-               <FormControl margin="normal" fullWidth>
-                    <InputLabel id="availability of manufacturing license">Availability Of Manufacturing License</InputLabel>
-                    <Select
-                        labelId="availability of manufacturing license"
-                        id="availabilityOfManufacturingLicense"
-                        name="availabilityOfManufacturingLicense"
-                        value={formik.values.availabilityOfManufacturingLicense}
-                        label="Availability Of Manufacturing License"
-                        onChange={formik.handleChange}
-                        autoFocus
-                        
-                    >
-                        <MenuItem value={10}>Local FDA</MenuItem>
-                        <MenuItem value={20}>FSSAI</MenuItem>
-                        <MenuItem value={30}>CDSCO</MenuItem>
-                        <MenuItem value={40}>Ayush</MenuItem>
-                        <MenuItem value={50}>Others</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl margin="normal" fullWidth>
-                    <InputLabel id="equipments">Equipments</InputLabel>
-                    <Select
-                        labelId="Equipments"
-                        id="equipments"
-                        name="equipments"
-                        value={formik.values.equipments}
-                        label="Equipments"
-                        onChange={formik.handleChange}
-                        autoFocus
-                        
-                    >
-                        <MenuItem value={10}>Skilled</MenuItem>
-                        <MenuItem value={20}>unskilled Control</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl margin="normal" fullWidth>
-                    <InputLabel id="indianGMPStatusStateGMP">Indian GMP status - State GMP</InputLabel>
-                    <Select
-                        labelId="indianGMPStatusStateGMP"
-                        id="indianGMPStatusStateGMP"
-                        name="indianGMPStatusStateGMP"
-                        value={formik.values.indianGMPStatusStateGMP}
-                        label="Indian GMP status - State GMP"
-                        onChange={formik.handleChange}
-                        autoFocus
-                        
-                    >
-                        <MenuItem value={10}>State GMP</MenuItem>
-                        <MenuItem value={20}>WHO-GMP</MenuItem>
-                        <MenuItem value={30}>None</MenuItem>
-
-                    </Select>
-                </FormControl>
+               <TextField
+                    margin="normal"
+                    id="availability_of_manufacturing_license"
+                    required
+                    fullWidth
+                    select
+                    label="Select Availability of Manufacturing License"
+                    name="availability_of_manufacturing_license"
+                    defaultValue="Select"
+                    
+                    onChange={formik.handleChange}
+                    value={formik.values.availability_of_manufacturing_license}
+                    helperText={formik.errors.availability_of_manufacturing_license ? formik.errors.availability_of_manufacturing_license : ''}
+                    error={formik.errors.availability_of_manufacturing_license ? true : false}
+                  >
+                   
+                  {activitiesOptions.map((activitiesTemp,index) => (
+                    <MenuItem key={index} value={activitiesTemp._id}>
+                      {activitiesTemp.title}
+                    </MenuItem>
+                  ))}
+                </TextField> 
+                
+                <TextField
+                    margin="normal"
+                    id="equipments"
+                    required
+                    fullWidth
+                    select
+                    label="Select Equipments"
+                    name="equipments"
+                    defaultValue="Select"
+                    onChange={formik.handleChange}
+                    value={formik.values.equipments}
+                    helperText={formik.errors.equipments ? formik.errors.equipments : ''}
+                    error={formik.errors.equipments ? true : false}
+                  >
+                   
+                  {activitiesOptions.map((activitiesTemp,index) => (
+                    <MenuItem key={index} value={activitiesTemp._id}>
+                      {activitiesTemp.title}
+                    </MenuItem>
+                  ))}
+                </TextField> 
+                
+                <TextField
+                    margin="normal"
+                    id="indian_gmp_status"
+                    required
+                    fullWidth
+                    select
+                    label="Select Indian GMP Status"
+                    name="indian_gmp_status"
+                    defaultValue="Select"
+                    onChange={formik.handleChange}
+                    value={formik.values.indian_gmp_status}
+                    helperText={formik.errors.indian_gmp_status ? formik.errors.indian_gmp_status : ''}
+                    error={formik.errors.indian_gmp_status ? true : false}
+                  >
+                   
+                  {activitiesOptions.map((activitiesTemp,index) => (
+                    <MenuItem key={index} value={activitiesTemp._id}>
+                      {activitiesTemp.title}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                
+                
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="plant_name"
+                  label="Enter Plant Name"
+                  name="plant_name"
+                  autoComplete="plant_name"
+                  onChange={formik.handleChange}
+                  value={formik.values.plant_name}
+                  helperText={formik.errors.plant_name ? formik.errors.plant_name : ''}
+                  error={formik.errors.plant_name ? true : false}
+                 
+                />
           </Grid>
           
         </Grid>
         
-        <Grid container spacing={2} style={{marginTop:'16px'}}>
+        <Grid container spacing={2} style={{marginTop:'5px'}}>
           <Grid item>
-            <Button variant="contained" color="primary" type='submit'>
-              Submit
+            <Button variant="contained" color="primary" type='submit' disabled={isLoading}>
+            {isLoading ? 'Please wait...' : 'Submit'}
+              
             </Button>
           </Grid>
           <Grid item>
@@ -408,16 +521,21 @@ function ApplicationsAddManufacturers() {
             variant="contained"
             color="secondary"
             component="a" 
-            href="/manufacturers" 
+            href="/admin/manufacturers" 
           >
           Cancel
         </Button>
           </Grid>
         </Grid>
+        
       </Box>  
+      </Card>
       </Container>
+      
       <Footer />
+      
     </>
+   
   );
 }
 

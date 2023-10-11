@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -23,7 +23,9 @@ import ApiServices from 'src/Network_call/apiservices';
 import ApiEndPoints from 'src/Network_call/ApiEndPoints';
 import { red } from '@mui/material/colors';
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
-import ErrorSuccessMsg from '../Components/ErrorSuccessMsg';
+import {Warning} from '../Components/Alert';
+import {Success} from '../Components/Alert';
+import {Danger} from '../Components/Alert';
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -43,6 +45,11 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [errorMessage, setErrorMessage] =  useState('');
+  const [successMessage, setSuccessMessage] =  useState('');
+
   // const daTA = useSelector((store) => store.auth);
   const validateSchema = yup.object().shape({
     email: yup
@@ -61,38 +68,23 @@ function Login() {
     },
     validationSchema: validateSchema,
     onSubmit: async (values, { resetForm }) => {
+      setIsLoading(true);
       const response = await ApiServices('post', ApiEndPoints.Login, values);
-     
+      
       if (response.success) {
+        //localStorage.setItem('auth', JSON.stringify(response))
         dispatch(userLogin(response));
         resetForm();
         navigate('/dashboards');
+        setIsLoading(false);
       }else{
-        showError(response.msg);
+        setErrorMessage(response.msg);
+        setIsLoading(false);
       } 
     }
   });
 
-  const [errorMessage, setErrorMessage] =  React.useState('');
-  const [successMessage, setSuccessMessage] =  React.useState('');
-
-  // Function to show an error message
-  const showError = (message) => {
-    setErrorMessage(message);
-  };
-
-  // Function to show an success message
-  const showSuccess = (message) => {
-    setSuccessMessage(message);
-  };
-
-  // Function to hide the success message
-  const hideMesssage = () => {
-    setSuccessMessage('');
-    setErrorMessage('');
-  };
-
-
+ 
   return (
     <>
       <Helmet>
@@ -114,7 +106,7 @@ function Login() {
           
             <Card sx={{ textAlign: 'center', mt: 3, p: 4 }}>
                
-              <ErrorSuccessMsg onClose={hideMesssage} message={successMessage?successMessage:errorMessage} success={!!successMessage}/>
+              {errorMessage && <Danger  message={errorMessage} />}
               
               <Box
                 component="form"
@@ -162,9 +154,11 @@ function Login() {
                   type="submit"
                   fullWidth
                   variant="contained"
+                  disabled={isLoading}
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Sign In
+                  {isLoading ? 'Please wait...' : 'Sign In'}
+                  
                 </Button>
                   <Link href="/admin/forgot-password" underline="hover"> Forgot Password?</Link>
                

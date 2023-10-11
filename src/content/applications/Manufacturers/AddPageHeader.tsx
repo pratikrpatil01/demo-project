@@ -8,7 +8,7 @@ function AddPageHeader() {
     avatar: '/static/images/avatars/1.jpg'
   };
   return (
-    <Grid container justifyContent="space-between" alignItems="center">
+    <Grid container justifyContent="space-between" alignItems="left">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
           Add Manufacturers

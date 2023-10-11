@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -22,7 +22,9 @@ import { styled } from '@mui/material/styles';
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import ApiServices from 'src/Network_call/apiservices';
 import ApiEndPoints from 'src/Network_call/ApiEndPoints';
-import ErrorSuccessMsg from '../Components/ErrorSuccessMsg';
+import {Warning} from '../Components/Alert';
+import {Success} from '../Components/Alert';
+import {Danger} from '../Components/Alert';
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -40,6 +42,11 @@ function Forgotpassword() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [errorMessage, setErrorMessage] =  useState('');
+  const [successMessage, setSuccessMessage] =  useState('');
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const validateSchema = yup.object().shape({
     email: yup.string().email("Please enter a valid email").required("The email field is required"),
     
@@ -52,38 +59,25 @@ function Forgotpassword() {
     },
     validationSchema: validateSchema,
     onSubmit: async (values, { resetForm }) => {
-     
+      setIsLoading(true);
       const response = await ApiServices('post', ApiEndPoints.ForgotPassword, values);
     
       if (response.success) {
-        showSuccess(response.msg);
+        setSuccessMessage(response.msg);
+        setIsLoading(false);
         //navigate('/admin/reset-password');
         resetForm();
       }else{
-        showError(response.msg);
+        setErrorMessage(response.msg);
+        setIsLoading(false);
       } 
     }
   });
 
 
-  const [errorMessage, setErrorMessage] =  React.useState('');
-  const [successMessage, setSuccessMessage] =  React.useState('');
+  
 
-  // Function to show an error message
-  const showError = (message) => {
-    setErrorMessage(message);
-  };
-
-  // Function to show an success message
-  const showSuccess = (message) => {
-    setSuccessMessage(message);
-  };
-
-  // Function to hide the success message
-  const hideMesssage = () => {
-    setSuccessMessage('');
-    setErrorMessage('');
-  };
+  
   return (
     <>
       <Helmet>
@@ -105,7 +99,8 @@ function Forgotpassword() {
           <Container maxWidth="sm">
             <Card sx={{ textAlign: 'center', mt: 3, p: 4 }}>
             
-              <ErrorSuccessMsg onClose={hideMesssage} message={successMessage?successMessage:errorMessage} success={!!successMessage}/>
+            {errorMessage && <Danger  message={errorMessage} />}
+            {successMessage && <Success  message={successMessage} />}
               
               <Box
                 component="form"
@@ -132,9 +127,10 @@ function Forgotpassword() {
                   type="submit"
                   fullWidth
                   variant="contained"
+                  disabled={isLoading}
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Submit
+                  {isLoading ? 'Please wait...' : 'Submit'}
                 </Button>
                 <Link href="/admin/login" underline="hover">Back to Login?</Link>
               </Box>

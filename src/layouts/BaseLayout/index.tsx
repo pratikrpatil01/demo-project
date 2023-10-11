@@ -1,6 +1,6 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { Box } from '@mui/material';
 
@@ -9,6 +9,16 @@ interface BaseLayoutProps {
 }
 
 const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
+
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    let auth = localStorage.getItem("auth");
+    if(!!auth){
+      navigate('/admin/manufacturers/');
+    };
+  }, [])
+
   return (
     <Box
       sx={{

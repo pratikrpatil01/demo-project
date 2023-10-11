@@ -50,8 +50,10 @@ const ApiServices = async (
     url,
     headers
   };
-
-  if (method.toLowerCase() === 'get' && data) {
+    if (method.toLowerCase() === 'get' && formData) {
+    config.data = formData
+ }
+  else if (method.toLowerCase() === 'get' && data) {
     config.params = data;
   } else if (method.toLowerCase() === 'post') {
     config.data = formData ? getFormData(data) : data;
