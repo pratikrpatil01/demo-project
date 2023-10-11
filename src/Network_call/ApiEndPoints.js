@@ -12,7 +12,7 @@ const ApiEndPoints = {
   Resetpassword: `${APPConfig.API_URL}/resetpassword`,
   DataList: `${APPConfig.API_URL}/list`,
   ManufacturerListForAdmin: `${APPConfig.API_URL}/get-manufacturer-list`,
-  ManufacturerAddForAdmin: `${APPConfig.API_URL}/add-manufacturer`,
+  ManufacturerAdd: `${APPConfig.API_URL}/add-manufacturer`,
   UserListForAdmin: `${APPConfig.API_URL}/get-user-list`,
   FileUpload: `${APPConfig.API_URL}/upload`,
   GetTypeList: `${APPConfig.API_URL}/get-type-list`,
