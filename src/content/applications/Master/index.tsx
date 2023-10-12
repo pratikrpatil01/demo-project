@@ -159,7 +159,7 @@ function MasterList() {
     <>
       <Loader open={isLoading} />
       <Helmet>
-        <title>Content Type</title>
+        <title>Content Types</title>
       </Helmet>
       <AddtypeModal open={open} handleClose={handleModal} />
       <EdittypeModal
@@ -171,7 +171,7 @@ function MasterList() {
         <PageHeader
           title={'Content Type'}
           actionText="Add Content Type"
-          subTitle=""
+          subTitle="Here you can you master data for equipements, activities etc"
           handleClick={handleModal}
         />
       </PageTitleWrapper>

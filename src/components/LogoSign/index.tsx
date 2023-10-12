@@ -98,11 +98,8 @@ function Logo() {
   const theme = useTheme();
 
   return (
-    <TooltipWrapper
-      title="Tokyo Free White React Typescript Admin Dashboard"
-      arrow
-    >
-      <LogoWrapper to="/overview">
+    <TooltipWrapper title="ProCuriit" arrow>
+      <LogoWrapper to="/admin/dashboard">
         <Badge
           sx={{
             '.MuiBadge-badge': {
@@ -113,13 +110,16 @@ function Logo() {
           }}
           overlap="circular"
           color="success"
-          badgeContent="2.0"
+          badgeContent="1.0"
         >
-          <LogoSignWrapper>
-            <LogoSign>
-              <LogoSignInner />
-            </LogoSign>
-          </LogoSignWrapper>
+          <img
+            alt="ProCuriit"
+            height={50}
+            src="/static/images/logo/procuriit-horizontal.png"
+          />
+          {/* <LogoSignWrapper>
+          <LogoSign><LogoSignInner /></LogoSign>
+        </LogoSignWrapper> */}
         </Badge>
       </LogoWrapper>
     </TooltipWrapper>
