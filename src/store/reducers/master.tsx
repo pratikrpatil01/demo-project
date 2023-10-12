@@ -21,6 +21,18 @@ export const AddContentType = createAsyncThunk(
   }
 );
 
+export const EditContentType = createAsyncThunk(
+  'edit/type',
+  async (payload: any) => {
+    const response = await ApiServices(
+      'put',
+      ApiEndPoints.EditContentType + payload.id,
+      payload.data
+    );
+    return response.success && payload;
+  }
+);
+
 export const GetContentTypeList = createAsyncThunk(
   'GetContentTypeList',
   async () => {
@@ -67,6 +79,20 @@ const masterTypeSlice = createSlice({
         state.data = state.data.filter(
           (item: any) => item._id !== action.payload
         );
+      })
+      .addCase(EditContentType.pending, (state: any) => {
+        state.isLoading = true;
+      })
+      .addCase(EditContentType.fulfilled, (state: any, action: any) => {
+        state.isLoading = false;
+
+        const updateData = state.data.findIndex(
+          (obj: any) => obj._id === action.payload.id
+        );
+        state.data[updateData] = action.payload.data;
+      })
+      .addCase(EditContentType.rejected, (state: any) => {
+        state.isLoading = false;
       });
   }
 });

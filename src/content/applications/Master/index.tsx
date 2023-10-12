@@ -1,14 +1,25 @@
 import { Helmet } from 'react-helmet-async';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Grid, Container, Card, MenuItem } from '@mui/material';
+import {
+  Grid,
+  Container,
+  Card,
+  MenuItem,
+  TextField,
+  Chip,
+  Box
+} from '@mui/material';
 import Footer from 'src/components/Footer';
 
 import PageHeader from 'src/components/PageHeader';
 import { useNavigate } from 'react-router';
 import MaterialTable from 'src/components/Table/materialTable';
-import { Columns } from 'src/utils/commonFunction';
+import { Columns, formatCapitalize } from 'src/utils/commonFunction';
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { AddtypeModal } from 'src/content/pages/Components/Modals';
+import {
+  AddtypeModal,
+  EdittypeModal
+} from 'src/content/pages/Components/Modals';
 import { dispatch, useSelector } from 'src/store';
 import { GetContentTypeList } from 'src/store/reducers/master';
 import { ChangeStatus, DeleteItem } from 'src/store/reducers/commanReducer';
@@ -18,7 +29,11 @@ import Loader from 'src/components/Loader';
 function MasterList() {
   const navigate = useNavigate();
   const { data, isLoading } = useSelector((store: any) => store.masterType);
+
+  const [tableData, setTableData] = React.useState(data);
   const [open, setOpen] = React.useState(false);
+  const [editOpen, setEditOpen] = React.useState(false);
+  const [editData, setEditData] = React.useState();
   // const [isLoading, setIsLoading] = React.useState(false);
   const [rowCount, setRowCount] = React.useState({
     mainData: 0,
@@ -36,6 +51,10 @@ function MasterList() {
 
   const handleModal = () => {
     setOpen(!open);
+  };
+  const handleEditModal = (data: any) => {
+    setEditData(data);
+    setEditOpen(!editOpen);
   };
 
   const handleEdit = (data: any) => {
@@ -63,16 +82,54 @@ function MasterList() {
     );
   };
 
+  const filterValues = data?.map((item: any) => item?.type);
+
+  console.log('filterValues', filterValues);
+
+  const handleFilter = (e: any) => {
+    const { value, name } = e.target;
+
+    setTableData(data?.filter((item: any) => item?.type === value));
+  };
+
   const key = ['title', 'type', 'status'];
-  const columns = Columns(key);
+  const columns = useMemo(
+    () => [
+      {
+        accessorKey: 'title',
+        header: 'Title'
+      },
+      {
+        accessorKey: 'type',
+        header: 'Type'
+      },
+      {
+        accessorKey: 'status',
+        header: 'Status',
+        // size: 300
+        Cell: ({ cell, row }) => (
+          <Chip
+            label={
+              cell.getValue()?.toLocaleString?.('en-US') == 1
+                ? 'Active'
+                : 'Inactive'
+            }
+            color={
+              cell.getValue()?.toLocaleString?.('en-US') == 1
+                ? 'success'
+                : 'error'
+            }
+          />
+        )
+      }
+    ],
+    []
+  );
 
   const TableAction = (row: any, closeMenu: any) => {
     console.log(row, 'closeMenu', closeMenu);
     const action = [
-      <MenuItem
-        key="edit"
-        // onClick={() => navigate(`/admin/content_type/edit/${row._id}`)}
-      >
+      <MenuItem key="edit" onClick={() => handleEditModal(row)}>
         Edit
       </MenuItem>,
       <MenuItem
@@ -91,12 +148,13 @@ function MasterList() {
           closeMenu();
         }}
       >
-        {row?.status == 1 ? 'Active' : 'Inactive'}
+        {row?.status == 1 ? 'Inactive' : 'Active'}
       </MenuItem>
     ];
     return action;
   };
 
+  console.log('editdata', editData);
   return (
     <>
       <Loader open={isLoading} />
@@ -104,6 +162,11 @@ function MasterList() {
         <title>Content Types</title>
       </Helmet>
       <AddtypeModal open={open} handleClose={handleModal} />
+      <EdittypeModal
+        open={editOpen}
+        handleClose={handleEditModal}
+        data={editData}
+      />
       <PageTitleWrapper>
         <PageHeader
           title={'Content Type'}
@@ -122,23 +185,33 @@ function MasterList() {
         >
           <Grid item xs={12}>
             <Card>
-              {/* <MainTable
-                cryptoOrders={data}
-                tableHeader={tableheader}
-                title="User List"
-                handleDelete={handleDelete}
-                handleEdit={handleEdit}
-              /> */}
-
               <MaterialTable
-                data={data || []}
+                data={tableData || []}
                 isLoading={isLoading}
                 columns={columns}
                 getData={''}
-                rowCount={rowCount.mainData}
+                rowCount={tableData.length}
                 tableAction={TableAction}
-                title=""
-                Filter={<></>}
+                title="Content Type List"
+                Filter={
+                  <>
+                    <TextField
+                      select
+                      label="Filter"
+                      name="Filter"
+                      defaultValue="Select"
+                      onChange={handleFilter}
+                      sx={{ minWidth: '150px' }}
+                      size={'small'}
+                    >
+                      {filterValues.map((item: any, index: number) => (
+                        <MenuItem key={index} value={item}>
+                          {formatCapitalize(item)}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </>
+                }
               />
             </Card>
           </Grid>
@@ -150,3 +223,11 @@ function MasterList() {
 }
 
 export default MasterList;
+
+const filterData: any = [
+  { title: 'name', value: 'Name' },
+  { title: 'email', value: 'Email' },
+  { title: 'place', value: 'Place' },
+  { title: 'type', value: 'Type' },
+  { title: 'status', value: 'status' }
+];

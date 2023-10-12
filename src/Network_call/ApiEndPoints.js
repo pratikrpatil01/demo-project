@@ -18,10 +18,10 @@ const ApiEndPoints = {
   GetTypeList: `${APPConfig.API_URL}/get-type-list`,
   GetContentTypeList: `${APPConfig.API_URL}/get-content-type-list`,
   AddContentType: `${APPConfig.API_URL}/add-content-type`,
+  EditContentType: `${APPConfig.API_URL}/edit-content-type?id=`,
   StatusActiveInactive: `${APPConfig.API_URL}/active-inactive/`,
   Delete: `${APPConfig.API_URL}/common-delete/`,
-  GetContentType: `${APPConfig.API_URL}/get-content-type`,
-  
+  GetContentType: `${APPConfig.API_URL}/get-content-type`
 };
 
 export default ApiEndPoints;

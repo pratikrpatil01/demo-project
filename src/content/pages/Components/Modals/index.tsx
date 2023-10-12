@@ -30,10 +30,11 @@ import Footer from 'src/components/Footer';
 import { useFormik } from 'formik';
 
 import * as yup from 'yup';
-import { AddContentType } from 'src/store/reducers/master';
+import { AddContentType, EditContentType } from 'src/store/reducers/master';
 // import { useDispatch } from 'react-redux';
 // import { dispatch } from 'src/store';
 import { dispatch } from 'src/store';
+import { log } from 'console';
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 
@@ -231,4 +232,94 @@ export const AddtypeModal = ({ handleClose, open }) => {
 AddtypeModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.any.isRequired
+};
+export const EdittypeModal = ({ data, handleClose, open }) => {
+  // const dispatch = useDispatch();
+  const initialState = {
+    type: data?.type,
+    title: data?.title
+  };
+  console.log('data------>>>', data);
+  const validateSchema = yup.object().shape({
+    type: yup.string().required('The type field is required'),
+    title: yup.string().required('The title field is required')
+  });
+
+  const formik = useFormik({
+    initialValues: initialState,
+    // validationSchema: validateSchema,
+    onSubmit: (values, { resetForm }) => {
+      //
+      dispatch(
+        EditContentType({
+          id: data?._id,
+          data: {
+            title: values.title,
+            type: values.type
+          }
+        })
+      );
+      resetForm();
+      handleClose();
+    }
+  });
+
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <DialogTitle fontSize={'20px'}> Add New Type</DialogTitle>
+      <Card>
+        {/* <CardHeader>Add Type</CardHeader> */}
+        <CardContent>
+          <Box
+            component="form"
+            onSubmit={formik.handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="Title"
+              label="Title"
+              name="title"
+              autoFocus
+              onChange={formik.handleChange}
+              value={formik.values.title}
+              helperText={formik.errors.title ? formik.errors.title : ''}
+              error={formik.errors.title ? true : false}
+            />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="type"
+              label="type"
+              id="type"
+              autoComplete="type"
+              onChange={formik.handleChange}
+              value={formik.values.type}
+              error={formik.errors.type ? true : false}
+              helperText={formik.errors.type ? formik.errors.type : ''}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Submit
+            </Button>
+          </Box>
+        </CardContent>
+      </Card>
+    </Dialog>
+  );
+};
+
+EdittypeModal.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+  open: PropTypes.any.isRequired,
+  data: PropTypes.any.isRequired
 };

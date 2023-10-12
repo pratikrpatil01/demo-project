@@ -27,7 +27,6 @@ const MaterialTable = ({
 
   return (
     <React.Fragment>
-      {/* <Typography variant="h4">{title}</Typography> */}
       <MaterialReactTable
         columns={columns}
         data={data}
