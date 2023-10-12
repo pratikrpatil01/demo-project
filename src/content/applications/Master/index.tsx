@@ -101,14 +101,14 @@ function MasterList() {
     <>
       <Loader open={isLoading} />
       <Helmet>
-        <title>Content Type</title>
+        <title>Content Types</title>
       </Helmet>
       <AddtypeModal open={open} handleClose={handleModal} />
       <PageTitleWrapper>
         <PageHeader
           title={'Content Type'}
           actionText="Add Content Type"
-          subTitle=""
+          subTitle="Here you can you master data for equipements, activities etc"
           handleClick={handleModal}
         />
       </PageTitleWrapper>
@@ -137,7 +137,7 @@ function MasterList() {
                 getData={''}
                 rowCount={rowCount.mainData}
                 tableAction={TableAction}
-                title="Content Type List"
+                title=""
                 Filter={<></>}
               />
             </Card>
@@ -150,135 +150,3 @@ function MasterList() {
 }
 
 export default MasterList;
-
-const dummyData = [
-  {
-    id: '1',
-    email: 'test@gmail.com',
-    title: 'test',
-    place: 'pune',
-    type: 'admin',
-    status: 'inactive'
-  },
-  {
-    id: '2',
-    email: 'demo@gmail.com',
-    title: 'demo',
-    place: 'dhar',
-    type: 'master',
-    status: 'pending'
-  },
-  {
-    id: '3',
-    email: 'west@gmail.com',
-    title: 'west',
-    place: 'indore',
-    type: 'user',
-    status: 'active'
-  },
-  {
-    id: '4',
-    email: 'test@gmail.com',
-    title: 'test',
-    place: 'pune',
-    type: 'admin',
-    status: 'inactive'
-  },
-  {
-    id: '5',
-    email: 'demo@gmail.com',
-    title: 'demo',
-    place: 'dhar',
-    type: 'master',
-    status: 'pending'
-  },
-  {
-    id: '6',
-    email: 'west@gmail.com',
-    title: 'west',
-    place: 'indore',
-    type: 'user',
-    status: 'active'
-  },
-  {
-    id: '7',
-    email: 'test@gmail.com',
-    title: 'test',
-    place: 'pune',
-    type: 'admin',
-    status: 'inactive'
-  },
-  {
-    id: '8',
-    email: 'demo@gmail.com',
-    title: 'demo',
-    place: 'dhar',
-    type: 'master',
-    status: 'pending'
-  },
-  {
-    id: '9',
-
-    email: 'west@gmail.com',
-    title: 'west',
-    place: 'indore',
-    type: 'user',
-    status: 'active'
-  },
-  {
-    id: '10',
-    email: 'test@gmail.com',
-    title: 'test',
-    place: 'pune',
-    type: 'admin',
-    status: 'inactive'
-  },
-  {
-    id: '11',
-    email: 'demo@gmail.com',
-    title: 'demo',
-    place: 'dhar',
-    type: 'master',
-    status: 'pending'
-  },
-  {
-    id: '12',
-
-    email: 'west@gmail.com',
-    title: 'west',
-    place: 'indore',
-    type: 'user',
-    status: 'active'
-  },
-  {
-    id: '13',
-    email: 'test@gmail.com',
-    title: 'test',
-    place: 'pune',
-    type: 'admin',
-    status: 'inactive'
-  },
-  {
-    id: '14',
-    email: 'demo@gmail.com',
-    title: 'demo',
-    place: 'dhar',
-    type: 'master',
-    status: 'pending'
-  },
-  {
-    id: '15',
-    email: 'west@gmail.com',
-    title: 'west',
-    place: 'indore',
-    type: 'user',
-    status: 'active'
-  }
-];
-const tableheader: any = [
-  { accesskey: 'name', label: 'Name' },
-  { accesskey: 'email', label: 'Email' },
-  { accesskey: 'place', label: 'Place' },
-  { accesskey: 'type', label: 'Type' },
-  { accesskey: 'status', label: 'status' }
-];

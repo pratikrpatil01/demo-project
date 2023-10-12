@@ -23,9 +23,9 @@ import ApiServices from 'src/Network_call/apiservices';
 import ApiEndPoints from 'src/Network_call/ApiEndPoints';
 import { red } from '@mui/material/colors';
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
-import {Warning} from '../Components/Alert';
-import {Success} from '../Components/Alert';
-import {Danger} from '../Components/Alert';
+import { Warning } from '../Components/Alert';
+import { Success } from '../Components/Alert';
+import { Danger } from '../Components/Alert';
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -39,16 +39,14 @@ const MainContent = styled(Box)(
   `
 );
 
-
-
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [errorMessage, setErrorMessage] =  useState('');
-  const [successMessage, setSuccessMessage] =  useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   // const daTA = useSelector((store) => store.auth);
   const validateSchema = yup.object().shape({
@@ -70,21 +68,19 @@ function Login() {
     onSubmit: async (values, { resetForm }) => {
       setIsLoading(true);
       const response = await ApiServices('post', ApiEndPoints.Login, values);
-      
+
+      setIsLoading(false);
       if (response.success) {
-        //localStorage.setItem('auth', JSON.stringify(response))
+        localStorage.setItem('auth', JSON.stringify(response));
         dispatch(userLogin(response));
         resetForm();
         navigate('/dashboards');
-        setIsLoading(false);
-      }else{
+      } else {
         setErrorMessage(response.msg);
-        setIsLoading(false);
-      } 
+      }
     }
   });
 
- 
   return (
     <>
       <Helmet>
@@ -95,26 +91,23 @@ function Login() {
           <Box textAlign="center">
             <img
               alt="ProCuriit"
-              height={180}
-              src="/static/images/logo/procuriit-horizontal.jpg"
+              height={80}
+              src="/static/images/logo/procuriit-horizontal.png"
             />
             <Typography variant="h2" sx={{ my: 2 }}>
               Login
             </Typography>
           </Box>
           <Container maxWidth="sm">
-          
             <Card sx={{ textAlign: 'center', mt: 3, p: 4 }}>
-               
-              {errorMessage && <Danger  message={errorMessage} />}
-              
+              {errorMessage && <Danger message={errorMessage} />}
+
               <Box
                 component="form"
                 onSubmit={formik.handleSubmit}
                 noValidate
                 sx={{ mt: 1 }}
               >
-                
                 <TextField
                   margin="normal"
                   required
@@ -158,10 +151,11 @@ function Login() {
                   sx={{ mt: 3, mb: 2 }}
                 >
                   {isLoading ? 'Please wait...' : 'Sign In'}
-                  
                 </Button>
-                  <Link href="/admin/forgot-password" underline="hover"> Forgot Password?</Link>
-               
+                <Link href="/admin/forgot-password" underline="hover">
+                  {' '}
+                  Forgot Password?
+                </Link>
               </Box>
             </Card>
           </Container>
