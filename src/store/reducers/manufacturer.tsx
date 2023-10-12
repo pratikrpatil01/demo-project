@@ -47,6 +47,18 @@ export const GetManufacturerList = createAsyncThunk(
   }
 );
 
+export const getContentTypeList = createAsyncThunk(
+  'getContentTypeList',
+  async (payload: any) => {
+    const response = await ApiServices(
+      'post',
+      ApiEndPoints.GetContentType,
+      payload
+    );
+    return response;
+  }
+);
+
 const manufacturerSlice = createSlice({
   name: 'manufacturerSlice',
   initialState,
@@ -64,6 +76,13 @@ const manufacturerSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(editManufactur.fulfilled, (state: any, action: any) => {
+        state.isLoading = false;
+      })
+
+      .addCase(getContentTypeList.pending, (state: any) => {
+        state.isLoading = true;
+      })
+      .addCase(getContentTypeList.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
       });
   }

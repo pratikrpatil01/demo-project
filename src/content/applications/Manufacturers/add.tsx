@@ -162,8 +162,12 @@ function ApplicationsAddManufacturers() {
     setNonPharmaActivities(event.target.value);
   };
 
-  const getContentTypeData = () => {
-    //setActivitiesOptions(GetContentTypeList:any);
+  
+
+  const getContentTypeData = (event) => {
+    // Your function to be called when the TextField receives focus
+    dispatch()
+    console.log('TextField has received focus');
   };
 
   const getActivityType = async (request) => {
@@ -260,6 +264,7 @@ function ApplicationsAddManufacturers() {
                   autoComplete="Enter Personel"
                   onChange={formik.handleChange}
                   value={formik.values.personel}
+                 
                   helperText={
                     formik.errors.personel ? formik.errors.personel : ''
                   }
@@ -293,53 +298,8 @@ function ApplicationsAddManufacturers() {
                   helperText={formik.errors.gst_no ? formik.errors.gst_no : ''}
                   error={formik.errors.gst_no ? true : false}
                 />
-                <TextField
-                  margin="normal"
-                  id="activities"
-                  required
-                  fullWidth
-                  select
-                  label="Select Activities"
-                  name="activities"
-                  defaultValue="Select"
-                  onChange={formik.handleChange}
-                  value={formik.values.activities}
-                  helperText={
-                    formik.errors.activities ? formik.errors.activities : ''
-                  }
-                  error={formik.errors.activities ? true : false}
-                >
-                  {activitiesOptions.map((activitiesTemp, index) => (
-                    <MenuItem key={index} value={activitiesTemp._id}>
-                      {activitiesTemp.title}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                
 
-                <TextField
-                  margin="normal"
-                  id="type_of_products"
-                  required
-                  fullWidth
-                  select
-                  label="Select Type of Products"
-                  name="type_of_products"
-                  defaultValue="Select"
-                  onChange={formik.handleChange}
-                  value={formik.values.type_of_products}
-                  helperText={
-                    formik.errors.type_of_products
-                      ? formik.errors.type_of_products
-                      : ''
-                  }
-                  error={formik.errors.type_of_products ? true : false}
-                >
-                  {activitiesOptions.map((activitiesTemp, index) => (
-                    <MenuItem key={index} value={activitiesTemp._id}>
-                      {activitiesTemp.title}
-                    </MenuItem>
-                  ))}
-                </TextField>
 
                 <TextField
                   margin="normal"
@@ -358,6 +318,7 @@ function ApplicationsAddManufacturers() {
                       : ''
                   }
                   error={formik.errors.international_gmp_status ? true : false}
+                  onFocus={() => getContentTypeData({ 'type': 'international_gmp_status' })}
                 >
                   {activitiesOptions.map((activitiesTemp, index) => (
                     <MenuItem key={index} value={activitiesTemp._id}>
@@ -366,23 +327,7 @@ function ApplicationsAddManufacturers() {
                   ))}
                 </TextField>
 
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="plant_address"
-                  label="Enter Plant Address"
-                  id="plant_address"
-                  autoComplete="Enter GST Number"
-                  onChange={formik.handleChange}
-                  value={formik.values.plant_address}
-                  helperText={
-                    formik.errors.plant_address
-                      ? formik.errors.plant_address
-                      : ''
-                  }
-                  error={formik.errors.plant_address ? true : false}
-                />
+                
               </Grid>
               <Grid item xs={4}>
                 <TextField
@@ -495,6 +440,48 @@ function ApplicationsAddManufacturers() {
                     </MenuItem>
                   ))}
                 </TextField>
+
+                <TextField
+                  margin="normal"
+                  id="activities"
+                  required
+                  fullWidth
+                  select
+                  label="Select Activities"
+                  name="activities"
+                  defaultValue="Select"
+                  onChange={formik.handleChange}
+                  value={formik.values.activities}
+                  helperText={
+                    formik.errors.activities ? formik.errors.activities : ''
+                  }
+                  error={formik.errors.activities ? true : false}
+                >
+                  {activitiesOptions.map((activitiesTemp, index) => (
+                    <MenuItem key={index} value={activitiesTemp._id}>
+                      {activitiesTemp.title}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="plant_address"
+                  label="Enter Plant Address"
+                  id="plant_address"
+                  autoComplete="Enter GST Number"
+                  onChange={formik.handleChange}
+                  value={formik.values.plant_address}
+                  helperText={
+                    formik.errors.plant_address
+                      ? formik.errors.plant_address
+                      : ''
+                  }
+                  error={formik.errors.plant_address ? true : false}
+                />
+
               </Grid>
               <Grid item xs={4}>
                 <TextField
@@ -605,6 +592,32 @@ function ApplicationsAddManufacturers() {
                   }
                   error={formik.errors.plant_name ? true : false}
                 />
+
+
+                <TextField
+                  margin="normal"
+                  id="type_of_products"
+                  required
+                  fullWidth
+                  select
+                  label="Select Type of Products"
+                  name="type_of_products"
+                  defaultValue="Select"
+                  onChange={formik.handleChange}
+                  value={formik.values.type_of_products}
+                  helperText={
+                    formik.errors.type_of_products
+                      ? formik.errors.type_of_products
+                      : ''
+                  }
+                  error={formik.errors.type_of_products ? true : false}
+                >
+                  {activitiesOptions.map((activitiesTemp, index) => (
+                    <MenuItem key={index} value={activitiesTemp._id}>
+                      {activitiesTemp.title}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </Grid>
             </Grid>
 
@@ -616,7 +629,7 @@ function ApplicationsAddManufacturers() {
                   type="submit"
                   // disabled={isLoading}
                 >
-                  {/* {isLoading ? 'Please wait...' : 'Submit'} */}dadsfsd
+                  {/* {isLoading ? 'Please wait...' : 'Submit'} */}Submit
                 </Button>
               </Grid>
               <Grid item>
