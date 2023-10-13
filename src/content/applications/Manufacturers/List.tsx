@@ -13,17 +13,18 @@ import { useNavigate } from 'react-router';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { GetManufacturerList } from 'src/store/reducers/manufacturer';
-import { useSelector } from 'src/store';
+import { dispatch, useSelector } from 'src/store';
 
 function List() {
-  const [data, setData] = useState(dummyData);
-  const [isLoading, setIsLoading] = useState(false);
+  const { count, ManufacturerData, isLoading } = useSelector(  
+  (store: any) => store.manufacturerSlice
+  );
+
+
+
+  console.log("count, ManufacturerData, isLoading----------------------->>>>>>>>>>>>>>>>",count, ManufacturerData, isLoading)
   const [filterData, setFilterData] = useState({});
-  const [rowCount, setRowCount] = useState({
-    mainData: 0,
-    user: 0,
-    manufacturer: 0
-  });
+
   const pagination = { pageIndex: 1, pageSize: 10 };
   const navigate = useNavigate();
   // const { ManufacturerData, count } = useSelector(
@@ -80,39 +81,39 @@ function List() {
     setFilterData((prev) => ({ ...prev, [name]: value }));
   };
 
-  async function getList(pagination) {
+  async function getList(pagination: any) {
     // setIsLoading(true);
     const payload = {
       page: pagination?.pageIndex,
       limit: pagination?.pageSize,
       info: filterData
     };
-    await GetManufacturerList(payload);
+    dispatch(GetManufacturerList(payload));
     // console.log('manufacturerList', ManufacturerData);
     // console.log('manufacturerDetails', manufacturerDetails);
     const response = null;
     // await ApiServices('post', payload, ApiEndPoints.DataList);
 
-    if (response?.success) {
-      setData(response?.data?.document);
-      setRowCount((prev) => ({
-        ...prev,
-        mainData: response?.data?.filterCount
-      }));
-    } else {
-      //   setData([]);
-    }
-    setIsLoading(false);
+    // if (response?.success) {
+    //   setData(response?.data?.document);
+    //   setRowCount((prev) => ({
+    //     ...prev,
+    //     mainData: response?.data?.filterCount
+    //   }));
+    // } else {
+    //   //   setData([]);
+    // }
+    // setIsLoading(false);
   }
 
   return (
     <>
       <MaterialTable
-        data={data}
+        data={[]}
         isLoading={isLoading}
         columns={columns}
         getData={getList}
-        rowCount={rowCount.mainData}
+        rowCount={count}
         tableAction={TableAction}
         title="Manufacturer List"
         Filter={<></>}
