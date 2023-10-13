@@ -30,10 +30,12 @@ import Footer from 'src/components/Footer';
 import { useFormik } from 'formik';
 
 import * as yup from 'yup';
-import { AddContentType } from 'src/store/reducers/master';
+import { AddContentType, EditContentType } from 'src/store/reducers/master';
 // import { useDispatch } from 'react-redux';
 // import { dispatch } from 'src/store';
 import { dispatch } from 'src/store';
+import { log } from 'console';
+import { isAsyncFunction } from 'util/types';
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 
@@ -231,4 +233,62 @@ export const AddtypeModal = ({ handleClose, open }) => {
 AddtypeModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.any.isRequired
+};
+export const EdittypeModal = ({ data, handleClose, open }) => {
+  const [title, setTitle] = React.useState(data?.title);
+
+  const onSubmit = async () => {
+    await dispatch(
+      EditContentType({
+        id: data?._id,
+        data: {
+          title: title
+        }
+      })
+    );
+
+    handleClose();
+  };
+
+  return (
+    <Dialog onClose={handleClose} open={open}>
+      <DialogTitle fontSize={'20px'}> Add New Type</DialogTitle>
+      <Card>
+        {/* <CardHeader>Add Type</CardHeader> */}
+        <CardContent>
+          <Box component="form" noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="Title"
+              label="Title"
+              name="title"
+              autoFocus
+              onChange={(e: any) => setTitle(e.target.value)}
+              value={title}
+              helperText={!title ? 'The title field is required' : ''}
+              error={!title ? true : false}
+            />
+
+            <Button
+              onClick={onSubmit}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Submit
+            </Button>
+          </Box>
+        </CardContent>
+      </Card>
+    </Dialog>
+  );
+};
+
+EdittypeModal.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+  open: PropTypes.any.isRequired,
+  data: PropTypes.any.isRequired,
+  initialState: PropTypes.any.isRequired
 };

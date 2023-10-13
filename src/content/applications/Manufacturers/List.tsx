@@ -93,7 +93,7 @@ function List() {
     const response = null;
     // await ApiServices('post', payload, ApiEndPoints.DataList);
 
-    if (response.success) {
+    if (response?.success) {
       setData(response?.data?.document);
       setRowCount((prev) => ({
         ...prev,
