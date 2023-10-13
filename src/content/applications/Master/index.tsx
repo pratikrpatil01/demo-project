@@ -21,7 +21,7 @@ import {
   EdittypeModal
 } from 'src/content/pages/Components/Modals';
 import { dispatch, useSelector } from 'src/store';
-import { GetContentTypeList } from 'src/store/reducers/master';
+import { GetContentType, GetContentTypeList } from 'src/store/reducers/master';
 import { ChangeStatus, DeleteItem } from 'src/store/reducers/commanReducer';
 import DeleteAlert from 'src/components/DeleteAlert';
 import Loader from 'src/components/Loader';
@@ -41,25 +41,26 @@ const ContentTypeConst = {
 };
 function MasterList() {
   const navigate = useNavigate();
-  const { data, isLoading } = useSelector((store: any) => store.masterType);
-  const [tableData, setTableData] = useState(data?.typeDetails || []);
-  const [open, setOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
-  const [editData, setEditData] = useState();
-  // const [isLoading, setIsLoading] = useState(false);
-  const contentTypes = Object.keys(ContentTypeConst);
-  const [rowCount, setRowCount] = useState({
-    mainData: 0,
-    user: 0,
-    manufacturer: 0
-  });
+  const { data, rowCount, isLoading } = useSelector(
+    (store: any) => store.masterType
+  );
 
-  const getData = () => {
-    return dispatch(GetContentTypeList());
+  const [open, setOpen] = React.useState(false);
+  const [editOpen, setEditOpen] = React.useState(false);
+  const [editData, setEditData] = React.useState();
+  // const [isLoading, setIsLoading] = React.useState(false);
+  // const [rowCount, setRowCount] = React.useState({
+  //   mainData: 0,
+  //   user: 0,
+  //   manufacturer: 0
+  // });
+
+  const getData = (pagination: any) => {
+    return dispatch(GetContentTypeList(pagination));
   };
 
   useEffect(() => {
-    getData();
+    getData({ page: 1, limit: 10 });
   }, []);
 
   const handleModal = () => {
@@ -95,15 +96,26 @@ function MasterList() {
     );
   };
 
+  const filterValues = [
+    'Activities',
+    'Availability of manufacturing license',
+    'Personel',
+    'Equipments',
+    'Types of products',
+    'Dosage forms',
+    'Indian GMP status - State GMP',
+    'International GMP status',
+    'Non Pharma activities',
+    'Batches Frequently'
+  ];
+
+  console.log('filterValues', filterValues);
+
   const handleFilter = (e: any) => {
     const { value, name } = e.target;
-
-    setTableData(
-      data?.typeDetails?.filter((item: any) => item?.type === value)
-    );
+    dispatch(GetContentType({ type: value }));
   };
 
-  const key = ['title', 'type', 'status'];
   const columns = useMemo(
     () => [
       {
@@ -172,11 +184,15 @@ function MasterList() {
         <title>Content Types</title>
       </Helmet>
       <AddtypeModal open={open} handleClose={handleModal} />
-      <EdittypeModal
-        open={editOpen}
-        handleClose={handleEditModal}
-        data={editData}
-      />
+
+      {editOpen && (
+        <EdittypeModal
+          open={editOpen}
+          handleClose={handleEditModal}
+          data={editData}
+        />
+      )}
+
       <PageTitleWrapper>
         <PageHeader
           title={'Content Type'}
@@ -196,11 +212,11 @@ function MasterList() {
           <Grid item xs={12}>
             <Card>
               <MaterialTable
-                data={tableData || []}
+                data={data || []}
                 isLoading={isLoading}
                 columns={columns}
-                getData={''}
-                rowCount={tableData.length || 0}
+                getData={getData}
+                rowCount={rowCount}
                 tableAction={TableAction}
                 title="Content Type List"
                 Filter={

@@ -35,6 +35,7 @@ import { AddContentType, EditContentType } from 'src/store/reducers/master';
 // import { dispatch } from 'src/store';
 import { dispatch } from 'src/store';
 import { log } from 'console';
+import { isAsyncFunction } from 'util/types';
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
 
@@ -234,35 +235,20 @@ AddtypeModal.propTypes = {
   open: PropTypes.any.isRequired
 };
 export const EdittypeModal = ({ data, handleClose, open }) => {
-  // const dispatch = useDispatch();
-  const initialState = {
-    type: data?.type,
-    title: data?.title
-  };
-  console.log('data------>>>', data);
-  const validateSchema = yup.object().shape({
-    type: yup.string().required('The type field is required'),
-    title: yup.string().required('The title field is required')
-  });
+  const [title, setTitle] = React.useState(data?.title);
 
-  const formik = useFormik({
-    initialValues: initialState,
-    // validationSchema: validateSchema,
-    onSubmit: (values, { resetForm }) => {
-      //
-      dispatch(
-        EditContentType({
-          id: data?._id,
-          data: {
-            title: values.title,
-            type: values.type
-          }
-        })
-      );
-      resetForm();
-      handleClose();
-    }
-  });
+  const onSubmit = async () => {
+    await dispatch(
+      EditContentType({
+        id: data?._id,
+        data: {
+          title: title
+        }
+      })
+    );
+
+    handleClose();
+  };
 
   return (
     <Dialog onClose={handleClose} open={open}>
@@ -270,12 +256,7 @@ export const EdittypeModal = ({ data, handleClose, open }) => {
       <Card>
         {/* <CardHeader>Add Type</CardHeader> */}
         <CardContent>
-          <Box
-            component="form"
-            onSubmit={formik.handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -284,27 +265,14 @@ export const EdittypeModal = ({ data, handleClose, open }) => {
               label="Title"
               name="title"
               autoFocus
-              onChange={formik.handleChange}
-              value={formik.values.title}
-              helperText={formik.errors.title ? formik.errors.title : ''}
-              error={formik.errors.title ? true : false}
+              onChange={(e: any) => setTitle(e.target.value)}
+              value={title}
+              helperText={!title ? 'The title field is required' : ''}
+              error={!title ? true : false}
             />
 
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="type"
-              label="type"
-              id="type"
-              autoComplete="type"
-              onChange={formik.handleChange}
-              value={formik.values.type}
-              error={formik.errors.type ? true : false}
-              helperText={formik.errors.type ? formik.errors.type : ''}
-            />
             <Button
-              type="submit"
+              onClick={onSubmit}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
@@ -321,5 +289,6 @@ export const EdittypeModal = ({ data, handleClose, open }) => {
 EdittypeModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.any.isRequired,
-  data: PropTypes.any.isRequired
+  data: PropTypes.any.isRequired,
+  initialState: PropTypes.any.isRequired
 };

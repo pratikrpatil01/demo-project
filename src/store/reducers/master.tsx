@@ -5,6 +5,7 @@ import { ChangeStatus, DeleteItem } from './commanReducer';
 
 const initialState = {
   data: [],
+  rowCount: 0,
   isLoading: false,
   error: null
 };
@@ -29,15 +30,30 @@ export const EditContentType = createAsyncThunk(
       ApiEndPoints.EditContentType + payload.id,
       payload.data
     );
-    return response.success && payload;
+    return payload;
   }
 );
 
 export const GetContentTypeList = createAsyncThunk(
   'GetContentTypeList',
-  async () => {
-    const response = await ApiServices('post', ApiEndPoints.GetContentTypeList);
+  async (payload: any) => {
+    const response = await ApiServices(
+      'post',
+      ApiEndPoints.GetContentTypeList,
+      payload
+    );
     return response?.data;
+  }
+);
+export const GetContentType = createAsyncThunk(
+  'GetContentType',
+  async (payload: any) => {
+    const response = await ApiServices(
+      'post',
+      ApiEndPoints.GetContentType,
+      payload
+    );
+    return response.data;
   }
 );
 
@@ -59,7 +75,8 @@ const masterTypeSlice = createSlice({
       })
       .addCase(GetContentTypeList.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = action.payload.typeDetails;
+        state.rowCount = action.payload?.count;
       })
       .addCase(ChangeStatus.pending, (state: any) => {
         state.isLoading = true;
@@ -80,6 +97,13 @@ const masterTypeSlice = createSlice({
           (item: any) => item._id !== action.payload
         );
       })
+      .addCase(GetContentType.pending, (state: any) => {
+        state.isLoading = true;
+      })
+      .addCase(GetContentType.fulfilled, (state: any, action: any) => {
+        state.isLoading = false;
+        state.data = action.payload;
+      })
       .addCase(EditContentType.pending, (state: any) => {
         state.isLoading = true;
       })
@@ -89,7 +113,7 @@ const masterTypeSlice = createSlice({
         const updateData = state.data.findIndex(
           (obj: any) => obj._id === action.payload.id
         );
-        state.data[updateData] = action.payload.data;
+        state.data[updateData].title = action.payload.data.title;
       })
       .addCase(EditContentType.rejected, (state: any) => {
         state.isLoading = false;
