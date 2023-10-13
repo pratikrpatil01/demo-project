@@ -15,7 +15,7 @@ import PageHeader from 'src/components/PageHeader';
 import { useNavigate } from 'react-router';
 import MaterialTable from 'src/components/Table/materialTable';
 import { Columns, formatCapitalize } from 'src/utils/commonFunction';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   AddtypeModal,
   EdittypeModal
@@ -26,16 +26,29 @@ import { ChangeStatus, DeleteItem } from 'src/store/reducers/commanReducer';
 import DeleteAlert from 'src/components/DeleteAlert';
 import Loader from 'src/components/Loader';
 
+const ContentTypeConst = {
+  Activity: 'Activity',
+  ManufacturerLicense: 'Manufacturing License',
+  Personel: 'Personel',
+  Equipment: 'Equipment',
+  TypesofProduct: 'Types of Product',
+  Section: 'Sections - Dosage forms approved',
+  IndianGmpStatus: 'Indian Gmp Status',
+  NonPharmaActivities: 'Non Pharma Activities',
+  InternationalGmpStatus: 'InternationalGmpStatus',
+  DosageForm: 'Dosage Form',
+  BatchesFrequently: 'Batches Frequently'
+};
 function MasterList() {
   const navigate = useNavigate();
   const { data, isLoading } = useSelector((store: any) => store.masterType);
-
-  const [tableData, setTableData] = React.useState(data);
-  const [open, setOpen] = React.useState(false);
-  const [editOpen, setEditOpen] = React.useState(false);
-  const [editData, setEditData] = React.useState();
-  // const [isLoading, setIsLoading] = React.useState(false);
-  const [rowCount, setRowCount] = React.useState({
+  const [tableData, setTableData] = useState(data?.typeDetails || []);
+  const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editData, setEditData] = useState();
+  // const [isLoading, setIsLoading] = useState(false);
+  const contentTypes = Object.keys(ContentTypeConst);
+  const [rowCount, setRowCount] = useState({
     mainData: 0,
     user: 0,
     manufacturer: 0
@@ -82,14 +95,12 @@ function MasterList() {
     );
   };
 
-  const filterValues = data?.map((item: any) => item?.type);
-
-  console.log('filterValues', filterValues);
-
   const handleFilter = (e: any) => {
     const { value, name } = e.target;
 
-    setTableData(data?.filter((item: any) => item?.type === value));
+    setTableData(
+      data?.typeDetails?.filter((item: any) => item?.type === value)
+    );
   };
 
   const key = ['title', 'type', 'status'];
@@ -154,7 +165,6 @@ function MasterList() {
     return action;
   };
 
-  console.log('editdata', editData);
   return (
     <>
       <Loader open={isLoading} />
@@ -190,26 +200,48 @@ function MasterList() {
                 isLoading={isLoading}
                 columns={columns}
                 getData={''}
-                rowCount={tableData.length}
+                rowCount={tableData.length || 0}
                 tableAction={TableAction}
                 title="Content Type List"
                 Filter={
                   <>
                     <TextField
                       select
-                      label="Filter"
+                      label="Select Type"
                       name="Filter"
-                      defaultValue="Select"
+                      defaultValue="All"
                       onChange={handleFilter}
                       sx={{ minWidth: '150px' }}
                       size={'small'}
+                      fullWidth
                     >
-                      {filterValues.map((item: any, index: number) => (
-                        <MenuItem key={index} value={item}>
-                          {formatCapitalize(item)}
-                        </MenuItem>
-                      ))}
+                      {contentTypes &&
+                        contentTypes.map((item: any, index: number) => (
+                          <MenuItem key={index} value={item}>
+                            {formatCapitalize(ContentTypeConst[item])}
+                          </MenuItem>
+                        ))}
                     </TextField>
+                    {/* <TextField
+                      select
+                      margin="normal"
+                      id="type_of_products"
+                      // required
+                      // fullWidth
+                      label="Select Type"
+                      name="type_of_products"
+                      defaultValue="Select"
+                      onChange={handleFilter}
+                      value={ContentTypeConst}
+                      sx={{ minWidth: '150px' }}
+                    >
+                      {contentTypes &&
+                        contentTypes.map((item: any, index: number) => (
+                          <MenuItem key={index} value={item}>
+                            {formatCapitalize(ContentTypeConst[item])}
+                          </MenuItem>
+                        ))}
+                    </TextField> */}
                   </>
                 }
               />
@@ -223,11 +255,3 @@ function MasterList() {
 }
 
 export default MasterList;
-
-const filterData: any = [
-  { title: 'name', value: 'Name' },
-  { title: 'email', value: 'Email' },
-  { title: 'place', value: 'Place' },
-  { title: 'type', value: 'Type' },
-  { title: 'status', value: 'status' }
-];

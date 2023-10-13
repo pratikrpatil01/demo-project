@@ -36,7 +36,7 @@ export const EditContentType = createAsyncThunk(
 export const GetContentTypeList = createAsyncThunk(
   'GetContentTypeList',
   async () => {
-    const response = await ApiServices('get', ApiEndPoints.GetContentTypeList);
+    const response = await ApiServices('post', ApiEndPoints.GetContentTypeList);
     return response?.data;
   }
 );
