@@ -15,7 +15,7 @@ import PageHeader from 'src/components/PageHeader';
 import { useNavigate } from 'react-router';
 import MaterialTable from 'src/components/Table/materialTable';
 import { Columns, formatCapitalize } from 'src/utils/commonFunction';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   AddtypeModal,
   EdittypeModal
@@ -26,6 +26,19 @@ import { ChangeStatus, DeleteItem } from 'src/store/reducers/commanReducer';
 import DeleteAlert from 'src/components/DeleteAlert';
 import Loader from 'src/components/Loader';
 
+const ContentTypeConst = {
+  Activity: 'Activity',
+  ManufacturerLicense: 'Manufacturing License',
+  Personel: 'Personel',
+  Equipment: 'Equipment',
+  TypesofProduct: 'Types of Product',
+  Section: 'Sections - Dosage forms approved',
+  IndianGmpStatus: 'Indian Gmp Status',
+  NonPharmaActivities: 'Non Pharma Activities',
+  InternationalGmpStatus: 'InternationalGmpStatus',
+  DosageForm: 'Dosage Form',
+  BatchesFrequently: 'Batches Frequently'
+};
 function MasterList() {
   const navigate = useNavigate();
   const { data, rowCount, isLoading } = useSelector(
@@ -164,12 +177,11 @@ function MasterList() {
     return action;
   };
 
-  console.log('editdata', editData);
   return (
     <>
       <Loader open={isLoading} />
       <Helmet>
-        <title>Content Type</title>
+        <title>Content Types</title>
       </Helmet>
       <AddtypeModal open={open} handleClose={handleModal} />
 
@@ -185,7 +197,7 @@ function MasterList() {
         <PageHeader
           title={'Content Type'}
           actionText="Add Content Type"
-          subTitle=""
+          subTitle="Here you can you master data for equipements, activities etc"
           handleClick={handleModal}
         />
       </PageTitleWrapper>
@@ -211,19 +223,41 @@ function MasterList() {
                   <>
                     <TextField
                       select
-                      label="Filter"
+                      label="Select Type"
                       name="Filter"
-                      defaultValue="Select"
+                      defaultValue="All"
                       onChange={handleFilter}
                       sx={{ minWidth: '150px' }}
                       size={'small'}
+                      fullWidth
                     >
-                      {filterValues.map((item: any, index: number) => (
-                        <MenuItem key={index} value={item}>
-                          {formatCapitalize(item)}
-                        </MenuItem>
-                      ))}
+                      {contentTypes &&
+                        contentTypes.map((item: any, index: number) => (
+                          <MenuItem key={index} value={item}>
+                            {formatCapitalize(ContentTypeConst[item])}
+                          </MenuItem>
+                        ))}
                     </TextField>
+                    {/* <TextField
+                      select
+                      margin="normal"
+                      id="type_of_products"
+                      // required
+                      // fullWidth
+                      label="Select Type"
+                      name="type_of_products"
+                      defaultValue="Select"
+                      onChange={handleFilter}
+                      value={ContentTypeConst}
+                      sx={{ minWidth: '150px' }}
+                    >
+                      {contentTypes &&
+                        contentTypes.map((item: any, index: number) => (
+                          <MenuItem key={index} value={item}>
+                            {formatCapitalize(ContentTypeConst[item])}
+                          </MenuItem>
+                        ))}
+                    </TextField> */}
                   </>
                 }
               />
@@ -237,11 +271,3 @@ function MasterList() {
 }
 
 export default MasterList;
-
-const filterData: any = [
-  { title: 'name', value: 'Name' },
-  { title: 'email', value: 'Email' },
-  { title: 'place', value: 'Place' },
-  { title: 'type', value: 'Type' },
-  { title: 'status', value: 'status' }
-];
