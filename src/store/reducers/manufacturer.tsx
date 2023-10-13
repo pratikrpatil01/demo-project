@@ -7,7 +7,7 @@ const initialState = {
   count: 0,
   ManufacturerData: [],
   manufacturerDetails: [],
-  GetContentTypeList: [],
+  getContentTypeList: [],
 
   isLoading: true
 };
@@ -55,7 +55,7 @@ export const getContentTypeList = createAsyncThunk(
       ApiEndPoints.GetContentType,
       payload
     );
-    return response;
+    return response.data;
   }
 );
 
@@ -84,6 +84,7 @@ const manufacturerSlice = createSlice({
       })
       .addCase(getContentTypeList.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
+        state.data = action.payload;
       });
   }
 });

@@ -21,6 +21,7 @@ const ApiEndPoints = {
   StatusActiveInactive: `${APPConfig.API_URL}/active-inactive/`,
   Delete: `${APPConfig.API_URL}/common-delete/`,
   GetContentType: `${APPConfig.API_URL}/get-content-type`,
+  ManufacturerAddUploadFile: `${APPConfig.API_URL}/upload-file`,
   
 };
 
