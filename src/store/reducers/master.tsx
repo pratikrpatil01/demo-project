@@ -3,6 +3,7 @@ import ApiEndPoints from 'src/Network_call/ApiEndPoints';
 import ApiServices from 'src/Network_call/apiservices';
 import { ChangeStatus, DeleteItem } from './commanReducer';
 import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 const initialState = {
   data: [],
@@ -38,6 +39,7 @@ export const EditContentType = createAsyncThunk(
     );
 
     if (response.success) {
+      // toast.success('Your content type has been edit.');
       Swal.fire('Edit', 'Your data has been edit.', 'success');
     }
     return payload;
@@ -52,6 +54,7 @@ export const GetContentTypeList = createAsyncThunk(
       ApiEndPoints.GetContentTypeList,
       payload
     );
+
     return response?.data;
   }
 );

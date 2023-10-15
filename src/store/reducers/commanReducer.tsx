@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 import ApiEndPoints from 'src/Network_call/ApiEndPoints';
 import ApiServices from 'src/Network_call/apiservices';
+
 import Swal from 'sweetalert2';
 
 export const ChangeStatus = createAsyncThunk(
@@ -11,6 +13,9 @@ export const ChangeStatus = createAsyncThunk(
       ApiEndPoints.StatusActiveInactive + payload?.id,
       payload.data
     );
+    if (response.success) {
+      toast.success('Your status has been changed.');
+    }
     return payload;
   }
 );
@@ -22,7 +27,7 @@ export const DeleteItem = createAsyncThunk('Delete', async (payload: any) => {
     payload.data
   );
   if (response.success) {
-    Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+    toast.success('Your item has been deleted.');
   }
   return response.success ? payload?.id : null;
 });
