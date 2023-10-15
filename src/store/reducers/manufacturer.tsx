@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 import ApiEndPoints from 'src/Network_call/ApiEndPoints';
 import ApiServices from 'src/Network_call/apiservices';
 import { dispatch } from 'src/store';
@@ -22,6 +23,11 @@ export const addManufactur = createAsyncThunk(
       ApiEndPoints.ManufacturerAdd,
       payload
     );
+    if(response.success){
+      toast.success(response.msg);
+    }else{
+      toast.error(response.msg);
+    }
     return response;
   }
 );
