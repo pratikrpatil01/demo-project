@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import ApiEndPoints from 'src/Network_call/ApiEndPoints';
 import ApiServices from 'src/Network_call/apiservices';
 import { ChangeStatus, DeleteItem } from './commanReducer';
+import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
 
 const initialState = {
   data: [],
@@ -18,7 +20,12 @@ export const AddContentType = createAsyncThunk(
       ApiEndPoints.AddContentType,
       payload
     );
-    return response;
+    if (response.success) {
+      Swal.fire('Add', 'Your data has been add.', 'success');
+    }
+    if (response.success) {
+      return response.data;
+    }
   }
 );
 
@@ -30,6 +37,11 @@ export const EditContentType = createAsyncThunk(
       ApiEndPoints.EditContentType + payload.id,
       payload.data
     );
+
+    if (response.success) {
+      // toast.success('Your content type has been edit.');
+      Swal.fire('Edit', 'Your data has been edit.', 'success');
+    }
     return payload;
   }
 );
@@ -42,6 +54,7 @@ export const GetContentTypeList = createAsyncThunk(
       ApiEndPoints.GetContentTypeList,
       payload
     );
+
     return response?.data;
   }
 );
@@ -69,6 +82,9 @@ const masterTypeSlice = createSlice({
       })
       .addCase(AddContentType.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
+        console.log(action.payload);
+        state.data = [...state.data, action.payload];
+        state.rowCount = state.rowCount + 1;
       })
       .addCase(GetContentTypeList.pending, (state: any) => {
         state.isLoading = true;
@@ -96,6 +112,7 @@ const masterTypeSlice = createSlice({
         state.data = state.data.filter(
           (item: any) => item._id !== action.payload
         );
+        state.rowCount = state.rowCount - 1;
       })
       .addCase(GetContentType.pending, (state: any) => {
         state.isLoading = true;

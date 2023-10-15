@@ -96,21 +96,6 @@ function MasterList() {
     );
   };
 
-  const filterValues = [
-    'Activities',
-    'Availability of manufacturing license',
-    'Personel',
-    'Equipments',
-    'Types of products',
-    'Dosage forms',
-    'Indian GMP status - State GMP',
-    'International GMP status',
-    'Non Pharma activities',
-    'Batches Frequently'
-  ];
-
-  console.log('filterValues', filterValues);
-
   const handleFilter = (e: any) => {
     const { value, name } = e.target;
     dispatch(GetContentType({ type: value }));
@@ -152,7 +137,13 @@ function MasterList() {
   const TableAction = (row: any, closeMenu: any) => {
     console.log(row, 'closeMenu', closeMenu);
     const action = [
-      <MenuItem key="edit" onClick={() => handleEditModal(row)}>
+      <MenuItem
+        key="edit"
+        onClick={() => {
+          handleEditModal(row);
+          closeMenu();
+        }}
+      >
         Edit
       </MenuItem>,
       <MenuItem
@@ -231,12 +222,14 @@ function MasterList() {
                       size={'small'}
                       fullWidth
                     >
-                      {contentTypes &&
-                        contentTypes.map((item: any, index: number) => (
-                          <MenuItem key={index} value={item}>
-                            {formatCapitalize(ContentTypeConst[item])}
-                          </MenuItem>
-                        ))}
+                      {ContentTypeConst &&
+                        Object.keys(ContentTypeConst)?.map(
+                          (item: any, index: number) => (
+                            <MenuItem key={index} value={item}>
+                              {formatCapitalize(ContentTypeConst[item])}
+                            </MenuItem>
+                          )
+                        )}
                     </TextField>
                     {/* <TextField
                       select

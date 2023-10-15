@@ -2,7 +2,14 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Button, Grid, Container, MenuItem, Typography } from '@mui/material';
+import {
+  Button,
+  Grid,
+  Container,
+  MenuItem,
+  Typography,
+  TextField
+} from '@mui/material';
 import Footer from 'src/components/Footer';
 
 import RecentOrders from './RecentOrders';
@@ -16,13 +23,16 @@ import { GetManufacturerList } from 'src/store/reducers/manufacturer';
 import { dispatch, useSelector } from 'src/store';
 
 function List() {
-  const { count, ManufacturerData, isLoading } = useSelector(  
-  (store: any) => store.manufacturerSlice
+  const { count, ManufacturerData, isLoading } = useSelector(
+    (store: any) => store.manufacturerSlice
   );
 
-
-
-  console.log("count, ManufacturerData, isLoading----------------------->>>>>>>>>>>>>>>>",count, ManufacturerData, isLoading)
+  console.log(
+    'count, ManufacturerData, isLoading----------------------->>>>>>>>>>>>>>>>',
+    count,
+    ManufacturerData,
+    isLoading
+  );
   const [filterData, setFilterData] = useState({});
 
   const pagination = { pageIndex: 1, pageSize: 10 };
@@ -76,7 +86,7 @@ function List() {
     console.log('fdijgiofdjgo', props);
   };
 
-  const handleFilter = (e) => {
+  const handleFilter = (e: any) => {
     const { value, name } = e.target;
     setFilterData((prev) => ({ ...prev, [name]: value }));
   };
@@ -116,7 +126,27 @@ function List() {
         rowCount={count}
         tableAction={TableAction}
         title="Manufacturer List"
-        Filter={<></>}
+        Filter={
+          <>
+            <TextField
+              select
+              label="Select Product"
+              name="Filter"
+              defaultValue="All"
+              onChange={handleFilter}
+              sx={{ minWidth: '150px' }}
+              size={'small'}
+              fullWidth
+            >
+              {productList &&
+                productList?.map((item: any, index: number) => (
+                  <MenuItem key={index} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
+            </TextField>
+          </>
+        }
       />
     </>
   );
@@ -132,85 +162,4 @@ const filterOption = [
   { lable: 'End Date', name: '$lt', type: 'date' }
 ];
 
-const dummyData = [
-  {
-    id: ' 1',
-    name: 'Giacomo',
-    city: 'indore',
-    country: 'india',
-    product: 'paracetamol',
-    companyDoc: 'docs',
-    plantName: 'lupin',
-    status: 'Active'
-  },
-  {
-    id: ' 2',
-    name: 'Marco',
-    city: 'mumbai',
-    country: 'india',
-    product: 'MR powergesic',
-    companyDoc: 'docs',
-    plantName: 'pharma',
-    status: 'Active'
-  },
-  {
-    id: ' 3',
-    name: 'Mariah',
-    city: 'pune',
-    country: 'india',
-    product: 'xerofam',
-    companyDoc: 'docs',
-    plantName: 'tata',
-    status: 'Active'
-  },
-  {
-    id: ' 4',
-    name: 'Valerie',
-    city: 'jablpur',
-    country: 'india',
-    product: 'cobate',
-    companyDoc: 'docs',
-    plantName: 'dabar',
-    status: 'Active'
-  },
-  {
-    id: ' 5',
-    name: 'Giacomo',
-    city: 'indore',
-    country: 'india',
-    product: 'paracetamol',
-    companyDoc: 'docs',
-    plantName: 'lupin',
-    status: 'Active'
-  },
-  {
-    id: ' 6',
-    name: 'Marco',
-    city: 'mumbai',
-    country: 'india',
-    product: 'MR powergesic',
-    companyDoc: 'docs',
-    plantName: 'pharma',
-    status: 'Active'
-  },
-  {
-    id: ' 7',
-    name: 'Mariah',
-    city: 'pune',
-    country: 'india',
-    product: 'xerofam',
-    companyDoc: 'docs',
-    plantName: 'tata',
-    status: 'Active'
-  },
-  {
-    id: ' 8',
-    name: 'Valerie',
-    city: 'jablpur',
-    country: 'india',
-    product: 'cobate',
-    companyDoc: 'docs',
-    plantName: 'dabar',
-    status: 'Active'
-  }
-];
+const productList = ['test', 'demo'];
