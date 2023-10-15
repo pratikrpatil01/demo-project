@@ -9,6 +9,7 @@ import snackbar from './snackbar';
 import manufacturer from './manufacturer';
 import auth from './auth';
 import masterTypeReducer from './master';
+import productScile from './product';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -17,7 +18,8 @@ const reducers = combineReducers({
   snackbar,
   manufacturerSlice: manufacturer,
   auth: auth,
-  masterType: masterTypeReducer
+  masterType: masterTypeReducer,
+  productData: productScile
 });
 
 export default reducers;
