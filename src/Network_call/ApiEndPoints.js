@@ -1,7 +1,6 @@
 const APPConfig = {
-  // API_URL: process.env.REACT_APP_API_URL + '/api'
-  // API_URL: 'http://192.168.29.23:3001/api'
-  API_URL: 'http://3.83.144.56:3001/api'
+  // API_URL: 'http://3.83.144.56:3001/api'
+  API_URL: 'http://44.201.182.26:3001/api'
 };
 
 const ApiEndPoints = {
@@ -22,7 +21,8 @@ const ApiEndPoints = {
   EditContentType: `${APPConfig.API_URL}/edit-content-type/`,
   Delete: `${APPConfig.API_URL}/delete/`,
   GetContentType: `${APPConfig.API_URL}/get-content-type`,
-  ManufacturerAddUploadFile: `${APPConfig.API_URL}/upload-file`
+  ManufacturerAddUploadFile: `${APPConfig.API_URL}/upload-file`,
+  GetProductList: `${APPConfig.API_URL}/get-product-list`
 };
 
 export default ApiEndPoints;

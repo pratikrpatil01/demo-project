@@ -23,9 +23,9 @@ export const addManufactur = createAsyncThunk(
       ApiEndPoints.ManufacturerAdd,
       payload
     );
-    if(response.success){
+    if (response.success) {
       toast.success(response.msg);
-    }else{
+    } else {
       toast.error(response.msg);
     }
     return response;
@@ -46,11 +46,13 @@ export const GetManufacturerList = createAsyncThunk(
   'GetManufacturerList',
   async (payload: any) => {
     const response = await ApiServices(
-      'get',
+      'post',
       ApiEndPoints.ManufacturerList,
       payload
     );
-    return response.data;
+    if (response.success) {
+      return response.data;
+    }
   }
 );
 
@@ -91,6 +93,10 @@ const manufacturerSlice = createSlice({
       .addCase(GetManufacturerList.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
         state.ManufacturerData = action.payload;
+        state.count = action.payload.count;
+      })
+      .addCase(GetManufacturerList.rejected, (state: any, action: any) => {
+        state.isLoading = false;
       })
       .addCase(getContentTypeList.pending, (state: any) => {
         state.isLoading = true;
@@ -103,37 +109,3 @@ const manufacturerSlice = createSlice({
 });
 
 export default manufacturerSlice.reducer;
-
-// const GetManufacturerList = async (payload: any) => {
-//   const response = await ApiServices('post', payload, ApiEndPoints.DataList);
-//   dispatch(manufacturerSlice.actions.manufacturerList(response));
-// };
-// const getManufacturerDetails = async (payload) => {
-//   const response = await ApiServices('get', payload, ApiEndPoints);
-//   dispatch(manufacturerSlice.actions.addManufacturer(response));
-// };
-// // const addManufactur = async (payload: any) => {
-// //   const response = await ApiServices('get', payload, ApiEndPoints);
-// //   dispatch(manufacturerSlice.actions.addManufacturer(response));
-// // };
-// const decreseCount = async () => {
-//   dispatch(manufacturerSlice.actions.decrese());
-// };
-
-// const increseCount = async () => {
-//   dispatch(manufacturerSlice.actions.increse());
-// };
-
-// const GetContentTypeList = async (payload: any) => {
-//   const response = await ApiServices('get', ApiEndPoints.GetContentTypeList);
-//   dispatch(manufacturerSlice.actions.GetContentTypeList(response));
-// };
-
-// export {
-//   GetManufacturerList,
-//   getManufacturerDetails,
-//   addManufactur,
-//   increseCount,
-//   decreseCount,
-//   GetContentTypeList
-// };

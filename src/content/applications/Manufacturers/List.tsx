@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -21,25 +21,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { GetManufacturerList } from 'src/store/reducers/manufacturer';
 import { dispatch, useSelector } from 'src/store';
+import { GetProductList } from 'src/store/reducers/product';
 
 function List() {
   const { count, ManufacturerData, isLoading } = useSelector(
     (store: any) => store.manufacturerSlice
   );
+  const { productData } = useSelector((store: any) => store.productData);
 
-  console.log(
-    'count, ManufacturerData, isLoading----------------------->>>>>>>>>>>>>>>>',
-    count,
-    ManufacturerData,
-    isLoading
-  );
+  useEffect(() => {
+    getProductData();
+  }, []);
+
   const [filterData, setFilterData] = useState({});
 
   const pagination = { pageIndex: 1, pageSize: 10 };
   const navigate = useNavigate();
-  // const { ManufacturerData, count } = useSelector(
-  //   (store) => store.manufacturerSlice
-  // );
 
   const key = [
     'id',
@@ -53,7 +50,26 @@ function List() {
   ];
   const columns = Columns(key);
 
-  const TableAction = (row) => {
+  const handelChange = (props: any) => {
+    console.log('fdijgiofdjgo', props);
+  };
+
+  const getProductData = () => {
+    dispatch(GetProductList());
+  };
+
+  const handleFilter = (e: any) => {};
+
+  async function getList(pagination: any) {
+    const payload = {
+      page: pagination?.pageIndex,
+      limit: pagination?.pageSize
+    };
+    dispatch(GetManufacturerList(payload));
+    const response = null;
+  }
+
+  const TableAction = (row: any) => {
     const action = [
       <MenuItem
         key="Details"
@@ -82,44 +98,11 @@ function List() {
     ];
     return action;
   };
-  const handelChange = (props) => {
-    console.log('fdijgiofdjgo', props);
-  };
-
-  const handleFilter = (e: any) => {
-    const { value, name } = e.target;
-    setFilterData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  async function getList(pagination: any) {
-    // setIsLoading(true);
-    const payload = {
-      page: pagination?.pageIndex,
-      limit: pagination?.pageSize,
-      info: filterData
-    };
-    dispatch(GetManufacturerList(payload));
-    // console.log('manufacturerList', ManufacturerData);
-    // console.log('manufacturerDetails', manufacturerDetails);
-    const response = null;
-    // await ApiServices('post', payload, ApiEndPoints.DataList);
-
-    // if (response?.success) {
-    //   setData(response?.data?.document);
-    //   setRowCount((prev) => ({
-    //     ...prev,
-    //     mainData: response?.data?.filterCount
-    //   }));
-    // } else {
-    //   //   setData([]);
-    // }
-    // setIsLoading(false);
-  }
 
   return (
     <>
       <MaterialTable
-        data={[]}
+        data={ManufacturerData || []}
         isLoading={isLoading}
         columns={columns}
         getData={getList}
@@ -138,10 +121,10 @@ function List() {
               size={'small'}
               fullWidth
             >
-              {productList &&
-                productList?.map((item: any, index: number) => (
-                  <MenuItem key={index} value={item}>
-                    {item}
+              {productData &&
+                productData?.map((item: any, index: number) => (
+                  <MenuItem key={index} value={item?.products_name}>
+                    {item?.products_name}
                   </MenuItem>
                 ))}
             </TextField>
