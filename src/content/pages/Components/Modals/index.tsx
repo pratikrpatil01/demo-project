@@ -12,7 +12,8 @@ import {
   CardContent,
   Divider,
   TextField,
-  Box
+  Box,
+  MenuItem
 } from '@mui/material';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
@@ -157,6 +158,20 @@ export default Modals;
 export const AddtypeModal = ({ handleClose, open }) => {
   // const dispatch = useDispatch();
 
+  const ContentTypeConst = {
+    Activity: 'Activity',
+    ManufacturerLicense: 'Manufacturing License',
+    Personel: 'Personel',
+    Equipment: 'Equipment',
+    TypesofProduct: 'Types of Product',
+    Section: 'Sections - Dosage forms approved',
+    IndianGmpStatus: 'Indian Gmp Status',
+    NonPharmaActivities: 'Non Pharma Activities',
+    InternationalGmpStatus: 'InternationalGmpStatus',
+    DosageForm: 'Dosage Form',
+    BatchesFrequently: 'Batches Frequently'
+  };
+
   const validateSchema = yup.object().shape({
     type: yup.string().required('The type field is required'),
     title: yup.string().required('The title field is required')
@@ -204,17 +219,28 @@ export const AddtypeModal = ({ handleClose, open }) => {
 
             <TextField
               margin="normal"
+              id="type"
               required
               fullWidth
+              select
+              label="Select Type "
               name="type"
-              label="type"
-              id="type"
-              autoComplete="type"
+              defaultValue="Select"
               onChange={formik.handleChange}
               value={formik.values.type}
-              error={formik.errors.type ? true : false}
               helperText={formik.errors.type ? formik.errors.type : ''}
-            />
+              error={formik.errors.type ? true : false}
+            >
+              {ContentTypeConst &&
+                Object.keys(ContentTypeConst).map(
+                  (activitiesTemp: any, index: any) => (
+                    <MenuItem key={index} value={activitiesTemp}>
+                      {ContentTypeConst[activitiesTemp]}
+                    </MenuItem>
+                  )
+                )}
+            </TextField>
+
             <Button
               type="submit"
               fullWidth
