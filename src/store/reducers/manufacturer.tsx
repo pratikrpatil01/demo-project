@@ -6,10 +6,11 @@ import { dispatch } from 'src/store';
 const initialState = {
   count: 0,
   ManufacturerData: [],
-  manufacturerDetails: [],
-  GetContentTypeList: [],
 
-  isLoading: true
+  manufacturerDetails: [],
+  getContentTypeList: [],
+
+  isLoading: false
 };
 
 export const addManufactur = createAsyncThunk(
@@ -39,11 +40,23 @@ export const GetManufacturerList = createAsyncThunk(
   'GetManufacturerList',
   async (payload: any) => {
     const response = await ApiServices(
-      'post',
-      ApiEndPoints.ManufacturerAdd,
+      'get',
+      ApiEndPoints.ManufacturerList,
       payload
     );
-    return response;
+    return response.data;
+  }
+);
+
+export const getContentTypeList = createAsyncThunk(
+  'getContentTypeList',
+  async (payload: any) => {
+    const response = await ApiServices(
+      'post',
+      ApiEndPoints.GetContentType,
+      payload
+    );
+    return response.data;
   }
 );
 
@@ -65,6 +78,20 @@ const manufacturerSlice = createSlice({
       })
       .addCase(editManufactur.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
+      })
+      .addCase(GetManufacturerList.pending, (state: any) => {
+        state.isLoading = true;
+      })
+      .addCase(GetManufacturerList.fulfilled, (state: any, action: any) => {
+        state.isLoading = false;
+        state.ManufacturerData = action.payload;
+      })
+      .addCase(getContentTypeList.pending, (state: any) => {
+        state.isLoading = true;
+      })
+      .addCase(getContentTypeList.fulfilled, (state: any, action: any) => {
+        state.isLoading = false;
+        state.data = action.payload;
       });
   }
 });
