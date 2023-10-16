@@ -10,7 +10,7 @@ const ApiEndPoints = {
   Otp: `${APPConfig.API_URL}/verifyotp`,
   Resetpassword: `${APPConfig.API_URL}/resetpassword`,
   DataList: `${APPConfig.API_URL}/list`,
-  ManufacturerList: `${APPConfig.API_URL}/get-manufacturer-list`,
+  ManufacturerList: `${APPConfig.API_URL}/manufacturer-list`,
   ManufacturerAdd: `${APPConfig.API_URL}/add-manufacturer`,
   UserListForAdmin: `${APPConfig.API_URL}/get-user-list`,
   FileUpload: `${APPConfig.API_URL}/upload`,

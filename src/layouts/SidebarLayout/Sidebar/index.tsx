@@ -79,7 +79,7 @@ function Sidebar() {
             background: theme.colors.alpha.trueWhite[10]
           }}
         />
-        <Box p={2}>
+        {/* <Box p={2}>
           <Button
             href="/admin/manufacturers"
             target="_blank"
@@ -91,7 +91,7 @@ function Sidebar() {
           >
             Homepage
           </Button>
-        </Box>
+        </Box> */}
       </SidebarWrapper>
       <Drawer
         sx={{
