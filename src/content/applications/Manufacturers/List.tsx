@@ -27,6 +27,8 @@ function List() {
   const { count, ManufacturerData, isLoading } = useSelector(
     (store: any) => store.manufacturerSlice
   );
+
+  console.log('count, ManufacturerData', count, ManufacturerData);
   const { productData } = useSelector((store: any) => store.productData);
 
   useEffect(() => {
