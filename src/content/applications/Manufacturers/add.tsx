@@ -132,7 +132,7 @@ function ApplicationsAddManufacturers() {
   const [internationalGmpStatusId, setInternationalGMPStatus] = useState('');
   const [nonPharmaActivitiesId, setNonPharmaactivitiesId] = useState('');
   const [batchesFrequently, setbatchesFrequently] = useState('');
-  
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleChangeAvailabilityOfManufacturingLicense = (
     event: SelectChangeEvent
@@ -184,9 +184,11 @@ function ApplicationsAddManufacturers() {
     console.log('TextField has received focus');
   };
 
- console.log(dropdownValue,'checkData')
+ 
 
-
+ const handleFileChange = (e) => {
+  setSelectedFile(e.target.files[0]);
+};
 
   
 
@@ -386,7 +388,7 @@ function ApplicationsAddManufacturers() {
                   id="plants_document"
                   autoComplete="Plants Document"
                   focused
-                  
+                  onChange={handleFileChange}
                   value={formik.values.plantsDocument}
                   helperText={
                     formik.errors.plantsDocument

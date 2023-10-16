@@ -91,7 +91,7 @@ const masterTypeSlice = createSlice({
       })
       .addCase(GetContentTypeList.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
-        state.data = action.payload.typeDetails;
+        state.data = action.payload?.typeDetails || [];
         state.rowCount = action.payload?.count;
       })
       .addCase(ChangeStatus.pending, (state: any) => {
