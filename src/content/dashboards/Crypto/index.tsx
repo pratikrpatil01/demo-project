@@ -8,14 +8,16 @@ import AccountBalance from './AccountBalance';
 import Wallets from './Wallets';
 import AccountSecurity from './AccountSecurity';
 import WatchList from './WatchList';
+import StatusMaintenance from 'src/content/pages/Status/Maintenance';
+import UnderConstruction from 'src/content/pages/Status/UnderConstruction';
 
 function DashboardCrypto() {
   return (
     <>
       <Helmet>
-        <title>Crypto Dashboard</title>
+        <title> Dashboard</title>
       </Helmet>
-      <PageTitleWrapper>
+      {/* <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg">
@@ -40,7 +42,11 @@ function DashboardCrypto() {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
+      <Footer /> */}
+
+      <Container>
+        <UnderConstruction />
+      </Container>
     </>
   );
 }
