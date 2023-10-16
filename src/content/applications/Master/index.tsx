@@ -27,6 +27,7 @@ import DeleteAlert from 'src/components/DeleteAlert';
 import Loader from 'src/components/Loader';
 
 const ContentTypeConst = {
+  '': 'All',
   Activity: 'Activity',
   ManufacturerLicense: 'Manufacturing License',
   Personel: 'Personel',
@@ -98,7 +99,11 @@ function MasterList() {
 
   const handleFilter = (e: any) => {
     const { value, name } = e.target;
-    dispatch(GetContentType({ type: value }));
+    if (value === '') {
+      return getData({ page: 1, limit: 10 });
+    } else {
+      return dispatch(GetContentType({ type: value }));
+    }
   };
 
   const columns = useMemo(
