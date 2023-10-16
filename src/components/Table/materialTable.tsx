@@ -60,6 +60,7 @@ const MaterialTable = ({
           isLoading,
           pagination
         }}
+        enableRowNumbers
         renderTopToolbarCustomActions={() => (
           <Grid container justifyContent="space-between">
             <Typography variant="h4">{title}</Typography>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -8,7 +8,8 @@ import {
   Container,
   MenuItem,
   Typography,
-  TextField
+  TextField,
+  Chip
 } from '@mui/material';
 import Footer from 'src/components/Footer';
 
@@ -22,6 +23,7 @@ import { Link } from 'react-router-dom';
 import { GetManufacturerList } from 'src/store/reducers/manufacturer';
 import { dispatch, useSelector } from 'src/store';
 import { GetProductList } from 'src/store/reducers/product';
+import { formatCapitalize } from 'src/utils/commonFunction';
 
 function List() {
   const { count, ManufacturerData, isLoading } = useSelector(
@@ -42,7 +44,7 @@ function List() {
 
   const key = [
     'id',
-    'name',
+    'manufacturerName',
     'city',
     'country',
     'product',
@@ -50,6 +52,39 @@ function List() {
     'plantName',
     'status'
   ];
+
+  const columnsIndex = useMemo(
+    () => [
+  
+      { accessorKey: 'manufacturerName', header: formatCapitalize('Name') },
+      { accessorKey: 'products.products_name', header: formatCapitalize('Product') },
+      { accessorKey: 'country', header: formatCapitalize('Country') },
+      { accessorKey: 'city', header: formatCapitalize('City') },
+      { accessorKey: 'plantAddress', header: formatCapitalize('Plan Address') },
+      { accessorKey: 'numOfPlants', header: formatCapitalize('No. Of Plants') },
+      { accessorKey: 'plantName', header: formatCapitalize('Plant Name') },
+      {
+        accessorKey: 'status',
+        header: 'Status',
+        // size: 300
+        Cell: ({ cell, row }) => (
+          <Chip
+            label={
+              cell.getValue()?.toLocaleString?.('en-US') == 1
+                ? 'Active'
+                : 'Inactive'
+            }
+            color={
+              cell.getValue()?.toLocaleString?.('en-US') == 1
+                ? 'success'
+                : 'error'
+            }
+          />
+        )
+      }
+    ],
+    []
+  );
   const columns = Columns(key);
 
   const handelChange = (props: any) => {
@@ -106,7 +141,7 @@ function List() {
       <MaterialTable
         data={ManufacturerData || []}
         isLoading={isLoading}
-        columns={columns}
+        columns={columnsIndex}
         getData={getList}
         rowCount={count}
         tableAction={TableAction}
