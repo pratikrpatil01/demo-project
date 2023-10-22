@@ -33,7 +33,10 @@ import { useNavigate } from 'react-router';
 import ApiServices from 'src/Network_call/apiservices';
 import ApiEndPoints from 'src/Network_call/ApiEndPoints';
 import { AnyAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { addManufactur,getContentTypeList } from 'src/store/reducers/manufacturer';
+import {
+  addManufactur,
+  getContentTypeList
+} from 'src/store/reducers/manufacturer';
 import { any } from 'prop-types';
 import { dispatch } from 'src/store';
 
@@ -43,9 +46,20 @@ function ApplicationsAddManufacturers() {
 
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  
 
-  const [dropdownValue ,setDropdownvalue] = useState({Personel:[],Activity:[],InternationalGmpStatus:[],ManufacturerLicense:[],Equipment:[],TypesofProduct:[],Section:[],IndianGmpStatus:[],NonPharmaactivities:[],DosageForm:[],BatchesFrequently:[]});
+  const [dropdownValue, setDropdownvalue] = useState({
+    Personel: [],
+    Activity: [],
+    InternationalGmpStatus: [],
+    ManufacturerLicense: [],
+    Equipment: [],
+    TypesofProduct: [],
+    Section: [],
+    IndianGmpStatus: [],
+    NonPharmaactivities: [],
+    DosageForm: [],
+    BatchesFrequently: []
+  });
   const validateSchema = yup.object().shape({
     manufacturerName: yup.string().required('The name field is required'),
     city: yup.string().required('The city field is required'),
@@ -56,7 +70,7 @@ function ApplicationsAddManufacturers() {
     typeOfProductsId: yup
       .string()
       .required('The types of products field is required'),
-      batchesFrequently: yup
+    batchesFrequently: yup
       .string()
       .required('The types of products field is required'),
     internationalGmpStatusId: yup
@@ -82,9 +96,7 @@ function ApplicationsAddManufacturers() {
     plantAddress: yup.string().required('The plant address field is required')
   });
 
-
   const formik = useFormik({
-    
     initialValues: {
       manufacturerName: '',
       gstNumber: '',
@@ -106,17 +118,15 @@ function ApplicationsAddManufacturers() {
       country: '',
       personel: '',
       dosageFormsId: '',
-      batchesFrequently:'',
+      batchesFrequently: ''
     },
     validationSchema: validateSchema,
     onSubmit: async (values, { resetForm }) => {
       dispatch(addManufactur(values));
       resetForm();
-      console.log(values);
     }
   });
 
-  console.log(formik.errors, 'error form');
   const [
     availabilityOfManufacturingLicenseId,
     setAvailabilityOfManufacturingLicense
@@ -169,30 +179,22 @@ function ApplicationsAddManufacturers() {
     setNonPharmaactivitiesId(event.target.value);
   };
 
-  
-  const { data, isLoading } = useSelector((store: any) => store.manufacturerSlice);
- 
+  const { data, isLoading } = useSelector(
+    (store: any) => store.manufacturerSlice
+  );
+
   const getContentTypeData = async (event) => {
     const response = await dispatch(getContentTypeList(event));
-    setDropdownvalue((preview:any) => ({
-      ...preview,[event.type] : response.payload
-    })) 
-    console.log("response")
-    console.log(response)
-    
-    // Your function to be called when the TextField receives focus
-    console.log('TextField has received focus');
+    setDropdownvalue((preview: any) => ({
+      ...preview,
+      [event.type]: response.payload
+    })); 
   };
 
- 
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
 
- const handleFileChange = (e) => {
-  setSelectedFile(e.target.files[0]);
-};
-
-  
-
-  
   return (
     <>
       <Helmet>
@@ -278,17 +280,22 @@ function ApplicationsAddManufacturers() {
                   autoComplete="Enter Batches Frequently"
                   onChange={formik.handleChange}
                   value={formik.values.batchesFrequently}
-                  onFocus={() => getContentTypeData({ 'type': 'BatchesFrequently' })}
+                  onFocus={() =>
+                    getContentTypeData({ type: 'BatchesFrequently' })
+                  }
                   helperText={
-                    formik.errors.batchesFrequently ? formik.errors.batchesFrequently : ''
+                    formik.errors.batchesFrequently
+                      ? formik.errors.batchesFrequently
+                      : ''
                   }
                   error={formik.errors.batchesFrequently ? true : false}
                 >
-                {dropdownValue?.BatchesFrequently && dropdownValue?.BatchesFrequently?.map((value, index) => (
-                    <MenuItem key={index} value={value._id}>
-                      {value.title}
-                    </MenuItem>
-                  ))}
+                  {dropdownValue?.BatchesFrequently &&
+                    dropdownValue?.BatchesFrequently?.map((value, index) => (
+                      <MenuItem key={index} value={value._id}>
+                        {value.title}
+                      </MenuItem>
+                    ))}
                 </TextField>
 
                 <TextField
@@ -303,20 +310,22 @@ function ApplicationsAddManufacturers() {
                   autoComplete="Enter Dosage Form"
                   onChange={formik.handleChange}
                   value={formik.values.dosageFormsId}
-                  onFocus={() => getContentTypeData({ 'type': 'DosageForm' })}
+                  onFocus={() => getContentTypeData({ type: 'DosageForm' })}
                   helperText={
-                    formik.errors.dosageFormsId ? formik.errors.dosageFormsId : ''
+                    formik.errors.dosageFormsId
+                      ? formik.errors.dosageFormsId
+                      : ''
                   }
                   error={formik.errors.dosageFormsId ? true : false}
                 >
-                {dropdownValue?.DosageForm && dropdownValue?.DosageForm?.map((value, index) => (
-                    <MenuItem key={index} value={value._id}>
-                      {value.title}
-                    </MenuItem>
-                  ))}
+                  {dropdownValue?.DosageForm &&
+                    dropdownValue?.DosageForm?.map((value, index) => (
+                      <MenuItem key={index} value={value._id}>
+                        {value.title}
+                      </MenuItem>
+                    ))}
                 </TextField>
 
-                
                 <TextField
                   margin="normal"
                   required
@@ -327,11 +336,11 @@ function ApplicationsAddManufacturers() {
                   autoComplete="Enter GST Number"
                   onChange={formik.handleChange}
                   value={formik.values.gstNumber}
-                  helperText={formik.errors.gstNumber ? formik.errors.gstNumber : ''}
+                  helperText={
+                    formik.errors.gstNumber ? formik.errors.gstNumber : ''
+                  }
                   error={formik.errors.gstNumber ? true : false}
                 />
-                
-
 
                 <TextField
                   margin="normal"
@@ -350,16 +359,19 @@ function ApplicationsAddManufacturers() {
                       : ''
                   }
                   error={formik.errors.internationalGmpStatusId ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'InternationalGmpStatus' })}
+                  onFocus={() =>
+                    getContentTypeData({ type: 'InternationalGmpStatus' })
+                  }
                 >
-                {dropdownValue?.InternationalGmpStatus && dropdownValue?.InternationalGmpStatus?.map((value, index) => (
-                    <MenuItem key={index} value={value._id}>
-                      {value.title}
-                    </MenuItem>
-                  ))}
+                  {dropdownValue?.InternationalGmpStatus &&
+                    dropdownValue?.InternationalGmpStatus?.map(
+                      (value, index) => (
+                        <MenuItem key={index} value={value._id}>
+                          {value.title}
+                        </MenuItem>
+                      )
+                    )}
                 </TextField>
-
-                
               </Grid>
               <Grid item xs={4}>
                 <TextField
@@ -413,9 +425,10 @@ function ApplicationsAddManufacturers() {
                     formik.errors.personelId ? formik.errors.personelId : ''
                   }
                   error={formik.errors.personelId ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'Personel' })}
-                  >
-                  {dropdownValue?.Personel && dropdownValue?.Personel?.map((value, index) => (
+                  onFocus={() => getContentTypeData({ type: 'Personel' })}
+                >
+                  {dropdownValue?.Personel &&
+                    dropdownValue?.Personel?.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -441,9 +454,10 @@ function ApplicationsAddManufacturers() {
                   error={
                     formik.errors.sectionsDosageFromsApprovedId ? true : false
                   }
-                  onFocus={() => getContentTypeData({ 'type': 'Section' })}
-                  >
-                   {dropdownValue?.Section && dropdownValue?.Section?.map((value, index) => (
+                  onFocus={() => getContentTypeData({ type: 'Section' })}
+                >
+                  {dropdownValue?.Section &&
+                    dropdownValue?.Section?.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -467,10 +481,15 @@ function ApplicationsAddManufacturers() {
                       : ''
                   }
                   error={formik.errors.nonPharmaActivitiesId ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'NonPharmaactivities' })}
-                  >
-                     <MenuItem key='s' value="123654">sfsfsdf</MenuItem>
-                  {dropdownValue?.NonPharmaactivities && dropdownValue?.NonPharmaactivities?.map((value, index) => (
+                  onFocus={() =>
+                    getContentTypeData({ type: 'NonPharmaactivities' })
+                  }
+                >
+                  <MenuItem key="s" value="123654">
+                    sfsfsdf
+                  </MenuItem>
+                  {dropdownValue?.NonPharmaactivities &&
+                    dropdownValue?.NonPharmaactivities?.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -492,9 +511,10 @@ function ApplicationsAddManufacturers() {
                     formik.errors.activitiesId ? formik.errors.activitiesId : ''
                   }
                   error={formik.errors.activitiesId ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'Activity' })}
-                  >
-                  {dropdownValue?.Activity && dropdownValue?.Activity?.map((value, index) => (
+                  onFocus={() => getContentTypeData({ type: 'Activity' })}
+                >
+                  {dropdownValue?.Activity &&
+                    dropdownValue?.Activity?.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -512,13 +532,10 @@ function ApplicationsAddManufacturers() {
                   onChange={formik.handleChange}
                   value={formik.values.plantAddress}
                   helperText={
-                    formik.errors.plantAddress
-                      ? formik.errors.plantAddress
-                      : ''
+                    formik.errors.plantAddress ? formik.errors.plantAddress : ''
                   }
                   error={formik.errors.plantAddress ? true : false}
                 />
-
               </Grid>
               <Grid item xs={4}>
                 <TextField
@@ -558,9 +575,12 @@ function ApplicationsAddManufacturers() {
                       ? true
                       : false
                   }
-                  onFocus={() => getContentTypeData({ 'type': 'ManufacturerLicense' })}
-                  >
-                  {dropdownValue?.ManufacturerLicense && dropdownValue?.ManufacturerLicense?.map((value, index) => (
+                  onFocus={() =>
+                    getContentTypeData({ type: 'ManufacturerLicense' })
+                  }
+                >
+                  {dropdownValue?.ManufacturerLicense &&
+                    dropdownValue?.ManufacturerLicense?.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -582,9 +602,10 @@ function ApplicationsAddManufacturers() {
                     formik.errors.equipmentsId ? formik.errors.equipmentsId : ''
                   }
                   error={formik.errors.equipmentsId ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'Equipment' })}
-                  >
-                    {dropdownValue?.Equipment && dropdownValue?.Equipment?.map((value, index) => (
+                  onFocus={() => getContentTypeData({ type: 'Equipment' })}
+                >
+                  {dropdownValue?.Equipment &&
+                    dropdownValue?.Equipment?.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -608,9 +629,12 @@ function ApplicationsAddManufacturers() {
                       : ''
                   }
                   error={formik.errors.indianGmpStatusId ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'IndianGmpStatus' })}
-                  >
-                   {dropdownValue?.IndianGmpStatus && dropdownValue?.IndianGmpStatus?.map((value, index) => (
+                  onFocus={() =>
+                    getContentTypeData({ type: 'IndianGmpStatus' })
+                  }
+                >
+                  {dropdownValue?.IndianGmpStatus &&
+                    dropdownValue?.IndianGmpStatus?.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -633,7 +657,6 @@ function ApplicationsAddManufacturers() {
                   error={formik.errors.plantName ? true : false}
                 />
 
-
                 <TextField
                   margin="normal"
                   id="typeOfProductsId"
@@ -651,9 +674,10 @@ function ApplicationsAddManufacturers() {
                       : ''
                   }
                   error={formik.errors.typeOfProductsId ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'TypesofProduct' })}
-                  >
-                   {dropdownValue?.TypesofProduct && dropdownValue?.TypesofProduct?.map((value, index) => (
+                  onFocus={() => getContentTypeData({ type: 'TypesofProduct' })}
+                >
+                  {dropdownValue?.TypesofProduct &&
+                    dropdownValue?.TypesofProduct?.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>

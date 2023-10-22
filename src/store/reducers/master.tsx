@@ -82,7 +82,6 @@ const masterTypeSlice = createSlice({
       })
       .addCase(AddContentType.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
-        console.log(action.payload);
         state.data = [...state.data, action.payload];
         state.rowCount = state.rowCount + 1;
       })

@@ -31,3 +31,24 @@ export const DeleteItem = createAsyncThunk('Delete', async (payload: any) => {
   }
   return response.success ? payload?.id : null;
 });
+
+export const getType = createAsyncThunk('getType', async (payload: any) => {
+  const response = await ApiServices(
+    'post',
+    ApiEndPoints.GetContentType,
+    payload
+  );
+
+  return response.data;
+});
+
+export const UploadFile = createAsyncThunk('getType', async (payload: any) => {
+  const response = await ApiServices(
+    'post',
+    ApiEndPoints.UploadFile,
+    payload,
+    true
+  );
+
+  return response.url;
+});

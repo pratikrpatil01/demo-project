@@ -23,8 +23,26 @@ import List from './List';
 import PageHeader from 'src/components/PageHeader';
 import MaterialTable from 'src/components/Table/materialTable';
 import { Columns } from 'src/utils/commonFunction';
+import ProductList from '../Product';
+import { useLocation, useParams } from 'react-router';
+import { useEffect } from 'react';
+import { dispatch, useSelector } from 'src/store';
+import { GetManufacturerDetails } from 'src/store/reducers/manufacturer';
+import { Link } from 'react-router-dom';
 
 function ManufacturerDetails() {
+  const { id } = useParams();
+
+  const { ManufacturerDetails } = useSelector(
+    (store: any) => store.manufacturerSlice
+  );
+
+  const data = ManufacturerDetails[0];
+ 
+
+  useEffect(() => {
+    dispatch(GetManufacturerDetails({ manufacture_id: id }));
+  }, []);
   const theme = useTheme();
   const user = {
     name: 'Catherine Pike',
@@ -91,23 +109,23 @@ function ManufacturerDetails() {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6} md={4}>
                   <Typography variant="h4">Manufacturer Name</Typography>
-                  <Typography>Manufacturer Name</Typography>
+                  <Typography>{data?.manufacturerName}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
                   <Typography variant="h4">Address</Typography>
-                  <Typography>Address</Typography>
+                  <Typography>{data?.address}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
                   <Typography variant="h4">GST Number</Typography>
-                  <Typography>GST Number</Typography>
+                  <Typography>{data?.gstNumber}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
                   <Typography variant="h4">NO. of Plants</Typography>
-                  <Typography>NO. of Plants</Typography>
+                  <Typography>{data?.numOfPlants}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
                   <Typography variant="h4">Company Document</Typography>
-                  <Typography>Company Document</Typography>
+                  <Typography>{data?.plantDocument[0]}</Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -140,13 +158,15 @@ function ManufacturerDetails() {
                 </Stack>
               </Box>
               <Box>
-                <Button
-                  // href={`${handleCkick}`}
-                  sx={{ mt: { xs: 2, md: 0 }, mr: '10px' }}
-                  variant="contained"
-                >
-                  Add Product
-                </Button>
+                <Link to={`/admin/product/add/${id}`}>
+                  <Button
+                    // href={`/admin/product/add/${id}`}
+                    sx={{ mt: { xs: 2, md: 0 }, mr: '10px' }}
+                    variant="contained"
+                  >
+                    Add Product
+                  </Button>
+                </Link>
                 <Button
                   // href={`${handleCkick}`}
 
@@ -172,24 +192,22 @@ function ManufacturerDetails() {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6} md={4}>
                   <Typography variant="h4"> Plant title</Typography>
-                  <Typography> Plant title</Typography>
+                  <Typography> {data?.plantName}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
                   <Typography variant="h4">Address</Typography>
-                  <Typography>Address</Typography>
+                  <Typography>{data?.plantAddress}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
                   <Typography variant="h4"> Dosage forms</Typography>
-                  <Typography> Dosage forms</Typography>
+                  <Typography> {data?.dosageFormsId}</Typography>
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={4}>
                   <Typography variant="h4">
                     plants document(Note:- Select All Document)
                   </Typography>
-                  <Typography>
-                    plants document(Note:- Select All Document)
-                  </Typography>
+                  <Typography>{data?.plantDocument[0]}</Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -209,26 +227,19 @@ function ManufacturerDetails() {
               <Typography variant="h3">Products Information</Typography>
 
               <Box>
-                <Button
-                  // href={`${handleCkick}`}
-                  sx={{ mt: { xs: 2, md: 0 }, mr: '10px' }}
-                  variant="contained"
-                >
-                  Edit Product
-                </Button>
+                <Link to={`/admin/product/edit/${id}`}>
+                  <Button
+                    // href={`/admin/product/edit/${id}`}
+                    sx={{ mt: { xs: 2, md: 0 }, mr: '10px' }}
+                    variant="contained"
+                  >
+                    Edit Product
+                  </Button>
+                </Link>
               </Box>
             </Box>
             <Grid item xs={12} pl={-2}>
-              <MaterialTable
-                data={data || []}
-                isLoading={false}
-                columns={columns}
-                getData={''}
-                rowCount={data?.length}
-                tableAction={TableAction}
-                Filter={<></>}
-                title=""
-              />
+              <ProductList data={data?.products} />
             </Grid>
             <Grid pl={2}>
               <Typography sx={{ font: 'bold' }}>

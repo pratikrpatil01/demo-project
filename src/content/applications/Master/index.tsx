@@ -139,8 +139,7 @@ function MasterList() {
     []
   );
 
-  const TableAction = (row: any, closeMenu: any) => {
-    console.log(row, 'closeMenu', closeMenu);
+  const TableAction = (row: any, closeMenu: any) => { 
     const action = [
       <MenuItem
         key="edit"

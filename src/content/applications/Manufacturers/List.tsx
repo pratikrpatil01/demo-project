@@ -29,8 +29,7 @@ function List() {
   const { count, ManufacturerData, isLoading } = useSelector(
     (store: any) => store.manufacturerSlice
   );
-
-  console.log('count, ManufacturerData', count, ManufacturerData);
+ 
   const { productData } = useSelector((store: any) => store.productData);
 
   useEffect(() => {
@@ -55,9 +54,11 @@ function List() {
 
   const columnsIndex = useMemo(
     () => [
-  
       { accessorKey: 'manufacturerName', header: formatCapitalize('Name') },
-      { accessorKey: 'products.products_name', header: formatCapitalize('Product') },
+      {
+        accessorKey: 'products.products_name',
+        header: formatCapitalize('Product')
+      },
       { accessorKey: 'country', header: formatCapitalize('Country') },
       { accessorKey: 'city', header: formatCapitalize('City') },
       { accessorKey: 'plantAddress', header: formatCapitalize('Plan Address') },
@@ -87,8 +88,7 @@ function List() {
   );
   const columns = Columns(key);
 
-  const handelChange = (props: any) => {
-    console.log('fdijgiofdjgo', props);
+  const handelChange = (props: any) => { 
   };
 
   const getProductData = () => {
@@ -110,7 +110,7 @@ function List() {
     const action = [
       <MenuItem
         key="Details"
-        onClick={() => navigate(`/admin/manufacturers/details/${row.id}`)}
+        onClick={() => navigate(`/admin/manufacturers/details/${row._id}`)}
       >
         Details
       </MenuItem>,
