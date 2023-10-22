@@ -1,4 +1,4 @@
-import { Suspense, lazy,useEffect } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import BaseLayout from 'src/layouts/BaseLayout';
@@ -8,10 +8,13 @@ import Login from './content/pages/Login';
 import Forgotpassword from './content/pages/Forgotpassword';
 import Resetpassword from './content/pages/Resetpassword';
 import AddUser from './content/applications/Master/addUser';
+import AddProduct from './content/applications/Product/Add';
 import EditUser from './content/applications/Master/editUset';
 import ManufacturerDetails from './content/applications/Manufacturers/Details';
 import { Outlet, RouteObject, useNavigate } from 'react-router';
 import SidebarLayout, { checkAuthLoader } from 'src/layouts/SidebarLayout';
+import ProductList from './content/applications/Product';
+import EditProduct from './content/applications/Product/Edit';
 
 const Loader = (Component) => (props) =>
   (
@@ -97,28 +100,25 @@ const StatusMaintenance = Loader(
   lazy(() => import('src/content/pages/Status/Maintenance'))
 );
 
-
 const CheckAuth = () => {
-
   const navigate = useNavigate();
 
-  const checkingAuth = () => {
+  const checkingAuth = () => {};
 
-  }
-
-  useEffect(()=>{
-    let auth = localStorage.getItem("auth");
-    if(!auth){
+  useEffect(() => {
+    let auth = localStorage.getItem('auth');
+    if (!auth) {
       navigate('/admin/login');
-    };
+    }
     checkingAuth();
-  }, [])
+  }, []);
 
-  return (<>
-    <Outlet />
-  </>)
-}
-
+  return (
+    <>
+      <Outlet />
+    </>
+  );
+};
 
 const routes: RouteObject[] = [
   {
@@ -180,9 +180,8 @@ const routes: RouteObject[] = [
   {
     path: '/',
     element: <CheckAuth />,
-  
+
     children: [
-      
       {
         path: 'admin/manufacturers/',
         element: <SidebarLayout />,
@@ -285,6 +284,28 @@ const routes: RouteObject[] = [
         ]
       },
       {
+        path: 'admin/product',
+        element: <SidebarLayout />,
+        children: [
+          {
+            path: '',
+            element: <Navigate to="add" replace />
+          },
+          // {
+          //   path: 'list'
+          //   // element: <ProductList />
+          // },
+          {
+            path: 'add/:id',
+            element: <AddProduct />
+          },
+          {
+            path: 'edit/:id',
+            element: <EditProduct />
+          }
+        ]
+      },
+      {
         path: '/components',
         element: <SidebarLayout />,
         children: [
@@ -330,12 +351,8 @@ const routes: RouteObject[] = [
           }
         ]
       }
-      
     ]
-  },
-
-
-  
+  }
 ];
 
 export default routes;

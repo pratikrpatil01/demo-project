@@ -24,7 +24,7 @@ const Columns = (data) => {
       data &&
       data.map((name: any) => ({
         accessorKey: name,
-        header: formatCapitalize(name)
+        header: allReplace(name, { _: ' ' })
         // size: 300
       })),
     [data] // Add data as a dependency

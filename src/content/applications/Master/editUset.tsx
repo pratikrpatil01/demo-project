@@ -61,8 +61,7 @@ function EditUser() {
   const data = location?.state?.data;
   const [status, setStatus] = useState(data?.status);
   const [type, setType] = useState(data?.type);
-
-  console.log(location);
+ 
   const handleChange = (event) => {
     setStatus(event.target.value);
   };

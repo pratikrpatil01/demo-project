@@ -107,8 +107,7 @@ function ApplicationsAddManufacturers() {
     },
     validationSchema: validateSchema,
     onSubmit: async (values, { resetForm }) => {
-      dispatch(addManufactur(values));
-      console.log(values);
+      dispatch(addManufactur(values)); 
     }
   });
 
@@ -164,12 +163,10 @@ function ApplicationsAddManufacturers() {
 
   
   const { data, isLoading } = useSelector((store: any) => store.manufacturerSlice);
-  console.log(data);
+ 
   const getContentTypeData = (event) => {
     
-    return dispatch(getContentTypeList(event));
-    // Your function to be called when the TextField receives focus
-    console.log('TextField has received focus');
+    return dispatch(getContentTypeList(event)); 
   };
 
   

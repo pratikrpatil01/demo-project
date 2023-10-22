@@ -15,6 +15,43 @@ export const GetProductList = createAsyncThunk('GetProductList', async () => {
   return response.data;
 });
 
+export const AddProduct = createAsyncThunk(
+  'AddProduct',
+  async (payload: any) => {
+    const response = await ApiServices(
+      'post',
+      ApiEndPoints.AddProduct,
+      payload
+    );
+    return response.data;
+  }
+);
+export const EditProduct = createAsyncThunk(
+  'EditProduct',
+  async (payload: any) => {
+    const response = await ApiServices(
+      'put',
+      ApiEndPoints.EditProduct + payload?.id,
+      payload.data
+    );
+    return response.data;
+  }
+);
+
+export const DeleteProduct = createAsyncThunk(
+  'DeleteProduct',
+  async (payload: any) => {
+    const response = await ApiServices(
+      'delete',
+      ApiEndPoints.DeleteProduct + payload
+    );
+    if (response.success) {
+      toast.success('Your item has been deleted.');
+    }
+    return payload;
+  }
+);
+
 const productScile = createSlice({
   name: 'productScile',
   initialState,
@@ -29,6 +66,14 @@ const productScile = createSlice({
       .addCase(GetProductList.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
         state.productData = action.payload.product;
+      })
+
+      .addCase(AddProduct.pending, (state: any) => {
+        state.isLoading = true;
+      })
+      .addCase(AddProduct.fulfilled, (state: any, action: any) => {
+        state.isLoading = false;
+        // state.productData = action.payload.product;
       });
   }
 });
