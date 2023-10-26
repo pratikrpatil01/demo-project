@@ -55,23 +55,23 @@ function ProductList<ProductListProps>({ data }) {
   };
 
   const handleEdit = (row: any) => {
-    navigate(`/admin/product/edit/${row?._id}`, { state: row });
+    navigate(`/admin/product/edit/${id}`, { state: row });
   };
- 
+
   const columns = Columns(key);
 
   const TableAction = (row: any, closeMenu: any) => {
     const action = [
-      <MenuItem
-        key="edit" //onClick={() => console.info('Edit', row)}
-      >
-        Active
-      </MenuItem>,
-      <MenuItem
-        key="edit" // onClick={() => console.info('Edit', row)}
-      >
-        Inactive
-      </MenuItem>,
+      // <MenuItem
+      //   key="edit" //onClick={() => console.info('Edit', row)}
+      // >
+      //   Active
+      // </MenuItem>,
+      // <MenuItem
+      //   key="edit" // onClick={() => console.info('Edit', row)}
+      // >
+      //   Inactive
+      // </MenuItem>,
       <MenuItem
         key="edit"
         onClick={() => {

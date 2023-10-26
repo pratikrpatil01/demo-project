@@ -19,7 +19,6 @@ import ProductHeader from './Header';
 import { dispatch } from 'src/store';
 import { UploadFile, getType } from 'src/store/reducers/commanReducer';
 import { AddProduct, EditProduct } from 'src/store/reducers/product';
- 
 
 interface dropdownState {
   BatchesFrequently?: string[];
@@ -43,18 +42,13 @@ const EditProducts = () => {
   });
   const [uploadImage, setUploadeImage] = React.useState<uploadImg>();
 
-  
-  const handleSubmit = (props: any) => {
-    
-  };
+  const handleSubmit = (props: any) => {};
   const getDropdownValue = async (type: any) => {
-    
     const responce = await dispatch(getType(type));
     setDropdownValue((prev) => ({
       ...prev,
       [type.type]: responce?.payload
     }));
-    
   };
 
   const navigate = useNavigate();
@@ -66,20 +60,16 @@ const EditProducts = () => {
     const responce = await dispatch(UploadFile(payload));
 
     setUploadeImage((prev) => ({ ...prev, [name]: responce?.payload }));
-    
   };
-
-  
 
   const formik = useFormik({
     initialValues: data?.state,
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
-      const payload = { id: id, data: values };
+      const payload = { id: data?.state?._id, data: values };
       dispatch(EditProduct(payload));
       navigate(`/admin/manufacturers/details/${id}`);
       resetForm();
-      
     }
   });
   return (
@@ -496,12 +486,7 @@ const EditProducts = () => {
                 </Grid>
                 <Grid item>
                   <Link to={`/admin/manufacturers/details/${id}`}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      component="a"
-                      // href={`/admin/manufacturers/details/${id}`}
-                    >
+                    <Button variant="contained" color="secondary" component="a">
                       Cancel
                     </Button>
                   </Link>

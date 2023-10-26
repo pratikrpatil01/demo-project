@@ -23,6 +23,9 @@ export const AddProduct = createAsyncThunk(
       ApiEndPoints.AddProduct,
       payload
     );
+    if (response.success) {
+      toast.success(response?.msg);
+    }
     return response.data;
   }
 );
@@ -34,6 +37,9 @@ export const EditProduct = createAsyncThunk(
       ApiEndPoints.EditProduct + payload?.id,
       payload.data
     );
+    if (response.success) {
+      toast.success(response?.msg);
+    }
     return response.data;
   }
 );
@@ -66,6 +72,15 @@ const productScile = createSlice({
       .addCase(GetProductList.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
         state.productData = action.payload.product;
+      })
+      .addCase(DeleteProduct.pending, (state: any) => {
+        state.isLoading = true;
+      })
+      .addCase(DeleteProduct.fulfilled, (state: any, action: any) => {
+        state.isLoading = false;
+        state.productData = state.productData.filter(
+          (i: any) => i._id !== action.payload.product
+        );
       })
 
       .addCase(AddProduct.pending, (state: any) => {
