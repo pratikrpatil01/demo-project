@@ -19,6 +19,7 @@ import ProductHeader from './Header';
 import { dispatch } from 'src/store';
 import { UploadFile, getType } from 'src/store/reducers/commanReducer';
 import { AddProduct } from 'src/store/reducers/product';
+import { GetManufacturerDetails } from 'src/store/reducers/manufacturer';
 
 interface dropdownState {
   BatchesFrequently?: string[];
@@ -66,7 +67,9 @@ const AddProducts = () => {
     validationSchema: validationSchema,
     onSubmit: async (values, { resetForm }) => {
       const payload = { manufacturer_id: id, ...values, ...uploadImage };
-      dispatch(AddProduct(payload));
+      await dispatch(AddProduct(payload));
+
+      await dispatch(GetManufacturerDetails({ manufacture_id: id }));
       navigate(`/admin/manufacturers/details/${id}`);
       resetForm();
     }
@@ -77,9 +80,9 @@ const AddProducts = () => {
         <Helmet>
           <title>Add Product</title>
         </Helmet>
-        <PageTitleWrapper>
+        {/* <PageTitleWrapper>
           <ProductHeader title="Add Products" />
-        </PageTitleWrapper>
+        </PageTitleWrapper> */}
 
         <Container style={{ height: '100%' }} maxWidth={false}>
           <Card style={{ padding: '25px' }}>
@@ -218,9 +221,6 @@ const AddProducts = () => {
                     }
                     error={formik.errors.list_of_countries ? true : false}
                   >
-                    <MenuItem key="s" value="123654">
-                      sfsfsdf
-                    </MenuItem>
                     {options.list_of_countries?.map((value, index) => (
                       <MenuItem key={index} value={value}>
                         {value}
@@ -498,7 +498,7 @@ const AddProducts = () => {
           </Card>
         </Container>
 
-        <Footer />
+        {/* <Footer /> */}
       </>
     </React.Fragment>
   );

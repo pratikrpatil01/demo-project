@@ -31,6 +31,7 @@ import ChromeReaderModeTwoToneIcon from '@mui/icons-material/ChromeReaderModeTwo
 import WorkspacePremiumTwoToneIcon from '@mui/icons-material/WorkspacePremiumTwoTone';
 import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
 import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
+import { Dashboard, Factory, TocRounded } from '@mui/icons-material';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -213,7 +214,7 @@ function SidebarMenu() {
                   component={RouterLink}
                   onClick={closeSidebar}
                   to="/dashboards/crypto"
-                  startIcon={<DesignServicesTwoToneIcon />}
+                  startIcon={<Dashboard />}
                 >
                   Dashboard
                 </Button>
@@ -254,7 +255,7 @@ function SidebarMenu() {
                   component={RouterLink}
                   onClick={closeSidebar}
                   to="/admin/manufacturers"
-                  startIcon={<BrightnessLowTwoToneIcon />}
+                  startIcon={<Factory />}
                 >
                   Manufacturers List
                 </Button>
@@ -270,7 +271,7 @@ function SidebarMenu() {
                   Cryptocurrency
                 </Button>
               </ListItem> */}
-              <ListItem component="div">
+              {/* <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -280,16 +281,17 @@ function SidebarMenu() {
                 >
                   Messenger
                 </Button>
-              </ListItem>
+              </ListItem> */}
             </List>
           </SubMenuWrapper>
         </List>
         <List
           component="div"
           subheader={
-            <ListSubheader component="div" disableSticky>
-              Settings
-            </ListSubheader>
+            ''
+            // <ListSubheader component="div" disableSticky>
+            //   Settings
+            // </ListSubheader>
           }
         >
           <SubMenuWrapper>
@@ -300,12 +302,12 @@ function SidebarMenu() {
                   component={RouterLink}
                   onClick={closeSidebar}
                   to="/admin/content_type/list"
-                  startIcon={<TableChartTwoToneIcon />}
+                  startIcon={<TocRounded />}
                 >
                   Content Type
                 </Button>
               </ListItem>
-              <ListItem component="div">
+              {/* <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
@@ -315,7 +317,7 @@ function SidebarMenu() {
                 >
                   Country
                 </Button>
-              </ListItem>
+              </ListItem> */}
             </List>
           </SubMenuWrapper>
         </List>

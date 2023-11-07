@@ -29,7 +29,7 @@ function List() {
   const { count, ManufacturerData, isLoading } = useSelector(
     (store: any) => store.manufacturerSlice
   );
- 
+
   const { productData } = useSelector((store: any) => store.productData);
 
   useEffect(() => {
@@ -88,8 +88,7 @@ function List() {
   );
   const columns = Columns(key);
 
-  const handelChange = (props: any) => { 
-  };
+  const handelChange = (props: any) => {};
 
   const getProductData = () => {
     dispatch(GetProductList());

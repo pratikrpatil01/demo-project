@@ -109,8 +109,8 @@ const manufacturerSlice = createSlice({
       })
       .addCase(GetManufacturerList.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
-        state.ManufacturerData = action.payload.manufacturerList;
-        state.count = action.payload.count;
+        state.ManufacturerData = action?.payload?.manufacturerList;
+        state.count = action.payload?.count;
       })
       .addCase(GetManufacturerDetails.pending, (state: any) => {
         state.isLoading = true;

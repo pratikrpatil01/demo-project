@@ -14,7 +14,10 @@ import {
   useTheme,
   Button,
   Divider,
-  MenuItem
+  MenuItem,
+  Tab,
+  Tabs,
+  styled
 } from '@mui/material';
 import Footer from 'src/components/Footer';
 
@@ -25,20 +28,41 @@ import MaterialTable from 'src/components/Table/materialTable';
 import { Columns } from 'src/utils/commonFunction';
 import ProductList from '../Product';
 import { useLocation, useParams } from 'react-router';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { dispatch, useSelector } from 'src/store';
 import { GetManufacturerDetails } from 'src/store/reducers/manufacturer';
 import { Link } from 'react-router-dom';
+import AddProducts from '../Product/Add';
+import ApplicationsAddManufacturers from './edit';
+
+const TabsWrapper = styled(Tabs)(
+  () => `
+    .MuiTabs-scrollableX {
+      overflow-x: auto !important;
+    }
+`
+);
 
 function ManufacturerDetails() {
   const { id } = useParams();
+
+  const [currentTab, setCurrentTab] = React.useState<string>('details');
+
+  const tabs = [
+    { value: 'details', label: 'Details' },
+    { value: 'add_product', label: 'Add Product' },
+    { value: 'edit_manufacturer', label: 'Edit Manufacturer' }
+  ];
+
+  const handleTabsChange = (event: any, value: string): void => {
+    setCurrentTab(value);
+  };
 
   const { ManufacturerDetails } = useSelector(
     (store: any) => store.manufacturerSlice
   );
 
   const data = ManufacturerDetails[0];
- 
 
   useEffect(() => {
     dispatch(GetManufacturerDetails({ manufacture_id: id }));
@@ -93,167 +117,215 @@ function ManufacturerDetails() {
           handleClick={''}
         />
       </PageTitleWrapper>
+
       <Container maxWidth="lg">
-        <Card>
-          <Typography variant="h4" p={3}>
-            Manufacturers Details
-          </Typography>
-          <Box px={2} p={5} py={4} display="flex" alignItems="flex-start">
-            <Grid
-              container
-              direction="row"
-              justifyContent="center"
-              alignItems="stretch"
-              spacing={3}
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="stretch"
+          spacing={3}
+        >
+          <Grid item xs={12}>
+            <TabsWrapper
+              onChange={handleTabsChange}
+              value={currentTab}
+              variant="scrollable"
+              scrollButtons="auto"
+              textColor="primary"
+              indicatorColor="primary"
             >
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Typography variant="h4">Manufacturer Name</Typography>
-                  <Typography>{data?.manufacturerName}</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Typography variant="h4">Address</Typography>
-                  <Typography>{data?.address}</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Typography variant="h4">GST Number</Typography>
-                  <Typography>{data?.gstNumber}</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Typography variant="h4">NO. of Plants</Typography>
-                  <Typography>{data?.numOfPlants}</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Typography variant="h4">Company Document</Typography>
-                  <Typography>{data?.plantDocument[0]}</Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Box>
-        </Card>
-        <br />
-        <Card>
-          <Box pl={2} pt={2} flex={1}>
-            <Box
-              pt={0}
-              pr={2}
-              pb={1}
-              display="flex"
-              justifyContent="space-between"
-            >
-              <Typography variant="h3">Plant Name</Typography>
-
-              <Box pr={8}>
-                <Stack spacing={1}>
-                  {/* <InputLabel>Search</InputLabel> */}
-                  <FormControl sx={{ width: '100%' }}>
-                    <TextField
-                      label="Search"
-                      value={''}
-                      name="*Manufacturer Name"
-                      id="*Manufacturer Name"
-                      size="small"
-                    />
-                  </FormControl>
-                </Stack>
-              </Box>
-              <Box>
-                <Link to={`/admin/product/add/${id}`}>
-                  <Button
-                    // href={`/admin/product/add/${id}`}
-                    sx={{ mt: { xs: 2, md: 0 }, mr: '10px' }}
-                    variant="contained"
-                  >
-                    Add Product
-                  </Button>
-                </Link>
-                <Button
-                  // href={`${handleCkick}`}
-
-                  sx={{ mt: { xs: 2, md: 0 } }}
-                  variant="contained"
-                >
-                  Audit
-                </Button>
-              </Box>
-            </Box>
-            <Divider />
-            <Divider />
-          </Box>
-
-          <Box px={2} p={5} py={4} display="flex" alignItems="flex-start">
-            <Grid
-              container
-              direction="row"
-              justifyContent="center"
-              alignItems="stretch"
-              spacing={3}
-            >
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Typography variant="h4"> Plant title</Typography>
-                  <Typography> {data?.plantName}</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Typography variant="h4">Address</Typography>
-                  <Typography>{data?.plantAddress}</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                  <Typography variant="h4"> Dosage forms</Typography>
-                  <Typography> {data?.dosageFormsId}</Typography>
-                </Grid>
-
-                <Grid item xs={12} sm={6} md={4}>
-                  <Typography variant="h4">
-                    plants document(Note:- Select All Document)
+              {tabs.map((tab) => (
+                <Tab key={tab.value} label={tab.label} value={tab.value} />
+              ))}
+            </TabsWrapper>
+          </Grid>
+          <Grid item xs={12}>
+            {currentTab === 'add_product' && <AddProducts />}
+            {currentTab === 'edit_manufacturer' && (
+              <ApplicationsAddManufacturers />
+            )}
+            {currentTab === 'details' && (
+              <Grid>
+                <Card>
+                  <Typography variant="h4" p={3}>
+                    Manufacturers Details
                   </Typography>
-                  <Typography>{data?.plantDocument[0]}</Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Box>
-        </Card>
-        <br />
-        <Card>
-          <Box pt={2} flex={1}>
-            <Box
-              pt={0}
-              pr={2}
-              pb={1}
-              pl={2}
-              display="flex"
-              justifyContent="space-between"
-            >
-              <Typography variant="h3">Products Information</Typography>
 
-              <Box>
-                <Link to={`/admin/product/edit/${id}`}>
-                  <Button
-                    // href={`/admin/product/edit/${id}`}
-                    sx={{ mt: { xs: 2, md: 0 }, mr: '10px' }}
-                    variant="contained"
+                  <Box
+                    px={2}
+                    p={5}
+                    py={4}
+                    display="flex"
+                    alignItems="flex-start"
                   >
-                    Edit Product
-                  </Button>
-                </Link>
-              </Box>
-            </Box>
-            <Grid item xs={12} pl={-2}>
-              <ProductList data={data?.products} />
-            </Grid>
-            <Grid pl={2}>
-              <Typography sx={{ font: 'bold' }}>
-                <b>
-                  ** For view product documentation and international business
-                  development press Button
-                </b>
-              </Typography>
-              <Typography>
-                NOTE :- When developing, the scroll bar will come here.
-              </Typography>
-            </Grid>
-          </Box>
-        </Card>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="stretch"
+                      spacing={3}
+                    >
+                      <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6} md={4}>
+                          <Typography variant="h4">
+                            Manufacturer Name
+                          </Typography>
+                          <Typography>{data?.manufacturerName}</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={4}>
+                          <Typography variant="h4">Address</Typography>
+                          <Typography>{data?.address}</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={4}>
+                          <Typography variant="h4">GST Number</Typography>
+                          <Typography>{data?.gstNumber}</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={4}>
+                          <Typography variant="h4">NO. of Plants</Typography>
+                          <Typography>{data?.numOfPlants}</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={4}>
+                          <Typography variant="h4">Company Document</Typography>
+                          <Typography>{data?.plantDocument[0]}</Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Card>
+                <br />
+                <Card>
+                  <Box pl={2} pt={2} flex={1}>
+                    <Box
+                      pt={0}
+                      pr={2}
+                      pb={1}
+                      display="flex"
+                      justifyContent="space-between"
+                    >
+                      <Typography variant="h3">Plant Name</Typography>
+
+                      <Box pr={8}>
+                        <Stack spacing={1}>
+                          {/* <InputLabel>Search</InputLabel> */}
+                          <FormControl sx={{ width: '100%' }}>
+                            <TextField
+                              label="Search"
+                              value={''}
+                              name="*Manufacturer Name"
+                              id="*Manufacturer Name"
+                              size="small"
+                            />
+                          </FormControl>
+                        </Stack>
+                      </Box>
+                      <Box>
+                        <Link to={`/admin/product/add/${id}`}>
+                          <Button
+                            // href={`/admin/product/add/${id}`}
+                            sx={{ mt: { xs: 2, md: 0 }, mr: '10px' }}
+                            variant="contained"
+                          >
+                            Add Product
+                          </Button>
+                        </Link>
+                        <Button
+                          // href={`${handleCkick}`}
+
+                          sx={{ mt: { xs: 2, md: 0 } }}
+                          variant="contained"
+                        >
+                          Audit
+                        </Button>
+                      </Box>
+                    </Box>
+                    <Divider />
+                    <Divider />
+                  </Box>
+
+                  <Box
+                    px={2}
+                    p={5}
+                    py={4}
+                    display="flex"
+                    alignItems="flex-start"
+                  >
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      alignItems="stretch"
+                      spacing={3}
+                    >
+                      <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6} md={4}>
+                          <Typography variant="h4"> Plant title</Typography>
+                          <Typography> {data?.plantName}</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={4}>
+                          <Typography variant="h4">Address</Typography>
+                          <Typography>{data?.plantAddress}</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={4}>
+                          <Typography variant="h4"> Dosage forms</Typography>
+                          <Typography> {data?.dosageFormsId}</Typography>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6} md={4}>
+                          <Typography variant="h4">
+                            plants document(Note:- Select All Document)
+                          </Typography>
+                          <Typography>{data?.plantDocument[0]}</Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Card>
+                <br />
+                <Card>
+                  <Box pt={2} flex={1}>
+                    <Box
+                      pt={0}
+                      pr={2}
+                      pb={1}
+                      pl={2}
+                      display="flex"
+                      justifyContent="space-between"
+                    >
+                      <Typography variant="h3">Products Information</Typography>
+
+                      <Box>
+                        <Link to={`/admin/product/edit/${id}`}>
+                          <Button
+                            // href={`/admin/product/edit/${id}`}
+                            sx={{ mt: { xs: 2, md: 0 }, mr: '10px' }}
+                            variant="contained"
+                          >
+                            Edit Product
+                          </Button>
+                        </Link>
+                      </Box>
+                    </Box>
+                    <Grid item xs={12} pl={-2}>
+                      <ProductList data={data?.products} />
+                    </Grid>
+                    <Grid pl={2}>
+                      <Typography sx={{ font: 'bold' }}>
+                        <b>
+                          ** For view product documentation and international
+                          business development press Button
+                        </b>
+                      </Typography>
+                      <Typography>
+                        NOTE :- When developing, the scroll bar will come here.
+                      </Typography>
+                    </Grid>
+                  </Box>
+                </Card>
+              </Grid>
+            )}
+          </Grid>
+        </Grid>
       </Container>
       <Footer />
     </>

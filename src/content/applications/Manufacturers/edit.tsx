@@ -33,7 +33,10 @@ import { useNavigate } from 'react-router';
 import ApiServices from 'src/Network_call/apiservices';
 import ApiEndPoints from 'src/Network_call/ApiEndPoints';
 import { AnyAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { addManufactur,getContentTypeList } from 'src/store/reducers/manufacturer';
+import {
+  addManufactur,
+  getContentTypeList
+} from 'src/store/reducers/manufacturer';
 import { any } from 'prop-types';
 import { dispatch } from 'src/store';
 
@@ -107,7 +110,7 @@ function ApplicationsAddManufacturers() {
     },
     validationSchema: validateSchema,
     onSubmit: async (values, { resetForm }) => {
-      dispatch(addManufactur(values)); 
+      dispatch(addManufactur(values));
     }
   });
 
@@ -161,29 +164,27 @@ function ApplicationsAddManufacturers() {
     setNonPharmaActivities(event.target.value);
   };
 
-  
-  const { data, isLoading } = useSelector((store: any) => store.manufacturerSlice);
- 
-  const getContentTypeData = (event) => {
-    
-    return dispatch(getContentTypeList(event)); 
-  };
+  const { data, isLoading } = useSelector(
+    (store: any) => store.manufacturerSlice
+  );
 
-  
+  const getContentTypeData = (event) => {
+    return dispatch(getContentTypeList(event));
+  };
 
   return (
     <>
       <Helmet>
         <title>Edit Manufacturers</title>
       </Helmet>
-      <PageTitleWrapper>
+      {/* <PageTitleWrapper>
         <AddPageHeader />
-      </PageTitleWrapper>
+      </PageTitleWrapper> */}
 
       <Container style={{ height: '100%' }} maxWidth={false}>
         <Card style={{ padding: '25px' }}>
           <Typography variant="h3" component="h3" gutterBottom>
-            Add Manufacturers
+            Edit Manufacturers
           </Typography>
           <Box
             component="form"
@@ -256,17 +257,18 @@ function ApplicationsAddManufacturers() {
                   autoComplete="Enter Personel"
                   onChange={formik.handleChange}
                   value={formik.values.personel}
-                  onFocus={() => getContentTypeData({ 'type': 'Personel' })}
+                  onFocus={() => getContentTypeData({ type: 'Personel' })}
                   helperText={
                     formik.errors.personel ? formik.errors.personel : ''
                   }
                   error={formik.errors.personel ? true : false}
                 >
-                {data && data.map((value, index) => (
-                    <MenuItem key={index} value={value._id}>
-                      {value.title}
-                    </MenuItem>
-                  ))}
+                  {data &&
+                    data.map((value, index) => (
+                      <MenuItem key={index} value={value._id}>
+                        {value.title}
+                      </MenuItem>
+                    ))}
                 </TextField>
                 <TextField
                   margin="normal"
@@ -296,8 +298,6 @@ function ApplicationsAddManufacturers() {
                   helperText={formik.errors.gst_no ? formik.errors.gst_no : ''}
                   error={formik.errors.gst_no ? true : false}
                 />
-                
-
 
                 <TextField
                   margin="normal"
@@ -316,16 +316,17 @@ function ApplicationsAddManufacturers() {
                       : ''
                   }
                   error={formik.errors.international_gmp_status ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'International GMP status' })}
+                  onFocus={() =>
+                    getContentTypeData({ type: 'International GMP status' })
+                  }
                 >
-                {data && data.map((value, index) => (
-                    <MenuItem key={index} value={value._id}>
-                      {value.title}
-                    </MenuItem>
-                  ))}
+                  {data &&
+                    data.map((value, index) => (
+                      <MenuItem key={index} value={value._id}>
+                        {value.title}
+                      </MenuItem>
+                    ))}
                 </TextField>
-
-                
               </Grid>
               <Grid item xs={4}>
                 <TextField
@@ -379,9 +380,10 @@ function ApplicationsAddManufacturers() {
                     formik.errors.personal ? formik.errors.personal : ''
                   }
                   error={formik.errors.personal ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'Personel' })}
-                  >
-                  {data && data.map((value, index) => (
+                  onFocus={() => getContentTypeData({ type: 'Personel' })}
+                >
+                  {data &&
+                    data.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -407,9 +409,10 @@ function ApplicationsAddManufacturers() {
                   error={
                     formik.errors.sections_dosage_froms_approved ? true : false
                   }
-                  onFocus={() => getContentTypeData({ 'type': 'Dosage forms' })}
-                  >
-                  {data && data.map((value, index) => (
+                  onFocus={() => getContentTypeData({ type: 'Dosage forms' })}
+                >
+                  {data &&
+                    data.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -433,9 +436,12 @@ function ApplicationsAddManufacturers() {
                       : ''
                   }
                   error={formik.errors.non_pharma_activities ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'Non Pharma activities' })}
-                  >
-                  {data && data.map((value, index) => (
+                  onFocus={() =>
+                    getContentTypeData({ type: 'Non Pharma activities' })
+                  }
+                >
+                  {data &&
+                    data.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -457,9 +463,10 @@ function ApplicationsAddManufacturers() {
                     formik.errors.activities ? formik.errors.activities : ''
                   }
                   error={formik.errors.activities ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'Activities' })}
-                  >
-                  {data && data.map((value, index) => (
+                  onFocus={() => getContentTypeData({ type: 'Activities' })}
+                >
+                  {data &&
+                    data.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -483,7 +490,6 @@ function ApplicationsAddManufacturers() {
                   }
                   error={formik.errors.plant_address ? true : false}
                 />
-
               </Grid>
               <Grid item xs={4}>
                 <TextField
@@ -523,9 +529,14 @@ function ApplicationsAddManufacturers() {
                       ? true
                       : false
                   }
-                  onFocus={() => getContentTypeData({ 'type': 'Availability of manufacturing license' })}
-                  >
-                  {data && data.map((value, index) => (
+                  onFocus={() =>
+                    getContentTypeData({
+                      type: 'Availability of manufacturing license'
+                    })
+                  }
+                >
+                  {data &&
+                    data.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -547,9 +558,10 @@ function ApplicationsAddManufacturers() {
                     formik.errors.equipments ? formik.errors.equipments : ''
                   }
                   error={formik.errors.equipments ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'Equipments' })}
-                  >
-                  {data && data.map((value, index) => (
+                  onFocus={() => getContentTypeData({ type: 'Equipments' })}
+                >
+                  {data &&
+                    data.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -573,9 +585,14 @@ function ApplicationsAddManufacturers() {
                       : ''
                   }
                   error={formik.errors.indian_gmp_status ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'Indian GMP status - State GMP' })}
-                  >
-                  {data && data.map((value, index) => (
+                  onFocus={() =>
+                    getContentTypeData({
+                      type: 'Indian GMP status - State GMP'
+                    })
+                  }
+                >
+                  {data &&
+                    data.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -598,7 +615,6 @@ function ApplicationsAddManufacturers() {
                   error={formik.errors.plant_name ? true : false}
                 />
 
-
                 <TextField
                   margin="normal"
                   id="type_of_products"
@@ -616,9 +632,12 @@ function ApplicationsAddManufacturers() {
                       : ''
                   }
                   error={formik.errors.type_of_products ? true : false}
-                  onFocus={() => getContentTypeData({ 'type': 'Types of products' })}
-                  >
-                  {data && data.map((value, index) => (
+                  onFocus={() =>
+                    getContentTypeData({ type: 'Types of products' })
+                  }
+                >
+                  {data &&
+                    data.map((value, index) => (
                       <MenuItem key={index} value={value._id}>
                         {value.title}
                       </MenuItem>
@@ -653,7 +672,7 @@ function ApplicationsAddManufacturers() {
         </Card>
       </Container>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
