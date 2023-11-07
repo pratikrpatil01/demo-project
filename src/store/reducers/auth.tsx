@@ -31,6 +31,7 @@ const auth = (state = initialState, action) => {
     }
     case 'LOGIN': {
       const { data, tokenInfo } = action.payload;
+      console.log('data-------->>>>', data);
       return {
         ...state,
         isLoggedIn: true,

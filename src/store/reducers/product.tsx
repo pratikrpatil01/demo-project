@@ -79,7 +79,7 @@ const productScile = createSlice({
       .addCase(DeleteProduct.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
         state.productData = state.productData.filter(
-          (i: any) => i._id !== action.payload.product
+          (i: any) => i._id !== action.payload?.product
         );
       })
 
@@ -87,6 +87,13 @@ const productScile = createSlice({
         state.isLoading = true;
       })
       .addCase(AddProduct.fulfilled, (state: any, action: any) => {
+        state.isLoading = false;
+        // state.productData = action.payload.product;
+      })
+      .addCase(EditProduct.pending, (state: any) => {
+        state.isLoading = true;
+      })
+      .addCase(EditProduct.fulfilled, (state: any, action: any) => {
         state.isLoading = false;
         // state.productData = action.payload.product;
       });

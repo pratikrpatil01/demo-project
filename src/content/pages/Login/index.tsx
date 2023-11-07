@@ -56,7 +56,7 @@ function Login() {
       .required('The email field is required'),
     password: yup.string().required('The password field is required')
   });
- 
+
   const formik = useFormik({
     initialValues: {
       email: '',

@@ -9,11 +9,11 @@ interface SidebarLayoutProps {
   children?: ReactNode;
 }
 
-
 export const checkAuthLoader = () => {
-  let auth = localStorage.getItem("auth");
-  if(!auth) return <Navigate to='login' />;
-}
+  let auth = localStorage.getItem('auth');
+  if (!auth) return <Navigate to="login" />;
+  console.log('auth', auth);
+};
 
 const SidebarLayout: FC<SidebarLayoutProps> = () => {
   const theme = useTheme();
